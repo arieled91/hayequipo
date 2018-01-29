@@ -17,7 +17,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'arieled91'
+group = 'org.arieled91'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
@@ -45,9 +45,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("com.h2database:h2")
     compile("org.jetbrains:annotations:15.0")
+	compile("org.springframework.boot:spring-boot-starter-mail")
 
-
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile("org.springframework.security:spring-security-test")
 	testCompile("junit:junit")
 }

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+  <style>
+    .password-verdict{
+      color:#000;
+    }
+  </style>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII"/>
+  <title text="#{label.form.title}">form</title>
+</head>
+<body>
+<div class="container">
+  <div >
+    <h1 text="#{label.form.title}">Sign Up</h1>
+    <br/>
+    <form th:action="@{/user/registration}" method="POST" enctype="utf8">
+      <div class="form-group row" >
+        <label class="col-sm-3" text="#{label.user.firstName}">First Name</label>
+        <span class="col-sm-5"><input class="form-control" name="firstName" value="" required="required"/></span>
+        <span id="firstNameError" class="alert alert-danger col-sm-4" style="display:none"></span>
+
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3" text="#{label.user.lastName}">Last Name</label>
+        <span class="col-sm-5"><input class="form-control" name="lastName" value="" required="required"/></span>
+        <span id="lastNameError" class="alert alert-danger col-sm-4" style="display:none"></span>
+
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3" text="#{label.user.email}">Email</label>
+        <span class="col-sm-5"><input type="email" class="form-control" name="email" value="" required="required"/></span>
+        <span id="emailError" class="alert alert-danger col-sm-4" style="display:none"></span>
+
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3" text="#{label.user.password}">Password</label>
+        <span class="col-sm-5"><input id="password" class="form-control" name="password" value="" type="password" required="required"/></span>
+        <span id="passwordError" class="alert alert-danger col-sm-4" style="display:none"></span>
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-3" text="#{label.user.confirmPass}">Confirm Password</label>
+        <span class="col-sm-5"><input id="matchPassword" class="form-control" name="matchingPassword" value="" type="password" required="required"/></span>
+        <span id="globalError" class="alert alert-danger col-sm-4" style="display:none">Passwords must be the same</span>
+      </div>
+      <br/>
+      <button type="submit" class="btn btn-primary" text="#{label.form.submit}">Send</button>
+    </form>
+    <br/>
+    <a href="@{/login}" text="#{label.form.loginLink}">Login</a>
+  </div>
+</div>
+
+</body>
+
+<script>
+    /*<![CDATA[*/
+//    $(document).ready(function () {
+//        $('form').submit(function(event) {
+//           // register(event);
+//        });
+//        $(":password").keyup(function(){
+//            if($("#password").val() !== $("#matchPassword").val()){
+//                $("#globalError").show().html(/*[[#{PasswordMatches.user}]]*/);
+//            }else{
+//                $("#globalError").html("").hide();
+//            }
+//        });
+
+//        options = {
+//            common: {minChar:8},
+//            ui: {
+//                showVerdictsInsideProgressBar:true,
+//                showErrors:true,
+//                errorMessages:{
+//                    wordLength: 3/*[[#{error.wordLength}]]*/,
+//                    wordNotEmail: 3/*[[#{error.wordNotEmail}]]*/,
+//                    wordSequences: 3/*[[#{error.wordSequences}]]*/,
+//                    wordLowercase: 0/*[[#{error.wordLowercase}]]*/,
+//                    wordUppercase: 0/*[[#{error.wordUppercase}]]*/,
+//                    wordOneNumber: 0/*[[#{error.wordOneNumber}]]*/,
+//                    wordOneSpecialChar: 0/*[[#{error.wordOneSpecialChar}]]*/
+//                }
+//            }
+//        };
+//        $('#password').pwstrength(options);
+//    });
+//    function register(event){
+//        event.preventDefault();
+//        $(".alert").html("").hide();
+//        $(".error-list").html("");
+//
+//        if(!validatePassword()) return;
+//        var formData= $('form').serialize();
+//        $.post("user/registration",formData ,function(data){
+//            console.log(data.message);
+//            if(data.message === "success"){
+//                window.location.href = "login.html?signedup";
+//            }
+//        })
+//            .fail(function(data) {
+//                if(data.responseJSON.error.indexOf("MailError") > -1)
+//                {
+//                    window.location.href = "emailError.html";
+//                }
+//                else if(data.responseJSON.error === "UserAlreadyExist"){
+//                    $("#emailError").show().html(data.responseJSON.message);
+//                }
+//                else if(data.responseJSON.error.indexOf("InternalError") > -1){
+//                    window.location.href = "login?message=" + data.responseJSON.message;
+//                }
+//                else{
+//                    var errors = $.parseJSON(data.responseJSON.message);
+//                    $.each( errors, function( index,item ){
+//                        $("#"+item.field+"Error").show().html(item.defaultMessage);
+//                    });
+//                    errors = $.parseJSON(data.responseJSON.error);
+//                    $.each( errors, function( index,item ){
+//                        $("#globalError").show().append(item.defaultMessage+"<br/>");
+//                    });
+//                }
+//            });
+//    }
+    var password = document.getElementById("password");
+    var matchPassword = document.getElementById("matchPassword");
+
+    function validatePassword(){
+        if(password.value !== matchPassword.value) {
+            matchPassword.setCustomValidity("Passwords Don't Match");
+            return false;
+        } else {
+            matchPassword.setCustomValidity('');
+            return true;
+        }
+    }
+
+    password.onchange = validatePassword;
+    matchPassword.onkeyup = validatePassword;
+
+    /*]]>*/
+</script>
+</html>

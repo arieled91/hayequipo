@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+  <title>Login </title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-indigo.min.css">
+  <!--<link href="../static/login.css" th:href="@{/css/Layout.css}" rel="stylesheet" />-->
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<header>
+  <h3> </h3>
+</header>
+<div class="mdl-grid">
+  <div class="mdl-layout-spacer"></div>
+
+  <form th:action="@{user/registration}" method="post">
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="email" name="email"/><label class="mdl-textfield__label" th:required="true">Email</label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" name="firstName"/><label class="mdl-textfield__label" th:required="true">First Name</label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="text" name="lastName"/><label class="mdl-textfield__label" th:required="true">Last Name</label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="password" name="password" id="password"/><label class="mdl-textfield__label" th:required="true">Password</label>
+    </div>
+    <br>
+    <div class="mdl-textfield mdl-js-textfield">
+      <input class="mdl-textfield__input" type="password" name="matchPassword" id="matchPassword"/><label class="mdl-textfield__label" th:required="true">Confirm Password</label>
+    </div>
+    <br>
+    <div style="text-align: center">
+      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Sign Up"/>
+    </div>
+  </form>
+
+  <div class="mdl-layout-spacer"></div>
+</div>
+</body>
+
+<script>
+    var password = document.getElementById("password");
+    var matchPassword = document.getElementById("matchPassword");
+
+    function validatePassword(){
+        if(password.value !== matchPassword.value) {
+            matchPassword.setCustomValidity("Passwords Don't Match");
+            return false;
+        } else {
+            matchPassword.setCustomValidity('');
+            return true;
+        }
+    }
+
+    password.onchange = validatePassword;
+    matchPassword.onkeyup = validatePassword;
+
+</script>
+</html>
