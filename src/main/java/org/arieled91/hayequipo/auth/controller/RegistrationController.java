@@ -3,6 +3,7 @@ package org.arieled91.hayequipo.auth.controller;
 import org.arieled91.hayequipo.auth.OnRegistrationCompleteEvent;
 import org.arieled91.hayequipo.auth.dto.PasswordDto;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
+import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
 import org.arieled91.hayequipo.auth.model.*;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
@@ -72,17 +73,22 @@ public class RegistrationController {
     // Registration
 
     @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
-    @ResponseBody
-    public GenericResponse registerUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
+    public String registerUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
         LOGGER.debug("Registering user account with information: {}", accountDto);
 
-        final User registered = userService.registerNewUserAccount(accountDto);
-        eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
-        return new GenericResponse("success");
+        try {
+            final User registered = userService.registerNewUserAccount(accountDto);
+            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+            return "redirect:/registration?sent";
+        }catch (UserAlreadyExistsException e){
+            return "redirect:/registration?emailError";
+        }catch (Exception e){
+            return "redirect:/registration?error";
+        }
     }
 
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
-    public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token) throws UnsupportedEncodingException {
+    public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token, RedirectAttributes redirect) throws UnsupportedEncodingException {
         Locale locale = request.getLocale();
         final String result = userService.validateVerificationToken(token);
         if (result.equals("valid")) {
@@ -97,10 +103,10 @@ public class RegistrationController {
             return "redirect:/login?signedup";
         }
 
-        model.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
-        model.addAttribute("expired", "expired".equals(result));
-        model.addAttribute("token", token);
-        return "redirect:/badUser.html?lang=" + locale.getLanguage();
+        redirect.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
+        redirect.addAttribute("expired", "expired".equals(result));
+        redirect.addAttribute("token", token);
+        return "redirect:/error";
     }
 
     // user activation - verification
@@ -191,7 +197,7 @@ public class RegistrationController {
         email.setSubject(subject);
         email.setText(body);
         email.setTo(user.getEmail());
-        email.setFrom(requireNonNull(env.getProperty("auth.mail.from"), MAIL_FROM_PROPERTY_ERROR));
+        email.setFrom(requireNonNull(env.getProperty("spring.mail.username"), MAIL_FROM_PROPERTY_ERROR));
         return email;
     }
 

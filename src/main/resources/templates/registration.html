@@ -17,28 +17,37 @@
   <div class="mdl-layout-spacer"></div>
 
   <form th:action="@{user/registration}" method="post">
+    <div th:if="${param.emailError}" th:text="#{message.regMailError}"></div>
+    <div th:if="${param.error}" th:text="#{message.regError}"></div>
+    <div th:if="${param.sent}" th:text="#{message.regSucc}"></div>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="email" name="email"/><label class="mdl-textfield__label" th:required="true">Email</label>
+      <input class="mdl-textfield__input" type="email" name="email" id="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" minlength=5 required/>
+      <label class="mdl-textfield__label" for="email" th:text="#{label.user.email}"></label>
     </div>
     <br>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="text" name="firstName"/><label class="mdl-textfield__label" th:required="true">First Name</label>
+      <input class="mdl-textfield__input" type="text" name="firstName" id="firstName" minlength=2 required/>
+      <label class="mdl-textfield__label" for="firstName" th:text="#{label.user.firstName}"></label>
     </div>
     <br>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="text" name="lastName"/><label class="mdl-textfield__label" th:required="true">Last Name</label>
+      <input class="mdl-textfield__input" type="text" name="lastName" id="lastName" minlength=2 required/>
+      <label class="mdl-textfield__label" for="lastName" th:text="#{label.user.lastName}"></label>
     </div>
     <br>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="password" name="password" id="password"/><label class="mdl-textfield__label" th:required="true">Password</label>
+      <input class="mdl-textfield__input" type="password" name="password" id="password" minlength=3 required/>
+      <label class="mdl-textfield__label" for="password" th:text="#{label.user.password}"></label>
     </div>
     <br>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="password" name="matchPassword" id="matchPassword"/><label class="mdl-textfield__label" th:required="true">Confirm Password</label>
+      <input class="mdl-textfield__input" type="password" name="matchPassword" id="matchPassword" minlength=3 required/>
+      <label class="mdl-textfield__label" for="matchPassword"  th:text="#{label.user.confirmPass}"></label>
     </div>
     <br>
     <div style="text-align: center">
-      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Sign Up"/>
+      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" th:value="#{label.form.submit}"/>
+      <a href="login" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" th:text="#{label.form.login}"></a>
     </div>
   </form>
 

@@ -49,9 +49,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User registerNewUserAccount(final User user) {
-        if (emailExist(user.getEmail()))
-            throw new UserAlreadyExistsException("There is an account with that email adress: " + user.getEmail());
-
+        if (emailExist(user.getEmail())) {
+            User persistedAccount = repository.findByEmail(user.getEmail());
+            if(persistedAccount.isEnabled()) throw new UserAlreadyExistsException("There is an account with that email address: " + user.getEmail());
+            else deleteUser(persistedAccount);
+        }
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_USER")));

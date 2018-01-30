@@ -10,7 +10,17 @@ import org.springframework.context.annotation.PropertySource;
 @ConfigurationProperties(prefix = "auth")
 public class AuthProperties {
     public class Mail {
-        private String from;
+        private String from = "";
+        private boolean required = true;
+
+
+        public boolean isRequired() {
+            return required;
+        }
+
+        public void setRequired(boolean required) {
+            this.required = required;
+        }
 
         public String getFrom() {
             return from;

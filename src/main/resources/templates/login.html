@@ -17,19 +17,19 @@
   <div class="mdl-layout-spacer"></div>
 
   <form th:action="@{/login}" method="post">
-    <div th:if="${param.error}">Invalid username and password.</div>
-    <div th:if="${param.logout}">You have been logged out.</div>
-    <div th:if="${param.signedup}">Registration Success.</div>
+    <div th:if="${param.error}" th:text="#{auth.message.invalidUserOrPass}"></div>
+    <div th:if="${param.logout}" th:text="#{message.logoutSucc}"></div>
+    <div th:if="${param.signedup}" th:text="#{label.successRegister.title}"></div>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="email" name="username"/><label class="mdl-textfield__label">Email</label>
+      <input class="mdl-textfield__input" type="email" name="username"/><label class="mdl-textfield__label" th:text="#{label.user.email}"></label>
     </div>
     <br>
     <div class="mdl-textfield mdl-js-textfield">
-      <input class="mdl-textfield__input" type="password" name="password"/><label class="mdl-textfield__label">Password</label>
+      <input class="mdl-textfield__input" type="password" name="password"/><label class="mdl-textfield__label" th:text="#{label.user.password}"></label>
     </div>
     <div style="text-align: center">
-      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" value="Log In"/>
-      <a href="registration" text="#{label.form.title}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent">Sign Up</a>
+      <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" th:value="#{label.form.login}"/>
+      <a href="registration" text="#{label.form.title}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" th:text="#{label.form.signup}"></a>
     </div>
   </form>
 

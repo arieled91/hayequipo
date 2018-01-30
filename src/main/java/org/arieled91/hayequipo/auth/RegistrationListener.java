@@ -54,14 +54,14 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     private SimpleMailMessage constructEmailMessage(final OnRegistrationCompleteEvent event, final User user, final String token) {
         final String recipientAddress = user.getEmail();
-        final String subject = "Registration Confirmation";
+        final String subject = messages.getMessage("message.mail.subject", null, event.getLocale());
         final String confirmationUrl = event.getAppUrl() + "/registrationConfirm.html?token=" + token;
-        final String message =  messages.getMessage("message.regSucc", null, event.getLocale());
+        final String message =  messages.getMessage("message.mail.text", null, event.getLocale());
         final SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText(message + " \r\n" + confirmationUrl);
-        email.setFrom(Objects.requireNonNull(env.getProperty("auth.mail.from"), "Email auth property cannot be null"));
+        email.setFrom(Objects.requireNonNull(env.getProperty("spring.mail.username"), "Email auth property cannot be null"));
         return email;
     }
 
