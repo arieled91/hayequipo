@@ -1,9 +1,11 @@
 package org.arieled91.hayequipo.auth.controller;
 
-import org.arieled91.hayequipo.auth.OnRegistrationCompleteEvent;
-import org.arieled91.hayequipo.auth.dto.PasswordDto;
+import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
+import org.arieled91.hayequipo.auth.OnRegistrationEvent;
+import org.arieled91.hayequipo.auth.model.dto.PasswordDto;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
+import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
 import org.arieled91.hayequipo.auth.model.*;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
@@ -41,7 +43,7 @@ import static java.util.Objects.requireNonNull;
 
 @Controller
 public class RegistrationController {
-    private final Logger LOGGER = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserService userService;
 
@@ -74,11 +76,11 @@ public class RegistrationController {
 
     @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
     public String registerUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
-        LOGGER.debug("Registering user account with information: {}", accountDto);
+        logger.debug("Registering user account with information: {}", accountDto);
 
         try {
             final User registered = userService.registerNewUserAccount(accountDto);
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), getAppUrl(request)));
+            eventPublisher.publishEvent(new OnRegistrationEvent(registered, request.getLocale(), getAppUrl(request)));
             return "redirect:/registration?sent";
         }catch (UserAlreadyExistsException e){
             return "redirect:/registration?emailError";
@@ -91,20 +93,20 @@ public class RegistrationController {
     public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token, RedirectAttributes redirect) throws UnsupportedEncodingException {
         Locale locale = request.getLocale();
         final String result = userService.validateVerificationToken(token);
-        if (result.equals("valid")) {
+        if (UserService.TOKEN_VALID.equals(result)) {
             final User user = userService.getUser(token);
             // if (user.isUsing2FA()) {
             // model.addAttribute("qr", userService.generateQRUrl(user));
             // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
             // }
             authWithoutPassword(user);
+            eventPublisher.publishEvent(new OnRegistrationConfirmEvent(user));
             model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
-//            return "redirect:/console.html?lang=" + locale.getLanguage();
             return "redirect:/login?signedup";
         }
 
         redirect.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
-        redirect.addAttribute("expired", "expired".equals(result));
+        redirect.addAttribute("expired", UserService.TOKEN_EXPIRED.equals(result));
         redirect.addAttribute("token", token);
         return "redirect:/error";
     }
@@ -158,9 +160,9 @@ public class RegistrationController {
     @RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse changeUserPassword(final Locale locale, @Valid PasswordDto passwordDto) {
-        final User user = userService.findUserByEmail(((User) SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getPrincipal()).getEmail());
+        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
+        final User user = userService.findActiveUserByMail(email).orElseThrow(UserNotFoundException::new);
+
         if (!userService.checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
             throw new InvalidOldPasswordException();
         }
@@ -209,7 +211,7 @@ public class RegistrationController {
         try {
             request.login(username, password);
         } catch (ServletException e) {
-            LOGGER.error("Error while login ", e);
+            logger.error("Error while login ", e);
         }
     }
 

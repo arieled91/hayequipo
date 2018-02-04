@@ -1,4 +1,4 @@
-package org.arieled91.hayequipo.auth.dto;
+package org.arieled91.hayequipo.auth.model.dto;
 
 
 public class PasswordDto {

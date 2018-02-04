@@ -1,13 +1,11 @@
 package org.arieled91.hayequipo.auth.model;
 
+import org.jetbrains.annotations.NotNull;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -16,24 +14,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
+    @NotEmpty @NotNull private String firstName = "";
+    @NotEmpty @NotNull private String lastName = "";
+    @NotEmpty @NotNull private String email = "";
+    @NotEmpty @NotNull private String password = "";
     private boolean enabled;
     private boolean tokenExpired;
 
-    @ManyToMany
-    @JoinTable(
-        name = "users_roles",
-        joinColumns = @JoinColumn(
-            name = "user_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(
-            name = "role_id", referencedColumnName = "id"))
-    private Collection<Role> roles;
+    @ManyToMany @JoinTable(
+            name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<Role> roles;
 
-    public User() {
-    }
+    public User() {}
 
     // GETTERS & SETTERS
 
@@ -45,35 +39,35 @@ public class User {
         this.id = id;
     }
 
-    public String getFirstName() {
+    @NotNull public String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(@NotNull String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    @NotNull public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(@NotNull String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
+    @NotNull public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(@NotNull String email) {
         this.email = email;
     }
 
-    public String getPassword() {
+    @NotNull public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NotNull String password) {
         this.password = password;
     }
 
@@ -97,7 +91,7 @@ public class User {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 }

@@ -1,4 +1,4 @@
-package org.arieled91.hayequipo.auth;
+package org.arieled91.hayequipo.auth.repository;
 
 import org.arieled91.hayequipo.auth.model.Privilege;
 import org.arieled91.hayequipo.auth.model.Role;
@@ -58,7 +58,7 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         createRoleIfNotFound("ROLE_USER", userPrivileges);
 
         // == create initial user
-        createUserIfNotFound("test@test.com", "Test", "Test", "test", new ArrayList<>(Collections.singletonList(adminRole)));
+        createUserIfNotFound("test@test.com", "Test", "Test", "test", Set.of(adminRole));
 
         alreadySetup = true;
     }
@@ -87,8 +87,8 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public void createUserIfNotFound(final String email, final String firstName, final String lastName, final String password, final Collection<Role> roles) {
-        User user = userRepository.findByEmail(email);
+    public void createUserIfNotFound(final String email, final String firstName, final String lastName, final String password, final Set<Role> roles) {
+        User user = userRepository.findByEmailAndEnabledIsTrue(email);
         if (user == null) {
             user = new User();
             user.setFirstName(firstName);

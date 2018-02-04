@@ -1,4 +1,4 @@
-package org.arieled91.hayequipo.auth;
+package org.arieled91.hayequipo.auth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
             .antMatchers("/css/**","/img/**","/js/**").permitAll()
-            .antMatchers("/registration*","/user/registration*","/login*","/error*").permitAll()
+            .antMatchers("/registration*","/user/registration*","/login*","/error*","/guests*").permitAll()
             .anyRequest().authenticated()
             .and()
             .formLogin()

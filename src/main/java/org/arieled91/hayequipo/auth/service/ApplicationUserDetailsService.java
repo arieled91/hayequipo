@@ -49,7 +49,7 @@ public class ApplicationUserDetailsService implements UserDetailsService {
 //            throw new RuntimeException("blocked");
 //        }
 
-        final User user = userRepository.findByEmail(email);
+        final User user = userRepository.findByEmailAndEnabledIsTrue(email);
         if (user == null) throw new UsernameNotFoundException("No user found with username: " + email);
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, getAuthorities(user.getRoles()));

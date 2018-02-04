@@ -7,6 +7,7 @@ import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
 import org.arieled91.hayequipo.auth.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,34 +30,30 @@ public class UserServiceImpl implements UserService{
 
     private final VerificationTokenRepository tokenRepository;
 
-    private static final String TOKEN_INVALID = "invalidToken";
-    private static final String TOKEN_EXPIRED = "expired";
-    private static final String TOKEN_VALID = "valid";
+    private final MessageSource message;
+
 
 //    public static String QR_PREFIX = "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
 //    public static String APP_NAME = "SpringRegistration";
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, SessionRegistry sessionRegistry, VerificationTokenRepository tokenRepository) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, SessionRegistry sessionRegistry, VerificationTokenRepository tokenRepository, MessageSource message) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.sessionRegistry = sessionRegistry;
         this.tokenRepository = tokenRepository;
+        this.message = message;
     }
 
     // API
 
     @Override
     public User registerNewUserAccount(final User user) {
-        if (emailExist(user.getEmail())) {
-            User persistedAccount = repository.findByEmail(user.getEmail());
-            if(persistedAccount.isEnabled()) throw new UserAlreadyExistsException("There is an account with that email address: " + user.getEmail());
-            else deleteUser(persistedAccount);
-        }
+        if(findActiveUserByMail(user.getEmail()).isPresent()) throw new UserAlreadyExistsException();
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singletonList(roleRepository.findByName("ROLE_USER")));
+        user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
         return repository.save(user);
     }
 
@@ -115,11 +112,6 @@ public class UserServiceImpl implements UserService{
 //        final PasswordResetToken myToken = new PasswordResetToken(token, user);
 //        passwordTokenRepository.save(myToken);
 //    }
-
-    @Override
-    public User findUserByEmail(final String email) {
-        return repository.findByEmail(email);
-    }
 
 //    @Override
 //    public PasswordResetToken getPasswordResetToken(final String token) {
@@ -183,8 +175,9 @@ public class UserServiceImpl implements UserService{
 //        return currentUser;
 //    }
 
-    private boolean emailExist(final String email) {
-        return repository.findByEmail(email) != null;
+    @Override
+    public Optional<User> findActiveUserByMail(final String email) {
+        return Optional.ofNullable(repository.findByEmailAndEnabledIsTrue(email));
     }
 
     @Override

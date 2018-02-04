@@ -1,4 +1,4 @@
-package org.arieled91.hayequipo.auth;
+package org.arieled91.hayequipo.auth.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

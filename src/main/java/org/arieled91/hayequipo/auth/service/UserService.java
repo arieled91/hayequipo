@@ -15,7 +15,7 @@ public interface UserService {
 
     void deleteUser(User user);
 
-    User findUserByEmail(String email);
+    Optional<User> findActiveUserByMail(String email);
 
     Optional<User> getUserById(long id);
 
@@ -44,6 +44,10 @@ public interface UserService {
     String validateVerificationToken(String token);
 
 //    User updateUser2FA(boolean use2FA);
+
+    String TOKEN_INVALID = "invalidToken";
+    String TOKEN_EXPIRED = "expired";
+    String TOKEN_VALID = "valid";
 
 
 }

@@ -16,7 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class RegistrationListener implements ApplicationListener<OnRegistrationEvent> {
 
     private final UserService service;
 
@@ -37,11 +37,11 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     // API
 
     @Override
-    public void onApplicationEvent(@NotNull final OnRegistrationCompleteEvent event) {
-        this.confirmRegistration(event);
+    public void onApplicationEvent(@NotNull final OnRegistrationEvent event) {
+        confirmRegistration(event);
     }
 
-    private void confirmRegistration(final OnRegistrationCompleteEvent event) {
+    private void confirmRegistration(final OnRegistrationEvent event) {
         final User user = event.getUser();
         final String token = UUID.randomUUID().toString();
         service.createVerificationTokenForUser(user, token);
@@ -50,9 +50,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         mailSender.send(email);
     }
 
-    //
-
-    private SimpleMailMessage constructEmailMessage(final OnRegistrationCompleteEvent event, final User user, final String token) {
+    private SimpleMailMessage constructEmailMessage(final OnRegistrationEvent event, final User user, final String token) {
         final String recipientAddress = user.getEmail();
         final String subject = messages.getMessage("message.mail.subject", null, event.getLocale());
         final String confirmationUrl = event.getAppUrl() + "/registrationConfirm.html?token=" + token;

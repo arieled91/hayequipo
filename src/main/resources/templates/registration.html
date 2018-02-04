@@ -5,10 +5,9 @@
   <title>Login </title>
 
   <script src="../static/js/jquery-3.3.1.min.js" th:src="@{../js/jquery-3.3.1.min.js}"></script>
-  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-  <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,500,400italic,700,700italic' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-indigo.min.css" />
-  <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-indigo.min.css">
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -67,7 +66,7 @@
 
     <div style="text-align: center">
       <input class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" type="submit" th:value="#{label.form.submit}"/>
-      <a href="login" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" th:text="#{label.form.login}"></a>
+      <a href="login.html" th:href="@{/login}" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--accent" th:text="#{label.form.login}"></a>
     </div>
 
   </form>
@@ -101,8 +100,5 @@
     $(document).ready(function() {
         $("div").removeClass('is-invalid');
     });
-</script>
-<script>
-
 </script>
 </html>
