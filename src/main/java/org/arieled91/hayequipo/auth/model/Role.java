@@ -1,14 +1,15 @@
 package org.arieled91.hayequipo.auth.model;
 
-import javax.persistence.*;
+import org.arieled91.hayequipo.common.AbstractEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.util.Collection;
 
 @Entity
-public class Role {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Role extends AbstractEntity{
 
     private String name;
     @ManyToMany(mappedBy = "roles")
@@ -27,15 +28,6 @@ public class Role {
     }
 
     // GETTERS & SETTERS
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

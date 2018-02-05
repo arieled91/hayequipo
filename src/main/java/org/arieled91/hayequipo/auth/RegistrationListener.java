@@ -1,9 +1,6 @@
 package org.arieled91.hayequipo.auth;
 
 
-import java.util.Objects;
-import java.util.UUID;
-
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +11,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
+import java.util.UUID;
 
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationEvent> {

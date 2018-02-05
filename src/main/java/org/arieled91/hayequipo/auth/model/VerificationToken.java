@@ -1,19 +1,16 @@
 package org.arieled91.hayequipo.auth.model;
 
 
+import org.arieled91.hayequipo.common.AbstractEntity;
+
+import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.*;
-
 @Entity
-public class VerificationToken {
+public class VerificationToken extends AbstractEntity{
 
     private static final int EXPIRATION = 60 * 24;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
     private String token;
 
@@ -40,10 +37,6 @@ public class VerificationToken {
         this.token = token;
         this.user = user;
         this.expiryDate = calculateExpiryDate(EXPIRATION);
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getToken() {

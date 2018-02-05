@@ -2,17 +2,17 @@ package org.arieled91.hayequipo.game.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.auth.model.User;
+import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 @Entity
-public class Player {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Player extends AbstractEntity {
 
     @NotNull private String firstName = "";
     @Nullable private String lastName;
@@ -24,16 +24,6 @@ public class Player {
     private User user;
 
     public Player() {}
-
-    // GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @NotNull public String getFirstName() {
         return user == null ? firstName : user.getFirstName();

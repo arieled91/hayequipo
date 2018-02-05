@@ -1,24 +1,20 @@
 package org.arieled91.hayequipo.game.model;
 
+import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
-public class Location {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Location extends AbstractEntity {
 
     @NotEmpty @NotNull
     private String address = "";
     @Nullable private Long latitude;
     @Nullable private Long longitude;
+    private String description;
 
     public Location() {
     }
@@ -48,5 +44,13 @@ public class Location {
 
     public void setLongitude(@Nullable Long longitude) {
         this.longitude = longitude;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -1,5 +1,6 @@
 package org.arieled91.hayequipo.game.model;
 
+import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
@@ -8,17 +9,13 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
-public class Game {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Game extends AbstractEntity{
 
     private String description = "";
 
     @NotNull private LocalDateTime date;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @Nullable
     private Location location;
 
@@ -30,14 +27,6 @@ public class Game {
     private Set<Player> players;
 
     public Game() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Set<Player> getPlayers() {
         return players;

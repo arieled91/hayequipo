@@ -1,10 +1,10 @@
-package org.arieled91.hayequipo.auth.model;
-
-import java.util.List;
-import java.util.stream.Collectors;
+package org.arieled91.hayequipo.auth.model.dto;
 
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GenericResponse {
 

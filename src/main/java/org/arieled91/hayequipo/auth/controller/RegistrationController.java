@@ -2,11 +2,15 @@ package org.arieled91.hayequipo.auth.controller;
 
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
-import org.arieled91.hayequipo.auth.model.dto.PasswordDto;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
 import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
-import org.arieled91.hayequipo.auth.model.*;
+import org.arieled91.hayequipo.auth.model.Privilege;
+import org.arieled91.hayequipo.auth.model.Role;
+import org.arieled91.hayequipo.auth.model.User;
+import org.arieled91.hayequipo.auth.model.VerificationToken;
+import org.arieled91.hayequipo.auth.model.dto.GenericResponse;
+import org.arieled91.hayequipo.auth.model.dto.PasswordDto;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,8 +1,8 @@
 package org.arieled91.hayequipo.game.controller;
 
-import org.arieled91.hayequipo.game.service.GameService;
 import org.arieled91.hayequipo.game.model.dto.GuestJoinDto;
 import org.arieled91.hayequipo.game.model.dto.UserJoinDto;
+import org.arieled91.hayequipo.game.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

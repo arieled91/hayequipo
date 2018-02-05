@@ -1,18 +1,13 @@
 package org.arieled91.hayequipo.auth.model;
 
-import java.util.Collection;
+import org.arieled91.hayequipo.common.AbstractEntity;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import java.util.Collection;
 
 @Entity
-public class Privilege {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Privilege extends AbstractEntity {
 
     private String name;
 
@@ -20,16 +15,6 @@ public class Privilege {
     private Collection<Role> roles;
 
     public Privilege() {
-    }
-
-    // GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

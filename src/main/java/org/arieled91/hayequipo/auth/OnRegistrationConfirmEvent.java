@@ -3,8 +3,6 @@ package org.arieled91.hayequipo.auth;
 import org.arieled91.hayequipo.auth.model.User;
 import org.springframework.context.ApplicationEvent;
 
-import java.util.Locale;
-
 @SuppressWarnings("serial")
 public class OnRegistrationConfirmEvent extends ApplicationEvent {
 

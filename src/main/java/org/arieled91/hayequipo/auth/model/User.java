@@ -1,18 +1,18 @@
 package org.arieled91.hayequipo.auth.model;
 
+import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class User extends AbstractEntity {
 
     @NotEmpty @NotNull private String firstName = "";
     @NotEmpty @NotNull private String lastName = "";
@@ -28,16 +28,6 @@ public class User {
     private Set<Role> roles;
 
     public User() {}
-
-    // GETTERS & SETTERS
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     @NotNull public String getFirstName() {
         return firstName;
