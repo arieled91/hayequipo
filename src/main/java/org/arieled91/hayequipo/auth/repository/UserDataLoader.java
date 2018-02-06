@@ -51,15 +51,16 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         final Privilege writePrivilege = createPrivilegeIfNotFound(WRITE_PRIVILEGE.name());
         final Privilege passwordPrivilege = createPrivilegeIfNotFound(CHANGE_PASSWORD_PRIVILEGE.name());
         final Privilege fullAccessPrivilege = createPrivilegeIfNotFound(FULL_ACCESS_PRIVILEGE.name());
+        final Privilege gamePriorityPrivilege = createPrivilegeIfNotFound(GAME_PRIORITY.name());
 
         // == create initial roles
         //final List<Privilege> adminPrivileges = List.of(readPrivilege, writePrivilege, passwordPrivilege, fullAccessPrivilege);
-        final Set<Privilege> fullAccessPrivileges = Set.of(fullAccessPrivilege);
+        final Set<Privilege> fullPrivileges = Set.of(fullAccessPrivilege, gamePriorityPrivilege);
         final Set<Privilege> userPrivileges = Set.of(readPrivilege, writePrivilege, passwordPrivilege);
 
-        final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullAccessPrivileges);
+        final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullPrivileges);
         Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
-        createRoleIfNotFound(ROLE_MODERATOR.name(), fullAccessPrivileges);
+        createRoleIfNotFound(ROLE_MODERATOR.name(), fullPrivileges);
 
         // == create initial user
         createUserIfNotFound("test@test.com", "Test", "Test", "test", Set.of(userRole, adminRole));
