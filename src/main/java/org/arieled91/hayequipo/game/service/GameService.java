@@ -1,11 +1,13 @@
 package org.arieled91.hayequipo.game.service;
 
 import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
+import org.arieled91.hayequipo.auth.model.PrivilegeType;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
 import org.arieled91.hayequipo.game.model.Game;
 import org.arieled91.hayequipo.game.model.Player;
+import org.arieled91.hayequipo.game.model.PlayerType;
 import org.arieled91.hayequipo.game.model.dto.GuestJoinDto;
 import org.arieled91.hayequipo.game.model.dto.UserJoinDto;
 import org.arieled91.hayequipo.game.repository.GameRepository;
@@ -14,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -31,15 +35,16 @@ public class GameService {
         this.playerRepository = playerRepository;
     }
 
-    public void userJoin(@Valid UserJoinDto playerDto) {
+    public void userJoin(UserJoinDto playerDto) {
+
         User user = userService.findActiveUserByMail(playerDto.getEmail()).orElseThrow(UserNotFoundException::new);
-        Player player = playerRepository.findByUser(user);
+        Player player = buildPlayer(user);
         if(player==null) throw new RuntimeException("Player cannot be null");
 
         join(player, playerDto.getGameId());
     }
 
-    public void guestJoin(@Valid GuestJoinDto joinDto) {
+    public void guestJoin(GuestJoinDto joinDto) {
         join(buildPlayer(joinDto), joinDto.getGameId());
     }
 
@@ -49,11 +54,28 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    private Player buildPlayer(@Valid GuestJoinDto joinDto) {
+    private Player buildPlayer(GuestJoinDto joinDto) {
         Player player = new Player();
         player.setEmail(joinDto.getEmail());
         player.setFirstName(joinDto.getFirstName());
         player.setLastName(joinDto.getLastName());
         return player;
     }
+
+    public List<Player> listPlayersOrdered(Game game){
+        Comparator<Player> playerType = Comparator.comparing(player -> player.getType().getOrder());
+        Comparator<Player> joinDate = Comparator.comparing(Player::getCreationTime);
+
+        return game.getPlayers().stream()
+                .sorted(playerType.thenComparing(joinDate))
+                .collect(Collectors.toList());
+    }
+
+    private Player buildPlayer(User user) {
+        Player player = new Player();
+        player.setUser(user);
+        player.setType(userService.hasPrivilege(user, PrivilegeType.FULL_ACCESS_PRIVILEGE) ? PlayerType.MODERATOR : PlayerType.NORMAL);
+        return player;
+    }
+
 }

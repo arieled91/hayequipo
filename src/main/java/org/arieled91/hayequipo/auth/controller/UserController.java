@@ -2,6 +2,7 @@ package org.arieled91.hayequipo.auth.controller;
 
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
+import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
 import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,7 +49,7 @@ import static java.util.Objects.requireNonNull;
 
 
 @Controller
-public class RegistrationController {
+public class UserController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserService userService;
@@ -67,7 +70,7 @@ public class RegistrationController {
 
 
     @Autowired
-    public RegistrationController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env) {
+    public UserController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env) {
         super();
         this.userService = userService;
         this.messages = messages;
@@ -93,11 +96,28 @@ public class RegistrationController {
         }
     }
 
+    @RequestMapping(value = "/user/current", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUser() {
+        return userService.getCurrentUser().map(User::getEmail).orElse("guest");
+    }
+
+    @RequestMapping(value = "/user/upgrade", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity upgradeUser(final String email) {
+        try {
+            userService.upgradeUser(email);
+            return ResponseEntity.ok().build();
+        }catch (final AuthorizationException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
     @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
     public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token, RedirectAttributes redirect) throws UnsupportedEncodingException {
         Locale locale = request.getLocale();
         final String result = userService.validateVerificationToken(token);
-        if (UserService.TOKEN_VALID.equals(result)) {
+        if (UserService.Token.VALID.key().equals(result)) {
             final User user = userService.getUser(token);
             // if (user.isUsing2FA()) {
             // model.addAttribute("qr", userService.generateQRUrl(user));
@@ -110,7 +130,7 @@ public class RegistrationController {
         }
 
         redirect.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
-        redirect.addAttribute("expired", UserService.TOKEN_EXPIRED.equals(result));
+        redirect.addAttribute("expired", UserService.Token.EXPIRED.key().equals(result));
         redirect.addAttribute("token", token);
         return "redirect:/error";
     }

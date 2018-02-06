@@ -9,7 +9,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 
 @Entity
 public class Player extends AbstractEntity {
@@ -17,7 +16,7 @@ public class Player extends AbstractEntity {
     @NotNull private String firstName = "";
     @Nullable private String lastName;
     @Nullable private String email;
-    @Transient private boolean guest = true;
+    @NotNull private PlayerType type = PlayerType.GUEST;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
@@ -55,10 +54,13 @@ public class Player extends AbstractEntity {
 
     public void setUser(@NotNull User user) {
         this.user = user;
-        guest = false;
     }
 
-    public boolean isGuest() {
-        return guest;
+    @NotNull public PlayerType getType() {
+        return type;
+    }
+
+    public void setType(@NotNull PlayerType type) {
+        this.type = type;
     }
 }

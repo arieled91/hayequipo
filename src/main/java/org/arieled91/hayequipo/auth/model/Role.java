@@ -7,13 +7,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 public class Role extends AbstractEntity{
 
     private String name;
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    private Set<User> users;
 
     @ManyToMany
     @JoinTable(
@@ -22,7 +23,7 @@ public class Role extends AbstractEntity{
             name = "role_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(
             name = "privilege_id", referencedColumnName = "id"))
-    private Collection<Privilege> privileges;
+    private Set<Privilege> privileges;
 
     public Role() {
     }
@@ -41,15 +42,15 @@ public class Role extends AbstractEntity{
         return users;
     }
 
-    public void setUsers(Collection<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 
-    public Collection<Privilege> getPrivileges() {
+    public Set<Privilege> getPrivileges() {
         return privileges;
     }
 
-    public void setPrivileges(Collection<Privilege> privileges) {
+    public void setPrivileges(Set<Privilege> privileges) {
         this.privileges = privileges;
     }
 }

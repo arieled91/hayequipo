@@ -2,8 +2,6 @@ package org.arieled91.hayequipo.game;
 
 
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
-import org.arieled91.hayequipo.auth.model.User;
-import org.arieled91.hayequipo.game.model.Player;
 import org.arieled91.hayequipo.game.repository.PlayerRepository;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +22,13 @@ public class RegistrationConfirmListener implements ApplicationListener<OnRegist
 
     @Override
     public void onApplicationEvent(@NotNull final OnRegistrationConfirmEvent event) {
-        playerRepo.save(buildPlayer(event.getUser()));
+        //playerRepo.save(buildPlayer(event.getUser()));
     }
 
-    private Player buildPlayer(User user) {
-        Player player = new Player();
-        player.setUser(user);
-        return player;
-    }
+//    private Player buildPlayer(User user) {
+//        Player player = new Player();
+//        player.setUser(user);
+//        return player;
+//    }
 
 }

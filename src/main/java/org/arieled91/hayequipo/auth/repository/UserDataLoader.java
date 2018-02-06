@@ -11,7 +11,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Set;
+
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.*;
+import static org.arieled91.hayequipo.auth.model.RoleType.*;
 
 @Component
 public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -44,18 +47,22 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         }
 
         // == create initial privileges
-        final Privilege readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
-        final Privilege writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
-        final Privilege passwordPrivilege = createPrivilegeIfNotFound("CHANGE_PASSWORD_PRIVILEGE");
+        final Privilege readPrivilege = createPrivilegeIfNotFound(READ_PRIVILEGE.name());
+        final Privilege writePrivilege = createPrivilegeIfNotFound(WRITE_PRIVILEGE.name());
+        final Privilege passwordPrivilege = createPrivilegeIfNotFound(CHANGE_PASSWORD_PRIVILEGE.name());
+        final Privilege fullAccessPrivilege = createPrivilegeIfNotFound(FULL_ACCESS_PRIVILEGE.name());
 
         // == create initial roles
-        final List<Privilege> adminPrivileges = new ArrayList<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege));
-        final List<Privilege> userPrivileges = new ArrayList<>(Arrays.asList(readPrivilege, passwordPrivilege));
-        final Role adminRole = createRoleIfNotFound("ROLE_ADMIN", adminPrivileges);
-        createRoleIfNotFound("ROLE_USER", userPrivileges);
+        //final List<Privilege> adminPrivileges = List.of(readPrivilege, writePrivilege, passwordPrivilege, fullAccessPrivilege);
+        final Set<Privilege> fullAccessPrivileges = Set.of(fullAccessPrivilege);
+        final Set<Privilege> userPrivileges = Set.of(readPrivilege, writePrivilege, passwordPrivilege);
+
+        final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullAccessPrivileges);
+        Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
+        createRoleIfNotFound(ROLE_MODERATOR.name(), fullAccessPrivileges);
 
         // == create initial user
-        createUserIfNotFound("test@test.com", "Test", "Test", "test", Set.of(adminRole));
+        createUserIfNotFound("test@test.com", "Test", "Test", "test", Set.of(userRole, adminRole));
 
         alreadySetup = true;
     }
@@ -72,7 +79,7 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
     }
 
     @Transactional
-    public Role createRoleIfNotFound(final String name, final Collection<Privilege> privileges) {
+    public Role createRoleIfNotFound(final String name, final Set<Privilege> privileges) {
         Role role = roleRepository.findByName(name);
         if (role == null) {
             role = new Role();
