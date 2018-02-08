@@ -11,7 +11,7 @@ import org.arieled91.hayequipo.auth.model.Role;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.model.VerificationToken;
 import org.arieled91.hayequipo.auth.model.dto.GenericResponse;
-import org.arieled91.hayequipo.auth.model.dto.PasswordDto;
+import org.arieled91.hayequipo.auth.model.dto.Password;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +49,7 @@ import static java.util.Objects.requireNonNull;
 
 
 @Controller
-public class UserController {
+public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final UserService userService;
@@ -70,7 +70,7 @@ public class UserController {
 
 
     @Autowired
-    public UserController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env) {
+    public AuthController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env) {
         super();
         this.userService = userService;
         this.messages = messages;
@@ -81,7 +81,7 @@ public class UserController {
 
     // Registration
 
-    @RequestMapping(value = "/user/registration", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/registration", method = RequestMethod.POST)
     public String registerUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
         logger.debug("Registering user account with information: {}", accountDto);
 
@@ -96,13 +96,19 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/user/current", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/user", method = RequestMethod.GET)
     @ResponseBody
-    public String currentUser() {
+    public ResponseEntity<User> currentUser() {
+        return userService.getCurrentUser().map(ResponseEntity::ok).orElse(ResponseEntity.ok(new User()));
+    }
+    
+    @RequestMapping(value = "/auth/username", method = RequestMethod.GET)
+    @ResponseBody
+    public String currentUsername() {
         return userService.getCurrentUser().map(User::getEmail).orElse("guest");
     }
 
-    @RequestMapping(value = "/user/upgrade", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/upgrade", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity upgradeUser(final String email) {
         try {
@@ -125,8 +131,9 @@ public class UserController {
             // }
             authWithoutPassword(user);
             eventPublisher.publishEvent(new OnRegistrationConfirmEvent(user));
-            model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
-            return "redirect:/login?signedup";
+//            model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
+//            return "redirect:/login?signedup";
+            return "redirect:/";
         }
 
         redirect.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
@@ -137,7 +144,7 @@ public class UserController {
 
     // user activation - verification
 
-    @RequestMapping(value = "/user/resendRegistrationToken", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/resendRegistrationToken", method = RequestMethod.GET)
     @ResponseBody
     public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
         final VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
@@ -147,7 +154,7 @@ public class UserController {
     }
 
 //
-//    @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
+//    @RequestMapping(value = "/auth/resetPassword", method = RequestMethod.POST)
 //    @ResponseBody
 //    public GenericResponse resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail) {
 //        final User user = userService.findUserByEmail(userEmail);
@@ -160,7 +167,7 @@ public class UserController {
 //        return new GenericResponse(messages.getMessage("message.resetPasswordEmail", null, request.getLocale()));
 //    }
 
-//    @RequestMapping(value = "/user/changePassword", method = RequestMethod.GET)
+//    @RequestMapping(value = "/auth/changePassword", method = RequestMethod.GET)
 //    public String showChangePasswordPage(final Locale locale, final Model model, @RequestParam("id") final long id, @RequestParam("token") final String token) {
 //        final String result = securityUserService.validatePasswordResetToken(id, token);
 //        if (result != null) {
@@ -170,31 +177,31 @@ public class UserController {
 //        return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
 //    }
 
-    @RequestMapping(value = "/user/savePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/savePassword", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse savePassword(final Locale locale, @Valid PasswordDto passwordDto) {
+    public GenericResponse savePassword(final Locale locale, @Valid Password password) {
         final User user = (User) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        userService.changeUserPassword(user, passwordDto.getNewPassword());
+        userService.changeUserPassword(user, password.getNewPassword());
         return new GenericResponse(messages.getMessage("message.resetPasswordSuc", null, locale));
     }
 
     // change user password
-    @RequestMapping(value = "/user/updatePassword", method = RequestMethod.POST)
+    @RequestMapping(value = "/auth/updatePassword", method = RequestMethod.POST)
     @ResponseBody
-    public GenericResponse changeUserPassword(final Locale locale, @Valid PasswordDto passwordDto) {
+    public GenericResponse changeUserPassword(final Locale locale, @Valid Password password) {
         String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         final User user = userService.findActiveUserByMail(email).orElseThrow(UserNotFoundException::new);
 
-        if (!userService.checkIfValidOldPassword(user, passwordDto.getOldPassword())) {
+        if (!userService.checkIfValidOldPassword(user, password.getOldPassword())) {
             throw new InvalidOldPasswordException();
         }
-        userService.changeUserPassword(user, passwordDto.getNewPassword());
+        userService.changeUserPassword(user, password.getNewPassword());
         return new GenericResponse(messages.getMessage("message.updatePasswordSuc", null, locale));
     }
 
-//    @RequestMapping(value = "/user/update/2fa", method = RequestMethod.POST)
+//    @RequestMapping(value = "/auth/update/2fa", method = RequestMethod.POST)
 //    @ResponseBody
 //    public GenericResponse modifyUser2FA(@RequestParam("use2FA") final boolean use2FA) throws UnsupportedEncodingException {
 //        final User user = userService.updateUser2FA(use2FA);
@@ -213,7 +220,7 @@ public class UserController {
     }
 
     private SimpleMailMessage constructResetTokenEmail(final String contextPath, final Locale locale, final String token, final User user) {
-        final String url = contextPath + "/user/changePassword?id=" + user.getId() + "&token=" + token;
+        final String url = contextPath + "/auth/changePassword?id=" + user.getId() + "&token=" + token;
         final String message = messages.getMessage("message.resetPassword", null, locale);
         return constructEmail("Reset Password", message + " \r\n" + url, user);
     }
@@ -260,7 +267,7 @@ public class UserController {
                 .collect(Collectors.toList());
 
         Authentication authentication =
-                new UsernamePasswordAuthenticationToken(user, null,authorities);
+                new UsernamePasswordAuthenticationToken(user.getUsername(), null,authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }

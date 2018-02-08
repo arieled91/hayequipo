@@ -1,7 +1,7 @@
 package org.arieled91.hayequipo.auth.model.dto;
 
 
-public class PasswordDto {
+public class Password {
 
     private String oldPassword;
 

@@ -47,10 +47,10 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         }
 
         // == create initial privileges
-        final Privilege readPrivilege = createPrivilegeIfNotFound(READ_PRIVILEGE.name());
-        final Privilege writePrivilege = createPrivilegeIfNotFound(WRITE_PRIVILEGE.name());
-        final Privilege passwordPrivilege = createPrivilegeIfNotFound(CHANGE_PASSWORD_PRIVILEGE.name());
-        final Privilege fullAccessPrivilege = createPrivilegeIfNotFound(FULL_ACCESS_PRIVILEGE.name());
+        final Privilege readPrivilege = createPrivilegeIfNotFound(READ.name());
+        final Privilege writePrivilege = createPrivilegeIfNotFound(WRITE.name());
+        final Privilege passwordPrivilege = createPrivilegeIfNotFound(CHANGE_PASSWORD.name());
+        final Privilege fullAccessPrivilege = createPrivilegeIfNotFound(FULL_ACCESS.name());
         final Privilege gamePriorityPrivilege = createPrivilegeIfNotFound(GAME_PRIORITY.name());
 
         // == create initial roles

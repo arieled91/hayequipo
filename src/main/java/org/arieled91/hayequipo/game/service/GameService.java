@@ -6,8 +6,8 @@ import org.arieled91.hayequipo.auth.service.UserService;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
 import org.arieled91.hayequipo.game.model.Game;
 import org.arieled91.hayequipo.game.model.Player;
-import org.arieled91.hayequipo.game.model.dto.GuestJoinDto;
-import org.arieled91.hayequipo.game.model.dto.UserJoinDto;
+import org.arieled91.hayequipo.game.model.dto.GuestJoin;
+import org.arieled91.hayequipo.game.model.dto.UserJoin;
 import org.arieled91.hayequipo.game.repository.GameRepository;
 import org.arieled91.hayequipo.game.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +37,16 @@ public class GameService {
         this.playerRepository = playerRepository;
     }
 
-    public void userJoin(UserJoinDto playerDto) {
-        User user = userService.findActiveUserByMail(playerDto.getEmail()).orElseThrow(UserNotFoundException::new);
+    public void userJoin(UserJoin join) {
+        User user = userService.findActiveUserByMail(join.getEmail()).orElseThrow(UserNotFoundException::new);
         Player player = buildPlayer(user);
         if(player==null) throw new RuntimeException("Player cannot be null");
 
-        join(player, playerDto.getGameId());
+        join(player, join.getGameId());
     }
 
-    public void guestJoin(GuestJoinDto joinDto) {
-        join(buildPlayer(joinDto), joinDto.getGameId());
+    public void guestJoin(GuestJoin join) {
+        join(buildPlayer(join), join.getGameId());
     }
 
     public void join(Player player, long gameId){
@@ -55,11 +55,11 @@ public class GameService {
         gameRepository.save(game);
     }
 
-    private Player buildPlayer(GuestJoinDto joinDto) {
+    private Player buildPlayer(GuestJoin join) {
         Player player = new Player();
-        player.setEmail(joinDto.getEmail());
-        player.setFirstName(joinDto.getFirstName());
-        player.setLastName(joinDto.getLastName());
+        player.setEmail(join.getEmail());
+        player.setFirstName(join.getFirstName());
+        player.setLastName(join.getLastName());
         return player;
     }
 

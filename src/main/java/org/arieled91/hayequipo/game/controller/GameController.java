@@ -1,7 +1,7 @@
 package org.arieled91.hayequipo.game.controller;
 
-import org.arieled91.hayequipo.game.model.dto.GuestJoinDto;
-import org.arieled91.hayequipo.game.model.dto.UserJoinDto;
+import org.arieled91.hayequipo.game.model.dto.GuestJoin;
+import org.arieled91.hayequipo.game.model.dto.UserJoin;
 import org.arieled91.hayequipo.game.service.GameService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/users/gameJoin", method = RequestMethod.POST)
-    public ResponseEntity addUserToGame(final UserJoinDto userJoinDto) {
+    public ResponseEntity addUserToGame(final UserJoin userJoinDto) {
         try {
             gameService.userJoin(userJoinDto);
             logger.info("GameController - User joined the game " + userJoinDto);
@@ -54,7 +54,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/guests/gameJoin", method = RequestMethod.POST)
-    public ResponseEntity addGuestToGame(final GuestJoinDto guestJoinDto) {
+    public ResponseEntity addGuestToGame(final GuestJoin guestJoinDto) {
         try {
             gameService.guestJoin(guestJoinDto);
             logger.info("GameController - User joined the game " + guestJoinDto);

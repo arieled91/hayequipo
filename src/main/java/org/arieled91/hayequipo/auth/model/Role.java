@@ -1,6 +1,8 @@
 package org.arieled91.hayequipo.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.common.AbstractEntity;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,17 +15,18 @@ import java.util.Set;
 public class Role extends AbstractEntity{
 
     private String name;
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    @ManyToMany
-    @JoinTable(
+    @NotNull @ManyToMany @JoinTable(
         name = "roles_privileges",
         joinColumns = @JoinColumn(
             name = "role_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(
             name = "privilege_id", referencedColumnName = "id"))
-    private Set<Privilege> privileges;
+    private Set<Privilege> privileges = Set.of();
 
     public Role() {
     }
@@ -46,11 +49,11 @@ public class Role extends AbstractEntity{
         this.users = users;
     }
 
-    public Set<Privilege> getPrivileges() {
+    @NotNull public Set<Privilege> getPrivileges() {
         return privileges;
     }
 
-    public void setPrivileges(Set<Privilege> privileges) {
+    public void setPrivileges(@NotNull Set<Privilege> privileges) {
         this.privileges = privileges;
     }
 }

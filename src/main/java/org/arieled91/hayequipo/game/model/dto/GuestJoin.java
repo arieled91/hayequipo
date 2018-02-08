@@ -4,14 +4,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class GuestJoinDto implements Serializable{
+public class GuestJoin implements Serializable{
 
     @NotNull private String firstName = "";
     private String lastName;
     private String email;
     private long gameId;
 
-    public GuestJoinDto() {
+    public GuestJoin() {
     }
 
     @NotNull
@@ -52,7 +52,7 @@ public class GuestJoinDto implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        GuestJoinDto that = (GuestJoinDto) o;
+        GuestJoin that = (GuestJoin) o;
 
         if (gameId != that.gameId) return false;
         if (!firstName.equals(that.firstName)) return false;

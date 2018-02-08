@@ -2,12 +2,12 @@ package org.arieled91.hayequipo.game.model.dto;
 
 import java.io.Serializable;
 
-public class UserJoinDto implements Serializable {
+public class UserJoin implements Serializable {
 
     private String email;
     private long gameId;
 
-    public UserJoinDto() {
+    public UserJoin() {
     }
 
     public String getEmail() {
@@ -31,7 +31,7 @@ public class UserJoinDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserJoinDto that = (UserJoinDto) o;
+        UserJoin that = (UserJoin) o;
 
         return gameId == that.gameId && email.equals(that.email);
     }

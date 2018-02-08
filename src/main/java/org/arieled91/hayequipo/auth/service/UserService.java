@@ -202,7 +202,7 @@ public class UserService {
         Role moderator = roleRepository.findByName(RoleType.ROLE_MODERATOR.name());
         if(moderator==null) throw new RuntimeException("Moderator role not found");
 
-        if(currentUserHasPrivilege(PrivilegeType.FULL_ACCESS_PRIVILEGE)) {
+        if(currentUserHasPrivilege(PrivilegeType.FULL_ACCESS)) {
             user.getRoles().add(moderator);
             repository.save(user);
         }

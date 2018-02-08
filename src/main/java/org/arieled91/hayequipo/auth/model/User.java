@@ -1,5 +1,6 @@
 package org.arieled91.hayequipo.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,22 +11,34 @@ import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class User extends AbstractEntity {
 
-    @NotEmpty @NotNull private String firstName = "";
-    @NotEmpty @NotNull private String lastName = "";
-    @NotEmpty @NotNull private String email = "";
-    @NotEmpty @NotNull private String password = "";
+    @NotEmpty @NotNull
+    private String firstName = "";
+
+    @NotEmpty @NotNull
+    private String lastName = "";
+
+    @NotEmpty @NotNull
+    private String email = "";
+
+    @NotEmpty @NotNull @JsonIgnore
+    private String password = "";
+
+    @JsonIgnore
     private boolean enabled;
+
+    @JsonIgnore
     private boolean tokenExpired;
 
-    @ManyToMany @JoinTable(
+    @NotNull @JsonIgnore @ManyToMany @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+    private Set<Role> roles = Set.of();
 
     public User() {}
 
@@ -81,7 +94,18 @@ public class User extends AbstractEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(@NotNull Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @JsonIgnore @NotNull
+    public String getUsername(){
+        return getEmail();
+    }
+
+    public Set<String> getPrivileges(){
+        return getRoles().stream()
+                .flatMap(role -> role.getPrivileges().stream().map(Privilege::getName))
+                .collect(Collectors.toSet());
     }
 }
