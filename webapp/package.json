@@ -1,6 +1,6 @@
 {
   "name": "hayequipo",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -25,6 +25,9 @@
     "@angular/router": "^5.2.0",
     "angular-google-maps": "^2.4.1",
     "core-js": "^2.4.1",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.3.1",
+    "materialize-css": "^0.100.2",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },
