@@ -1,2 +1,35 @@
-<h1>{{ title }}</h1>
-<app-game></app-game>
+<header class="mdc-toolbar">
+  <div class="mdc-toolbar__row">
+    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+      <i id="open-menu-button" class="menu material-icons mdc-toolbar__menu-icon">menu</i>
+      <span class="mdc-toolbar__title">{{title}}</span>
+    </section>
+  </div>
+
+</header>
+
+<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+  <nav class="mdc-drawer__drawer">
+
+    <div class="mdc-drawer__toolbar-spacer"></div>
+
+    <nav class="mdc-drawer__content mdc-list white">
+      <a class="mdc-list-item mdc-list-item--activated" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
+      </a>
+      <a class="mdc-list-item" href="#">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Game
+      </a>
+    </nav>
+  </nav>
+</aside>
+
+<router-outlet></router-outlet>
+
+
+
+
+
+<div class="container">
+  <app-game></app-game>
+</div>
