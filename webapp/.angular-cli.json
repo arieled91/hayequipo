@@ -20,17 +20,13 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/materialize-css/dist/css/materialize.css",
         "../node_modules/material-design-icons-iconfont/dist/fonts/material-icons.css",
-        "../node_modules/material-components-web/dist/material-components-web.min.css",
         "../node_modules/material-components-web/dist/material-components-web.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.js",
         "../node_modules/hammerjs/hammer.js",
-        "../node_modules/materialize-css/dist/js/materialize.js",
-        "../node_modules/material-components-web/dist/material-components-web.js",
-        "../node_modules/material-components-web/dist/material-components-web.min.js"
+        "../node_modules/material-components-web/dist/material-components-web.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

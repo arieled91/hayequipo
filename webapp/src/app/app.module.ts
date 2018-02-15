@@ -4,14 +4,16 @@ import {RouterModule} from "@angular/router";
 
 
 import {AppComponent} from './app.component';
-import {GameComponent} from './game/game.component';
+import {GameSearchComponent} from './game/game-search.component';
 import {FormsModule} from "@angular/forms";
+import { GameListComponent } from './game/game-list/game-list.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GameComponent
+    GameSearchComponent,
+    GameListComponent
   ],
   imports: [
     BrowserModule,
