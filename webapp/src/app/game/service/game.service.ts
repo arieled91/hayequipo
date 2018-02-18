@@ -4,7 +4,6 @@ import {Api} from "../../service/api";
 import {Router} from "@angular/router";
 import {AuthenticationService} from "../../service/authentication.service";
 import {Game} from "../interfaces";
-import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class GameService {
