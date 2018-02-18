@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {Game} from "./interfaces";
+import {GameService} from "./service/game.service";
 
 @Component({
   selector: 'app-game-search',
   templateUrl: './game-search.component.html',
   styleUrls: ['./game-search.component.css']
 })
-export class GameSearchComponent implements OnInit {
+export class GameSearchComponent{
 
   games: Array<Game>;
 
-  constructor() { }
+  constructor(private gameService: GameService) {
+  }
 
-  ngOnInit() {
+  find(date: Date) {
+    this.gameService.findByDate(date);
   }
 
 }

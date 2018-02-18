@@ -9,11 +9,12 @@ import org.arieled91.hayequipo.game.model.Player;
 import org.arieled91.hayequipo.game.model.dto.GuestJoin;
 import org.arieled91.hayequipo.game.model.dto.UserJoin;
 import org.arieled91.hayequipo.game.repository.GameRepository;
-import org.arieled91.hayequipo.game.repository.PlayerRepository;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,13 +29,11 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final UserService userService;
-    private final PlayerRepository playerRepository;
 
     @Autowired
-    public GameService(GameRepository gameRepository, UserService userService, PlayerRepository playerRepository) {
+    public GameService(GameRepository gameRepository, UserService userService) {
         this.gameRepository = gameRepository;
         this.userService = userService;
-        this.playerRepository = playerRepository;
     }
 
     public void userJoin(UserJoin join) {
@@ -77,6 +76,10 @@ public class GameService {
         player.setUser(user);
         player.setType(userService.hasPrivilege(user, GAME_PRIORITY) ? MODERATOR : NORMAL);
         return player;
+    }
+
+    public List<Game> findByDate(@Nullable LocalDate date){
+        return date !=null ? gameRepository.findByDate(date) : List.of();
     }
 
 }

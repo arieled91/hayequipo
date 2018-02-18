@@ -13,7 +13,7 @@ public class Game extends AbstractEntity{
 
     private String description = "";
 
-    @NotNull private LocalDateTime date;
+    @NotNull private LocalDateTime dateTime;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @Nullable
@@ -44,12 +44,12 @@ public class Game extends AbstractEntity{
         this.description = description;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(LocalDateTime date) {
-        this.date = date;
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     @Nullable

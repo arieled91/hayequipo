@@ -42,7 +42,7 @@ public class GameDataLoader implements ApplicationListener<ContextRefreshedEvent
     public void createGameIfEmpty() {
         if(gameRepository.count() <= 0){
             Game game = new Game();
-            game.setDate(LocalDateTime.now().plusHours(1));
+            game.setDateTime(LocalDateTime.now().plusHours(1));
             game.setDescription("Futbol 5 en la cancha");
             game.setLocation(findAnyOrCreateLocation());
             gameRepository.save(game);

@@ -14,10 +14,10 @@
     <div class="mdc-drawer__toolbar-spacer"></div>
 
     <nav class="mdc-drawer__content mdc-list white">
-      <a class="mdc-list-item mdc-list-item--activated" href="#">
+      <a class="mdc-list-item mdc-list-item--activated" href="#" routerLink="/home" routerLinkActive="active">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
       </a>
-      <a class="mdc-list-item" href="#">
+      <a class="mdc-list-item" href="#" routerLink="/game" routerLinkActive="active">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Game
       </a>
     </nav>
@@ -25,11 +25,3 @@
 </aside>
 
 <router-outlet></router-outlet>
-
-
-
-
-
-<div class="container">
-  <app-game-search></app-game-search>
-</div>
