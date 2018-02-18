@@ -19,11 +19,11 @@ import java.util.List;
 
 @Service("userDetailsService")
 @Transactional
-public class ApplicationUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    public ApplicationUserDetailsService(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

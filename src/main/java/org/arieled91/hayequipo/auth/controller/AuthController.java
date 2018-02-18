@@ -1,5 +1,6 @@
 package org.arieled91.hayequipo.auth.controller;
 
+import org.arieled91.hayequipo.TokenUtil;
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
@@ -10,6 +11,8 @@ import org.arieled91.hayequipo.auth.model.Privilege;
 import org.arieled91.hayequipo.auth.model.Role;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.model.VerificationToken;
+import org.arieled91.hayequipo.auth.model.dto.AuthenticationRequest;
+import org.arieled91.hayequipo.auth.model.dto.AuthenticationResponse;
 import org.arieled91.hayequipo.auth.model.dto.GenericResponse;
 import org.arieled91.hayequipo.auth.model.dto.Password;
 import org.arieled91.hayequipo.auth.service.UserService;
@@ -23,17 +26,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
@@ -54,6 +60,8 @@ public class AuthController {
 
     private final UserService userService;
 
+    private final UserDetailsService userDetailsService;
+
 //    @Autowired
 //    private ISecurityUserService securityUserService;
 
@@ -65,18 +73,25 @@ public class AuthController {
 
     private final Environment env;
 
+    private final AuthenticationManager authenticationManager;
+
+    private final TokenUtil tokenUtil;
+
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
 
 
     @Autowired
-    public AuthController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env) {
+    public AuthController(UserService userService, UserDetailsService userDetailsService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env, AuthenticationManager authenticationManager, TokenUtil tokenUtil) {
         super();
         this.userService = userService;
+        this.userDetailsService = userDetailsService;
         this.messages = messages;
         this.mailSender = mailSender;
         this.eventPublisher = eventPublisher;
         this.env = env;
+        this.authenticationManager=authenticationManager;
+        this.tokenUtil = tokenUtil;
     }
 
     // Registration
@@ -211,6 +226,41 @@ public class AuthController {
 //        return null;
 //    }
 
+
+    @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+
+        // Perform the security
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        authenticationRequest.getUsername(),
+                        authenticationRequest.getPassword()
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Reload password post-security so we can generate token
+
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+        final String token = tokenUtil.generateToken(userDetails, device);
+
+        // Return the token
+        return ResponseEntity.ok(new AuthenticationResponse(token));
+    }
+
+    public void authWithAuthManager(HttpServletRequest request, String username, String password) {
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+        authToken.setDetails(new WebAuthenticationDetails(request));
+        Authentication authentication = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+        // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+    }
+
+
+
     // ============== NON-API ============
 
     private SimpleMailMessage constructResendVerificationTokenEmail(final String contextPath, final Locale locale, final VerificationToken newToken, final User user) {
@@ -245,15 +295,6 @@ public class AuthController {
             logger.error("Error while login ", e);
         }
     }
-
-//    public void authWithAuthManager(HttpServletRequest request, String username, String password) {
-//        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
-//        authToken.setDetails(new WebAuthenticationDetails(request));
-//        Authentication authentication = authenticationManager.authenticate(authToken);
-//        SecurityContextHolder.getContext()
-//                .setAuthentication(authentication);
-//        // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-//    }
 
     private void authWithoutPassword(User user){
         List<Privilege> privileges = user.getRoles()

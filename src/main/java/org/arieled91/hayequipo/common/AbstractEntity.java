@@ -16,7 +16,7 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDateTime creationTime;
+    private LocalDateTime creationTime = LocalDateTime.now();
 
     public Long getId() {
         return id;

@@ -11,6 +11,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {GameService} from './game/service/game.service';
 import {HomeComponent} from './home/home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
+import {LoginComponent} from './auth/login/login.component';
+import {AuthenticationService} from "./service/authentication.service";
 
 
 @NgModule({
@@ -18,7 +20,8 @@ import {AppRoutingModule} from "./app-routing.module";
     AppComponent,
     GameSearchComponent,
     GameListComponent,
-    HomeComponent
+    HomeComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import {AppRoutingModule} from "./app-routing.module";
     AppRoutingModule
   ],
   providers: [
-    GameService
+    GameService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

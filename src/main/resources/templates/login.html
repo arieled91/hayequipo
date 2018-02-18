@@ -15,7 +15,7 @@
 <div class="mdl-grid mdl-layout__content mdl-js-layout">
   <div class="mdl-layout-spacer"></div>
 
-  <form role="form" action="/login" th:action="@{/login}" method="post">
+  <form role="form" action="/auth/login" th:action="@{/auth/login}" method="post">
 
     <div th:if="${param.error}" th:text="#{auth.message.invalidUserOrPass}"></div>
     <div th:if="${param.logout}" th:text="#{message.logoutSucc}"></div>
