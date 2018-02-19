@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {Game} from "./interfaces";
 import {GameService} from "./service/game.service";
 
 @Component({
@@ -9,13 +8,19 @@ import {GameService} from "./service/game.service";
 })
 export class GameSearchComponent{
 
-  games: Array<Game>;
+  gameDate;
+  games;
 
   constructor(private gameService: GameService) {
+    this.gameDate = new Date();
+    this.games = [];
   }
 
-  find(date: Date) {
-    this.gameService.findByDate(date);
+  find(event: Event) {
+    this.gameService.findByDate(this.gameDate).subscribe(
+      data => this.games = data
+    );
+    console.log(this.games);
   }
 
 }

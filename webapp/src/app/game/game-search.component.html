@@ -8,14 +8,16 @@
   </div>-->
 
 
-  <div class="mdc-text-field mdc-text-field--upgraded">
-    <input type="date" id="game-date" class="mdc-text-field__input" >
-    <label class="mdc-text-field__label mdc-text-field__label--float-above" for="game-date">Date</label>
-    <div class="mdc-line-ripple"></div>
-  </div>
+  <!--<div class="mdc-text-field mdc-text-field&#45;&#45;upgraded">-->
+    <!--<input type="date" id="game-date" class="mdc-text-field__input" [gameDate]>-->
+    <!--<label class="mdc-text-field__label mdc-text-field__label&#45;&#45;float-above" for="game-date">Date</label>-->
+    <!--<div class="mdc-line-ripple"></div>-->
+  <!--</div>-->
+
+  <input type="date" name="gameDate" [ngModel] ="gameDate | date:'yyyy-MM-dd'" (ngModelChange)="gameDate = $event">
 
   <button class="mdc-fab mdc-fab--mini material-icons" style="padding-bottom: 0">
-  <span class="mdc-fab__icon" (click)="find('2018-02-18')">
+  <span class="mdc-fab__icon" (click)="find($event)">
     search
   </span>
   </button>
@@ -29,9 +31,9 @@
     <!--Join-->
   <!--</button>-->
 
-  <ul>
-    <li *ngFor="let game of games">{{game}}</li>
-  </ul>
+
 </form>
 
-
+<ul>
+  <li *ngFor="let game of games">{{game | json}}</li>
+</ul>
