@@ -1,4 +1,4 @@
-package org.arieled91.hayequipo;
+package org.arieled91.hayequipo.auth;
 
 
 import io.jsonwebtoken.Claims;
@@ -34,10 +34,10 @@ public class TokenUtil implements Serializable {
 //    @SuppressFBWarnings(value = "SE_BAD_FIELD", justification = "It's okay here")
     private Clock clock = DefaultClock.INSTANCE;
 
-    @Value("${jwt.secret}")
+    @Value("${authorization.secret}")
     private String secret;
 
-    @Value("${jwt.expiration}")
+    @Value("${authorization.expiration}")
     private Long expiration;
 
     public String getUsernameFromToken(String token) {

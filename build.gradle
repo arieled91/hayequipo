@@ -19,8 +19,8 @@ apply plugin: "io.spring.dependency-management"
 
 group = "org.arieled91"
 version = "0.0.1-SNAPSHOT"
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
+sourceCompatibility = "1.9"
+targetCompatibility = "1.9"
 
 task wrapper(type: Wrapper) {
 	gradleVersion = "4.5"

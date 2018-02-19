@@ -1,6 +1,6 @@
 package org.arieled91.hayequipo.auth.controller;
 
-import org.arieled91.hayequipo.TokenUtil;
+import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;

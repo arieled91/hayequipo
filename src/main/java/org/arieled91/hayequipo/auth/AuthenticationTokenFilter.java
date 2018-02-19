@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.arieled91.hayequipo.TokenUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,7 +30,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Autowired
     private TokenUtil tokenUtil;
 
-    @Value("${jwt.header}")
+    @Value("${authorization.header}")
     private String tokenHeader;
 
 
@@ -51,13 +50,14 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             } catch (ExpiredJwtException e) {
                 logger.warn("the token is expired and not valid anymore", e);
             }
-        } else {
+        } /*else {
             logger.warn("couldn't find bearer string, will ignore the header");
-        }
+        }*/
 
-        logger.info("checking authentication for user " + username);
+
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+//            logger.info("checking authentication for user " + username);
+            
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);

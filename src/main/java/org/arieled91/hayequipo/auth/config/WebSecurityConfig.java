@@ -1,7 +1,6 @@
 package org.arieled91.hayequipo.auth.config;
 
 import org.arieled91.hayequipo.auth.AuthenticationTokenFilter;
-import org.arieled91.hayequipo.auth.model.JwtAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -47,10 +51,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //            .rememberMe().tokenValiditySeconds(60);
 
         http
-                .authorizeRequests().antMatchers("/registration*","/auth/registration*","/auth/user*","/login*","/error*","/guests*","/auth/login*").permitAll()
+                .authorizeRequests().antMatchers("/registration*","/auth/registration*","/auth/user*","/login*","/error*","/guests*","/auth/login*", "/actuator*", "/actuator/*").permitAll()
 
                 // we don't need CSRF because our token is invulnerable
                 .and().csrf().disable()
+                .cors().and()
 
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
