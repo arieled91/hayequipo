@@ -5,7 +5,8 @@ export class Api{
     return this.BACKEND_URL+"api/";
   }
   public static request(endpoint: String, args: String){
-    let base = Api.url()+endpoint;
-    return args != null ? base+"?"+args : base;
+    const base = Api.url()+endpoint;
+    const argPrefix = (args !== null && args !== "" ? "?" : "");
+    return args != null ? base+argPrefix+args : base;
   }
 }
