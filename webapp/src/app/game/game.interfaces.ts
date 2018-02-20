@@ -1,10 +1,10 @@
-import DateTimeFormat = Intl.DateTimeFormat;
-
 export interface Game {
   description : String;
-  date        : DateTimeFormat;
+  dateTime    : Date;
   location    : Location;
+  currentUserJoined : boolean;
 }
+
 export interface Location {
   latitude    : Number;
   longitude   : Number;

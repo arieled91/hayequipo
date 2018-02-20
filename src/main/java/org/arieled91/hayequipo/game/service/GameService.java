@@ -11,10 +11,13 @@ import org.arieled91.hayequipo.game.model.dto.UserJoin;
 import org.arieled91.hayequipo.game.repository.GameRepository;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,4 +85,17 @@ public class GameService {
         return date !=null ? gameRepository.findByDate(date) : List.of();
     }
 
+    public boolean isCurrentUserJoined(Game game) {
+        return userService.getCurrentUser().map(user -> isUserInGame(user, game)).orElse(false);
+    }
+
+    public static boolean isUserInGame(User user, Game game){
+        return game.getPlayers().stream()
+                .filter(p -> p.getUser() != null && p.getUser().getId().equals(user.getId()))
+                .count() > 0;
+    }
+
+    public Page<Game> listNextGames(Pageable pageable){
+        return gameRepository.findByDateTimeGreaterThanOrderByDateTime(LocalDateTime.now(), pageable);
+    }
 }

@@ -33,19 +33,25 @@ public class GameDataLoader implements ApplicationListener<ContextRefreshedEvent
     public void onApplicationEvent(@NotNull final ContextRefreshedEvent event) {
         if (alreadySetup) return;
 
-        createGameIfEmpty();
+        createGamesIfEmpty();
 
         alreadySetup = true;
     }
 
     @Transactional
-    public void createGameIfEmpty() {
+    public void createGamesIfEmpty() {
         if(gameRepository.count() <= 0){
-            Game game = new Game();
-            game.setDateTime(LocalDateTime.now().plusHours(1));
-            game.setDescription("Futbol 5 en la cancha");
-            game.setLocation(findAnyOrCreateLocation());
-            gameRepository.save(game);
+            Game game1 = new Game();
+            game1.setDateTime(LocalDateTime.now().plusHours(1));
+            game1.setDescription("Futbol 5 en la cancha");
+            game1.setLocation(findAnyOrCreateLocation());
+            gameRepository.save(game1);
+
+            Game game2 = new Game();
+            game2.setDateTime(LocalDateTime.now().plusHours(1));
+            game2.setDescription("Otro partido");
+            game2.setLocation(findAnyOrCreateLocation());
+            gameRepository.save(game2);
         }
     }
 

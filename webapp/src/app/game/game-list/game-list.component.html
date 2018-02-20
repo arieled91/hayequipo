@@ -1,3 +1,22 @@
-<p>
-  game-list works!
-</p>
+<div [hidden]="games.length === 0">
+  <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
+    <li class="mdc-list-item" *ngFor="let game of games">
+      <div [hidden]="game.currentUserJoined">
+        <span class="mdc-list-item__graphic" role="presentation">
+          <i class="material-icons" aria-hidden="true">event</i>
+        </span>
+      </div>
+      <div [hidden]="!game.currentUserJoined" >
+        <span class="mdc-list-item__graphic" role="presentation"style="color: limegreen">
+          <i class="material-icons" aria-hidden="true">check</i>
+        </span>
+      </div>
+      <span class="mdc-list-item__text">{{game.description}}
+        <span class="mdc-list-item__secondary-text">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
+      </span>
+      <a href="#" class="mdc-list-item__meta material-icons" aria-label="View more information" title="More info" onclick="event.preventDefault();">
+        info
+      </a>
+    </li>
+  </ul>
+</div>

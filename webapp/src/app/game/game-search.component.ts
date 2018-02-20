@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameService} from "./service/game.service";
 
 @Component({
@@ -6,21 +6,26 @@ import {GameService} from "./service/game.service";
   templateUrl: './game-search.component.html',
   styleUrls: ['./game-search.component.css']
 })
-export class GameSearchComponent{
+export class GameSearchComponent implements OnInit{
 
+  title;
   gameDate;
   games;
 
   constructor(private gameService: GameService) {
-    this.gameDate = new Date();
+    this.title = "Partidos";
+    this.gameDate = null;
     this.games = [];
   }
 
-  find(event: Event) {
+  find() {
     this.gameService.findByDate(this.gameDate).subscribe(
       data => this.games = data
     );
     console.log(this.games);
+  }
+  ngOnInit(): void {
+    this.find()
   }
 
 }

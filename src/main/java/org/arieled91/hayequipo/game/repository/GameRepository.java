@@ -1,6 +1,8 @@
 package org.arieled91.hayequipo.game.repository;
 
 import org.arieled91.hayequipo.game.model.Game;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +23,10 @@ public interface GameRepository extends JpaRepository<Game, Long>{
     List<Game> findByDateTimeBetween(
             @Param("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
             @Param("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to
+    );
+
+    Page<Game> findByDateTimeGreaterThanOrderByDateTime(
+            @Param("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+            Pageable pageable
     );
 }
