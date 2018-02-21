@@ -1,6 +1,3 @@
-@import "~material-components-web/material-components-web";
-@import "@material/theme/mdc-theme";
-
 a.material-icons {
   text-decoration: none;
 }
@@ -8,7 +5,10 @@ a.material-icons {
 body{
   margin: 0;
 }
-
-$mdc-theme-primary: #d80b03;
-$mdc-theme-secondary: #76ff03;
+// customize some theme variables, e.g.:
+$mdc-theme-primary: #212121;
+$mdc-theme-secondary: #00e871;
 $mdc-theme-background: #fff;
+
+// import theming for all mdc components:
+@import "material-components-web/material-components-web";
