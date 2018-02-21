@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.GAME_PRIORITY;
-import static org.arieled91.hayequipo.game.model.PlayerType.MODERATOR;
+import static org.arieled91.hayequipo.game.model.PlayerType.VIP;
 import static org.arieled91.hayequipo.game.model.PlayerType.NORMAL;
 
 @Service
@@ -77,7 +77,7 @@ public class GameService {
     private Player buildPlayer(User user) {
         Player player = new Player();
         player.setUser(user);
-        player.setType(userService.hasPrivilege(user, GAME_PRIORITY) ? MODERATOR : NORMAL);
+        player.setType(userService.hasPrivilege(user, GAME_PRIORITY) ? VIP : NORMAL);
         return player;
     }
 

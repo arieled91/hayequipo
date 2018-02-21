@@ -21,7 +21,7 @@ public class Application {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins(frontendUrl);
+				registry.addMapping("/**").allowedOrigins(frontendUrl, "http://192.168.0.105:4200");
 			}
 		};
 	}

@@ -5,10 +5,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {HttpClient} from "@angular/common/http";
 import {TokenResponse} from "../auth/auth.interfaces";
+import {Api} from "./api.util";
 
 @Injectable()
 export class AuthenticationService {
-  private authUrl = 'http://localhost:8080/auth/login';
+  private authUrl = Api.BASE_URL+'/auth/login';
   private options = {headers: {'Content-Type': 'application/json'}};
 
 

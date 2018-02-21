@@ -14,7 +14,7 @@ export class GameService {
   findByDate(date: Date) : Observable<any>{
     const pipe = new DatePipe('en-US');
     const dateParam = (date===null || date.toString()==="" ? "": "date="+pipe.transform(date,"yyyy-MM-dd"));
-    let requestUrl = Api.request("games/find", dateParam);
+    let requestUrl = Api.request("/games/find", dateParam);
     return this.http.get<Game>(requestUrl);
   }
 }

@@ -1,7 +1,7 @@
 package org.arieled91.hayequipo.game.model;
 
 public enum PlayerType {
-    MODERATOR(1),
+    VIP(1),
     NORMAL(2),
     GUEST(3);
 
