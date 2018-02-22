@@ -8,14 +8,16 @@ import {GameService} from "./service/game.service";
 })
 export class GameSearchComponent implements OnInit{
 
-  title;
-  gameDate;
-  games;
+  title = "Partidos";
+  dateLabel = "Buscar";
 
-  constructor(private gameService: GameService) {
-    this.title = "Partidos";
-    this.gameDate = null;
-    this.games = [];
+  gameDate = null;
+  games = [];
+
+  constructor(private gameService: GameService) {}
+
+  ngOnInit(): void {
+    this.find()
   }
 
   find() {
@@ -24,8 +26,6 @@ export class GameSearchComponent implements OnInit{
     );
     console.log(this.games);
   }
-  ngOnInit(): void {
-    this.find()
-  }
+
 
 }

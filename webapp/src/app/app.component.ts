@@ -9,13 +9,11 @@ import * as mdc from 'material-components-web'
 export class AppComponent implements AfterContentInit{
   drawer: any;
 
-  title = 'HayEquipo';
+
+  title = 'FUTBOLDESA';
 
   ngAfterContentInit(): void {
     let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
     document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
   }
-
-
-
 }

@@ -1,14 +1,55 @@
+$mdc-theme-primary: #D1030F;
+$mdc-theme-primary-light: #ff030f;
+$mdc-theme-primary-dark: #a3030f;
+$mdc-theme-secondary: #0084E0;
+$mdc-theme-secondary-light: #62ffd2;
+$mdc-theme-secondary-dark: #59bd94;
+$mdc-theme-background: #ffffff;
+
+
+@import "~material-components-web/material-components-web";
+
+body{
+  margin: 0;
+  //background: $mdc-theme-background;
+  --mdc-theme-primary: $mdc-theme-primary;
+  --mdc-theme-primary-light: $mdc-theme-primary-light;
+  --mdc-theme-primary-dark: $mdc-theme-primary-dark;
+  --mdc-theme-secondary: $mdc-theme-secondary;
+  --mdc-theme-secondary-light: $mdc-theme-secondary-light;
+  --mdc-theme-secondary-dark: $mdc-theme-secondary-dark;
+}
+
+body:after{
+  background: url("assets/images/icon.svg") no-repeat;
+  content : "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  opacity : 0.03;
+  z-index: -1;
+}
+
 a.material-icons {
   text-decoration: none;
 }
 
-body{
-  margin: 0;
-}
-// customize some theme variables, e.g.:
-$mdc-theme-primary: #212121;
-$mdc-theme-secondary: #00e871;
-$mdc-theme-background: #fff;
+[mdcListGroup] {
+  border: 1px solid rgba(0, 0, 0, 0.1);
 
-// import theming for all mdc components:
-@import "material-components-web/material-components-web";
+  [mdcAvatarList] [mdcListItemStartDetail] {
+    background-color: rgba(0, 0, 0, .26);
+  }
+
+  [mdcListItem]{
+    background-color: rgba(whitesmoke, .3)
+
+  }
+
+  a {
+    color: rgba(0, 0, 0, .85);
+  }
+}

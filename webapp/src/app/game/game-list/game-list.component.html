@@ -1,8 +1,8 @@
-<div [hidden]="games.length === 0">
-  <ul class="mdc-list mdc-list--two-line mdc-list--avatar-list demo-list demo-list--with-avatars demo-list--icon-placeholders">
-    <li class="mdc-list-item" *ngFor="let game of games">
+<div mdcListGroup [hidden]="games.length === 0">
+  <ul mdcList [dense]="dense">
+    <li mdcListItem mdcListDivider [mdcRipple]="ripple" *ngFor="let game of games" style="height: 80px">
       <div [hidden]="game.currentUserJoined">
-        <span class="mdc-list-item__graphic" role="presentation">
+        <span mdcListItem="graphic" role="presentation">
           <i class="material-icons" aria-hidden="true">event</i>
         </span>
       </div>

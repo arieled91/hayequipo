@@ -7,13 +7,12 @@
 
   <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-3-phone  mdc-layout-grid__cell--span-5-tablet mdc-layout-grid__cell--align-middle" style="text-align: right">
     <div class="mdc-text-field mdc-text-field--upgraded" style="text-align: right">
-      <input class="mdc-text-field__input" type="date" name="gameDate" id="gameDate" [ngModel] ="gameDate | date:'yyyy-MM-dd'" (ngModelChange)="gameDate = $event">
-      <label class="mdc-text-field__label mdc-text-field__label--float-above" for="gameDate">Date</label>
-      <div class="mdc-line-ripple"></div>
+      <input mdcTextFieldInput type="date" name="gameDate" id="gameDate" [ngModel] ="gameDate | date:'yyyy-MM-dd'" (ngModelChange)="gameDate = $event">
+      <label mdcTextFieldLabel class="mdc-text-field__label--float-above" for="gameDate">{{dateLabel}}</label>
     </div>
 
-    <button class="mdc-fab mdc-fab--mini material-icons">
-    <span class="mdc-fab__icon" (click)="find()">
+    <button mdcFab mini class="material-icons">
+    <span mdcFabIcon (click)="find()">
       search
     </span>
     </button>

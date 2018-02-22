@@ -1,8 +1,8 @@
-<header class="mdc-toolbar">
-  <div class="mdc-toolbar__row">
-    <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+<header mdcToolbar>
+  <div mdcToolbarRow>
+    <section mdcToolbarSection alignStart>
       <i id="open-menu-button" class="menu material-icons mdc-toolbar__menu-icon">menu</i>
-      <span class="mdc-toolbar__title">{{title}}</span>
+      <span mdcToolbarTitle style="padding-left: -20px"><b>{{title}}</b></span>
     </section>
   </div>
 
@@ -11,17 +11,23 @@
 <aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
   <nav class="mdc-drawer__drawer">
 
-    <div class="mdc-drawer__toolbar-spacer"></div>
+    <div mdcDrawerToolbarSpacer></div>
+    <div mdcDrawerHeader style="height: 90px">
+      <div mdcDrawerHeaderContent style="padding: 15px">Header Content</div>
+    </div>
 
-    <nav class="mdc-drawer__content mdc-list white">
-      <a class="mdc-list-item mdc-list-item--activated" href="#" routerLink="/home" routerLinkActive="active">
+    <nav mdcDrawerContent mdcList="white">
+      <a mdcListItem="activated" href="#" routerLink="/home" routerLinkActive="active">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
       </a>
-      <a class="mdc-list-item" href="#" routerLink="/game" routerLinkActive="active">
+      <a mdcListItem href="#" routerLink="/game" routerLinkActive="active">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Game
       </a>
     </nav>
   </nav>
 </aside>
 
-<router-outlet></router-outlet>
+
+<main>
+    <router-outlet></router-outlet>
+</main>
