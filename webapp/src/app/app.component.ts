@@ -1,5 +1,6 @@
-import {AfterContentInit, Component} from '@angular/core';
-import * as mdc from 'material-components-web'
+import {AfterContentInit, Component, ElementRef, ViewChild} from '@angular/core';
+import {appMenus} from "./app.menu";
+import {MDCTemporaryDrawer} from '@material/drawer';
 
 @Component({
   selector: 'app-root',
@@ -7,26 +8,25 @@ import * as mdc from 'material-components-web'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterContentInit{
-  drawer: any;
+  drawerMenu;
   active = 0;
 
   title = 'FUTBOLDESA';
+  menus = appMenus;
 
-  constructor(){
-  }
+  @ViewChild('drawerMenuRef') drawerMenuRef: ElementRef;
 
-  menus = [
-    {name: "Home", link: "home"},
-    {name: "Partidos", link: "game"}
-  ];
+  constructor() {}
 
   ngAfterContentInit(): void {
-    // this.setDevice();
-    let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-drawer--temporary'));
-    document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+    this.drawerMenu = new MDCTemporaryDrawer(this.drawerMenuRef.nativeElement);
   }
 
   activate(index: number) {
     this.active = index;
+  }
+
+  openDrawerMenu(){
+    this.drawerMenu.open = true;
   }
 }

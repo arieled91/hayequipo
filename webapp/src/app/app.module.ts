@@ -1,8 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {RouterModule} from "@angular/router";
-import { FormsModule } from '@angular/forms';
-import { MaterialModule } from '@blox/material';
+import {FormsModule} from '@angular/forms';
+import {MaterialModule} from '@blox/material';
 
 
 import {AppComponent} from './app.component';
@@ -15,6 +15,7 @@ import {LoginComponent} from './auth/login/login.component';
 import {AuthenticationService} from "./service/authentication.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ApiHttpInterceptor} from "./service/api.interceptor";
+import {GameFormComponent} from './game/game-form/game-form.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import {ApiHttpInterceptor} from "./service/api.interceptor";
     GameSearchComponent,
     GameListComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    GameFormComponent
   ],
   imports: [
     BrowserModule,

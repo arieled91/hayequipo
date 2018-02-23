@@ -1,17 +1,17 @@
-<header mdcToolbar (window:resize)="onResize($event)">
+<header mdcToolbar>
   <div mdcToolbarRow>
     <section mdcToolbarSection alignStart>
-      <i id="open-menu-button" class="menu material-icons mdc-toolbar__menu-icon">menu</i>
+      <i id="open-menu-button" (click)="openDrawerMenu()" class="menu material-icons mdc-toolbar__menu-icon">menu</i>
       <span mdcToolbarTitle><b>{{title}}</b></span>
     </section>
-    <nav mdcTabBar class="menu-tab-bar" >
+    <nav mdcTabBar class="menu-tab-bar">
       <a *ngFor="let menu of menus; let i = index" mdcTab (activate)="activate(i)" tabindex="0" mdcTabRouter [routerLink]="[menu.link]">{{menu.name}}</a>
     </nav>
   </div>
 
 </header>
 
-<aside class="mdc-drawer mdc-drawer--temporary mdc-typography">
+<aside #drawerMenuRef class="mdc-drawer mdc-drawer--temporary mdc-typography">
   <nav class="mdc-drawer__drawer">
 
     <div mdcDrawerToolbarSpacer></div>
@@ -20,11 +20,8 @@
     </div>
 
     <nav mdcDrawerContent mdcList="white">
-      <a mdcListItem="activated" href="#" routerLink="/home" routerLinkActive="active">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">home</i>Home
-      </a>
-      <a mdcListItem href="#" routerLink="/game" routerLinkActive="active">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">star</i>Game
+      <a *ngFor="let menu of menus" mdcListItem [routerLink]="[menu.link]" routerLinkActive="activeTabIndex">
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{menu.icon}}</i>{{menu.name}}
       </a>
     </nav>
   </nav>

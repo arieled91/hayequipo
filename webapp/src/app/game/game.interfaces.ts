@@ -1,11 +1,11 @@
-export interface Game {
+export class Game {
   description : String;
   dateTime    : Date;
   location    : Location;
   currentUserJoined : boolean;
 }
 
-export interface Location {
+export class Location {
   latitude    : Number;
   longitude   : Number;
   description : String;
