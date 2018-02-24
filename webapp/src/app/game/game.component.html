@@ -1,0 +1,31 @@
+<div>
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop  mdc-layout-grid__cell--span-3-tablet mdc-layout-grid__cell--span-1-phone mdc-layout-grid__cell--align-middle">
+    <b class="mdc-typography--headline">{{title}}</b>
+
+    <button mdcFab mini class="material-icons btn-primary" style="margin-left: 10px">
+      <span mdcFabIcon (click)="openGameDialog()">add</span>
+    </button>
+  </div>
+
+
+  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-3-phone  mdc-layout-grid__cell--span-5-tablet mdc-layout-grid__cell--align-middle" style="text-align: right">
+    <mat-form-field >
+      <input matInput
+             id="gameDate"
+             name="gameDate"
+             placeholder={{dateLabel}}
+             [matDatepicker]="gameDatePicker"
+             [ngModel] ="gameDate" (ngModelChange)="gameDate = $event">
+      <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #gameDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <button mdcFab stroked mini class="material-icons">
+      <span mdcFabIcon (click)="find()">search</span>
+    </button>
+
+  </div>
+</div>
+
+<app-game-list [games]="games"></app-game-list>
+

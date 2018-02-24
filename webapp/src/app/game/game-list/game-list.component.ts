@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Game} from "../game.interfaces";
+import {Game} from "../game.model";
 
 @Component({
   selector: 'app-game-list',

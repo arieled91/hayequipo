@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Game} from "../game.interfaces";
-import {isUndefined} from "util";
+import {Game} from "../game.model";
+import {isNullOrUndefined, isUndefined} from "util";
+import {GameService} from "../service/game.service";
 
 @Component({
   selector: 'app-game-form',
@@ -10,17 +11,28 @@ import {isUndefined} from "util";
 export class GameFormComponent implements OnInit {
 
   title = "Partido";
+
   descriptionLabel = "Descripción";
+  dateTimeLabel = "Fecha";
+  locationLabel = "Lugar";
 
   @Input() game : Game;
-  dateTimeLabel = "Fecha";
 
 
-  constructor() {
+  constructor(private gameService: GameService) {
   }
 
   ngOnInit() {
     if(isUndefined(this.game)) this.game = new Game()
   }
 
+  saveGame() {
+    if(isNullOrUndefined(this.game.id)) this.addNewGame();
+  }
+
+  addNewGame(){
+    this.gameService.addNewGame(this.game).subscribe(
+      data => this.game = data
+    );
+  }
 }

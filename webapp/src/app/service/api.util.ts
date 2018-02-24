@@ -1,5 +1,5 @@
 export class Api{
-  public static BASE_URL = "http://192.168.0.105:8080";
+  public static BASE_URL = "http://localhost:8080";
 
   public static URL = Api.BASE_URL+"/api";
 
