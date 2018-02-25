@@ -98,4 +98,8 @@ public class GameService {
     public Page<Game> listNextGames(Pageable pageable){
         return gameRepository.findByDateTimeGreaterThanOrderByDateTime(LocalDateTime.now(), pageable);
     }
+
+    public Game addGame(Game newGame){
+        return gameRepository.save(newGame);
+    }
 }

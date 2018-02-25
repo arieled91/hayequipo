@@ -20,6 +20,9 @@ public class GameResponse {
 
     private final boolean currentUserJoined;
 
+    public GameResponse(Game game) {
+        this(game, false);
+    }
     public GameResponse(Game game, boolean currentUserJoined) {
         this.id = game.getId();
         this.dateTime = game.getDateTime();

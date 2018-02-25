@@ -4,7 +4,7 @@ import {Api} from "../../service/api.util";
 import {Game} from "../game.model";
 import {DatePipe} from "@angular/common";
 import {Observable} from "rxjs/Observable";
-import {isUndefined, isNullOrUndefined} from "util";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class GameService {
@@ -19,8 +19,9 @@ export class GameService {
   }
 
   addNewGame(game: Game) : Observable<any>{
+    game.dateTime.utc(true); //fixes utc time
     if(isNullOrUndefined(game)) throw new Error("addNewGame - Game cannot be: "+game);
-    let requestUrl = Api.request("/games", "");
+    let requestUrl = Api.request("/games/add", "");
     return this.http.post<Game>(requestUrl, game);
   }
 }

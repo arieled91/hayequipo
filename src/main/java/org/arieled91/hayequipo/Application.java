@@ -14,14 +14,17 @@ public class Application {
 	}
 
     @Value("${frontend.url}")
-    private String frontendUrl = "*";
+    private String frontendUrl = "http://localhost:4200";
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins(frontendUrl, "http://192.168.0.105:4200");
+				registry.addMapping("/**")
+						.allowedOrigins(frontendUrl,"*")
+                        .allowedMethods("GET","POST","PATCH","PUT","DELETE")
+                        .allowedHeaders("*");
 			}
 		};
 	}

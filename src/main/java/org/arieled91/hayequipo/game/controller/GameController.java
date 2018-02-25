@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -72,4 +73,16 @@ public class GameController {
             return ResponseEntity.badRequest().body(List.of());
         }
     }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseEntity add(@RequestBody final Game game) {
+        try {
+            final GameResponse newGame = new GameResponse(gameService.addGame(game));
+            return ResponseEntity.ok(newGame);
+        }catch (Exception e){
+            logger.error("GameController - Error adding new game: " + game.toString(), e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

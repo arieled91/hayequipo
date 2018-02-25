@@ -15,7 +15,7 @@
              name="gameDate"
              placeholder={{dateLabel}}
              [matDatepicker]="gameDatePicker"
-             [ngModel] ="gameDate" (ngModelChange)="gameDate = $event">
+             [(ngModel)] ="gameDate">
       <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #gameDatePicker></mat-datepicker>
     </mat-form-field>

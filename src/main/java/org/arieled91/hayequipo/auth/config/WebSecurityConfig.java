@@ -19,11 +19,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -41,56 +36,53 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//            .antMatchers("/css/**","/img/**","/js/**").permitAll()
-//            .antMatchers("/registration*","/auth/registration*","/auth/user*","/login*","/error*","/guests*","/auth/login*").permitAll()
-//            .anyRequest().authenticated().and()
-//            .formLogin().loginPage("/login").loginProcessingUrl("/auth/login").permitAll().and()
-//            .logout().deleteCookies("rememberme").permitAll().and()
-//            .csrf().disable()
-//            .rememberMe().tokenValiditySeconds(60);
-
         http
-                .authorizeRequests().antMatchers("/registration*","/auth/registration*","/auth/user*","/login*","/error*","/guests*","/auth/login*", "/actuator*", "/actuator/*").permitAll()
-
-                // we don't need CSRF because our token is invulnerable
-                .and().csrf().disable()
-                .cors().and()
-
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-
-                // don't create session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
-                .authorizeRequests()
-                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                // allow anonymous resource requests
-                .antMatchers(
-                        HttpMethod.GET,
-//                        "/",
-//                        "/*.html",
-                        "/favicon.ico",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+            .authorizeRequests().antMatchers(
+                "/registration*",
+                "/auth/registration*",
+                "/auth/user*",
+                "/login*",
+                "/error*",
+                "/guests*",
+                "/auth/login*",
+                "/actuator*",
+                "/actuator/**",
+                "/api/browser*"
+//                ,"/**" //do NOT uncomment for prod
                 ).permitAll()
 
-                // Un-secure H2 Database
-                .antMatchers("/h2-console/**/**").permitAll()
+            // we don't need CSRF because our token is invulnerable
+            .and().csrf().disable()
+            .cors().and()
 
-                .antMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated();
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+
+            // don't create session
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
+            .authorizeRequests()
+
+            // allow anonymous resource requests
+            .antMatchers(
+                    HttpMethod.GET,
+                    "/favicon.ico",
+                    "/**/*.html",
+                    "/**/*.css",
+                    "/**/*.js"
+            ).permitAll()
+
+            // Un-secure H2 Database
+            .antMatchers("/h2-console/**/**").permitAll()
+
+            .antMatchers("/auth/**").permitAll()
+            .anyRequest().authenticated();
 
         // Custom JWT based security filter
-        http
-                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         // disable page caching
-        http
-                .headers()
-                .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-                .cacheControl();
+        http.headers().frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
+            .cacheControl();
     }
 
     @Autowired

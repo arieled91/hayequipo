@@ -60,4 +60,14 @@ public class Game extends AbstractEntity{
     public void setLocation(@Nullable Location location) {
         this.location = location;
     }
+
+    @Override
+    public String toString() {
+        return "Game{" +
+                "description='" + description + '\'' +
+                ", dateTime=" + dateTime +
+                ", location=" + location +
+                ", players=" + players +
+                '}';
+    }
 }

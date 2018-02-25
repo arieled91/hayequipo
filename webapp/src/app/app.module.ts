@@ -20,8 +20,9 @@ import {GameDialogComponent} from "./game/game-dialog.component";
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule, MatNativeDateModule} from "@angular/material";
+import {MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule} from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -44,12 +45,13 @@ import {MatButtonModule} from '@angular/material/button';
     MaterialModule,
 
     BrowserAnimationsModule,
-    MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule,
     MatInputModule,
     MatDialogModule,
     MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule
   ],
   providers: [
     GameService,
@@ -58,6 +60,10 @@ import {MatButtonModule} from '@angular/material/button';
       provide: HTTP_INTERCEPTORS,
       useClass: ApiHttpInterceptor,
       multi: true
+    },
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'es-AR'
     }
   ],
   bootstrap: [AppComponent]
