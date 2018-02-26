@@ -1,5 +1,6 @@
 package org.arieled91.hayequipo.auth.controller;
 
+import com.sun.mail.iap.Response;
 import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
@@ -114,7 +115,7 @@ public class AuthController {
     @RequestMapping(value = "/auth/user", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<User> currentUser() {
-        return userService.getCurrentUser().map(ResponseEntity::ok).orElse(ResponseEntity.ok(new User()));
+        return ResponseEntity.ok(userService.getCurrentUser().orElse(new User()));
     }
     
     @RequestMapping(value = "/auth/username", method = RequestMethod.GET)

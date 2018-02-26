@@ -4,12 +4,13 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {HttpClient} from "@angular/common/http";
-import {TokenResponse} from "../auth/auth.interfaces";
-import {Api} from "./api.util";
+import {TokenResponse, User} from "../auth.interfaces";
+import Api from "../../service/api.util";
 
 @Injectable()
 export class AuthenticationService {
   private authUrl = Api.BASE_URL+'/auth/login';
+  private userUrl = Api.BASE_URL+'/auth/user';
   private options = {headers: {'Content-Type': 'application/json'}};
 
 
@@ -35,8 +36,12 @@ export class AuthenticationService {
       }).catch((error:any) => Observable.throw(error.error || 'Server error'));
   }
 
+  static getUser(): any{
+    return JSON.parse(localStorage.getItem('currentUser'));
+  }
+
   static getToken(): String {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = AuthenticationService.getUser();
     const token = currentUser && currentUser.token;
     return token ? token : "";
   }
@@ -44,5 +49,9 @@ export class AuthenticationService {
   static logout(): void {
     // clear token remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+  }
+
+  findCurrentUser(){
+    return this.http.get<User>(this.userUrl)
   }
 }

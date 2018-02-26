@@ -1,4 +1,4 @@
 export const appMenus = [
-  {name: "Home", link: "home", icon: "home"},
-  {name: "Partidos", link: "game", icon: "star"}
+  {label: "Home", link: "home", icon: "home"},
+  {label: "Partidos", link: "game", icon: "event"}
 ];

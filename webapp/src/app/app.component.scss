@@ -7,7 +7,7 @@
 }
 
 .menu-tab-bar{
-  margin-bottom: -15px;
+  //margin-bottom: -15px;
   margin-right: 30px;
 
   a{
@@ -15,9 +15,20 @@
     font-weight: bold;
   }
 
-  .mdc-tab-bar__indicator{
-    background-color: #0084E0;
+  .mat-ink-bar{
     height: 3px;
+  }
+
+  .mat-tab-link{
+    opacity: 1;
+  }
+  [mat-tab-link]{
+    height: 64px;
+    @media (max-width: 750px) {
+      display: none;
+    }
+
   }
 }
 
+//@media (max-width: 599px);

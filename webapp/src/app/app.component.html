@@ -1,14 +1,22 @@
-<header mdcToolbar>
-  <div mdcToolbarRow>
-    <section mdcToolbarSection alignStart>
-      <i id="open-menu-button" (click)="openDrawerMenu()" class="menu material-icons mdc-toolbar__menu-icon">menu</i>
-      <span mdcToolbarTitle><b>{{title}}</b></span>
-    </section>
-    <nav mdcTabBar class="menu-tab-bar">
-      <a *ngFor="let menu of menus; let i = index" mdcTab (activate)="activate(i)" tabindex="0" mdcTabRouter [routerLink]="[menu.link]">{{menu.name}}</a>
-    </nav>
-  </div>
+<header>
+  <mat-toolbar [class.mat-elevation-z3]="true" color="accent" style="padding-left: 0">
+    <button mat-icon-button style="margin: 10px" (click)="openDrawerMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span style="margin-right: 80px"><b>{{title}}</b></span>
 
+    <nav mat-tab-nav-bar class="menu-tab-bar" [hidden]="this.drawerMenu.open">
+      <a mat-tab-link
+         *ngFor="let menu of menus"
+         [routerLink]="menu.link"
+         routerLinkActive #rla="routerLinkActive"
+         [active]="rla.isActive">
+        <mat-icon style="margin-right: 10px">{{menu.icon}}</mat-icon>
+        {{menu.label}}
+      </a>
+    </nav>
+
+  </mat-toolbar>
 </header>
 
 <aside #drawerMenuRef class="mdc-drawer mdc-drawer--temporary mdc-typography">
@@ -16,18 +24,23 @@
 
     <div mdcDrawerToolbarSpacer></div>
     <div mdcDrawerHeader style="height: 90px">
-      <div mdcDrawerHeaderContent style="padding: 15px">Header Content</div>
+      <div mdcDrawerHeaderContent style="margin-left: 15px; margin-top: 15px">
+        <span class="mat-title">{{userName()}}</span>
+        <br>
+        <span>{{user.email}}</span>
+
+      </div>
     </div>
 
     <nav mdcDrawerContent mdcList="white">
       <a *ngFor="let menu of menus" mdcListItem [routerLink]="[menu.link]" routerLinkActive="activeTabIndex">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{menu.icon}}</i>{{menu.name}}
+        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{menu.icon}}</i>{{menu.label}}
       </a>
     </nav>
   </nav>
 </aside>
 
-
 <main class="mdc-layout-grid">
     <router-outlet></router-outlet>
 </main>
+

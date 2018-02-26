@@ -1,4 +1,4 @@
-export class Api{
+export default class Api{
   public static BASE_URL = "http://localhost:8080";
 
   public static URL = Api.BASE_URL+"/api";
