@@ -169,6 +169,11 @@ public class AuthController {
         return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));
     }
 
+    @RequestMapping(value = "/api/ping", method = RequestMethod.GET)
+    public ResponseEntity ping() {
+        return ResponseEntity.ok().build();
+    }
+
 //
 //    @RequestMapping(value = "/auth/resetPassword", method = RequestMethod.POST)
 //    @ResponseBody
@@ -230,7 +235,7 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AuthenticationResponse> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
@@ -245,11 +250,19 @@ public class AuthController {
 
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
-        final String token = tokenUtil.generateToken(userDetails, device);
+        final String token = tokenUtil.generateTokenWithHeader(userDetails, device);
 
         // Return the token
         return ResponseEntity.ok(new AuthenticationResponse(token));
     }
+
+    @RequestMapping(value = "/auth/formLogin", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<AuthenticationResponse> formLogin(AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
+        return login(authenticationRequest, device);
+    }
+
+
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);

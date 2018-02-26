@@ -15,7 +15,6 @@
         {{menu.label}}
       </a>
     </nav>
-
   </mat-toolbar>
 </header>
 
@@ -26,9 +25,11 @@
     <div mdcDrawerHeader style="height: 90px">
       <div mdcDrawerHeaderContent style="margin-left: 15px; margin-top: 15px">
         <span class="mat-title">{{userName()}}</span>
+        <button mat-icon-button [routerLink]="['/login']">
+          <mat-icon>exit_to_app</mat-icon>
+        </button>
         <br>
         <span>{{user.email}}</span>
-
       </div>
     </div>
 

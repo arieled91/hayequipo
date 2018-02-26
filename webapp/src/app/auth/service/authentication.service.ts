@@ -9,6 +9,7 @@ import Api from "../../service/api.util";
 
 @Injectable()
 export class AuthenticationService {
+  private pingUrl = Api.BASE_URL+'/api/ping';
   private authUrl = Api.BASE_URL+'/auth/login';
   private userUrl = Api.BASE_URL+'/auth/user';
   private options = {headers: {'Content-Type': 'application/json'}};
@@ -51,7 +52,11 @@ export class AuthenticationService {
     localStorage.removeItem('currentUser');
   }
 
-  findCurrentUser(){
+  findCurrentUser(): Observable<User>{
     return this.http.get<User>(this.userUrl)
+  }
+
+  ping(){
+    return this.http.get<User>(this.pingUrl).subscribe()
   }
 }

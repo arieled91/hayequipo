@@ -28,10 +28,8 @@ export class AppComponent implements AfterContentInit, OnInit{
   }
 
   ngOnInit(): void {
-    this.authService.findCurrentUser().subscribe(
-      data => {this.user = data},
-      error => console.log(error)
-    );
+    this.authService.ping(); //redirects to login if user credentials fail
+    this.setUser();
   }
 
   openDrawerMenu(){
@@ -40,5 +38,12 @@ export class AppComponent implements AfterContentInit, OnInit{
 
   userName(){
     return `${this.user.firstName} ${this.user.lastName}`
+  }
+
+  setUser(){
+    this.authService.findCurrentUser().subscribe(
+      data => {this.user = data},
+      error => console.log(error)
+    );
   }
 }

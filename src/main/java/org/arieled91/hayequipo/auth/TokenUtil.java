@@ -31,6 +31,8 @@ public class TokenUtil implements Serializable {
     static final String AUDIENCE_MOBILE = "mobile";
     static final String AUDIENCE_TABLET = "tablet";
 
+    static final String TOKEN_HEADER = "Bearer";
+
 //    @SuppressFBWarnings(value = "SE_BAD_FIELD", justification = "It's okay here")
     private Clock clock = DefaultClock.INSTANCE;
 
@@ -97,6 +99,10 @@ public class TokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails, Device device) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername(), generateAudience(device));
+    }
+
+    public String generateTokenWithHeader(UserDetails userDetails, Device device) {
+        return TOKEN_HEADER+" "+generateToken(userDetails, device);
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject, String audience) {
