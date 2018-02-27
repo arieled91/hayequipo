@@ -1,22 +1,13 @@
-<div mdcListGroup [hidden]="games.length === 0">
-  <ul mdcList [dense]="dense">
-    <li mdcListItem mdcListDivider [mdcRipple]="ripple" *ngFor="let game of games" style="height: 80px">
-      <div [hidden]="game.currentUserJoined">
-        <span mdcListItem="graphic" role="presentation">
-          <i class="material-icons" aria-hidden="true">event</i>
-        </span>
-      </div>
-      <div [hidden]="!game.currentUserJoined" >
-        <span class="mdc-list-item__graphic" role="presentation"style="color: limegreen">
-          <i class="material-icons" aria-hidden="true">check</i>
-        </span>
-      </div>
-      <span class="mdc-list-item__text">{{game.description}}
+<mat-list [hidden]="games.length === 0" style="border: solid #ebebeb 1px">
+  <mat-list-item *ngFor="let game of games" style="height: 80px;border-bottom: solid #ebebeb 1px" class="mat-list-option">
+    <mat-icon mat-list-icon *ngIf="!game.currentUserJoined">event</mat-icon>
+    <mat-icon mat-list-icon *ngIf="game.currentUserJoined">check</mat-icon>
+    <h2 mat-line>{{game.description}}
         <span class="mdc-list-item__secondary-text">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
-      </span>
-      <a href="#" class="mdc-list-item__meta material-icons" aria-label="View more information" title="More info" onclick="event.preventDefault();">
-        info
-      </a>
-    </li>
-  </ul>
-</div>
+      </h2>
+    <button mat-mini-fab color="basic" (click)="joinGame()" style="float: right;">
+      <mat-icon>playlist_add</mat-icon>
+    </button>
+    <!--<mat-icon>info</mat-icon>-->
+  </mat-list-item>
+</mat-list>

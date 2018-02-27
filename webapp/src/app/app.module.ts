@@ -22,7 +22,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule} from "@angular/material";
+import {MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule, MatListModule} from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 
@@ -55,6 +55,8 @@ import {MatButtonModule} from '@angular/material/button';
     MatToolbarModule,
     MatIconModule,
     MatTabsModule,
+    MatGridListModule,
+    MatListModule,
   ],
   providers: [
     GameService,
