@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {appMenus} from "./app.menu";
 import {MDCTemporaryDrawer} from '@material/drawer';
 import {AuthenticationService} from "./auth/service/authentication.service";
@@ -19,7 +19,7 @@ export class AppComponent implements AfterContentInit, OnInit{
 
   @ViewChild('drawerMenuRef') drawerMenuRef: ElementRef;
 
-  constructor(private authService: AuthenticationService) {
+  constructor(private authService: AuthenticationService, private changeDetector: ChangeDetectorRef) {
 
   }
 
@@ -33,16 +33,21 @@ export class AppComponent implements AfterContentInit, OnInit{
   }
 
   openDrawerMenu(){
+    this.setUser();
     this.drawerMenu.open = true;
   }
 
-  userName(){
-    return `${this.user.firstName} ${this.user.lastName}`
+  closeDrawerMenu(){
+    this.setUser();
+    this.drawerMenu.open = false;
   }
 
   setUser(){
     this.authService.findCurrentUser().subscribe(
-      data => {this.user = data},
+      data => {
+          this.user = data;
+          this.changeDetector.markForCheck();
+      },
       error => console.log(error)
     );
   }

@@ -1,59 +1,59 @@
 package org.arieled91.hayequipo.game.controller;
 
+import org.arieled91.hayequipo.game.exception.GameClosedException;
 import org.arieled91.hayequipo.game.model.Game;
 import org.arieled91.hayequipo.game.model.dto.GameResponse;
-import org.arieled91.hayequipo.game.model.dto.GuestJoin;
-import org.arieled91.hayequipo.game.model.dto.UserJoin;
+import org.arieled91.hayequipo.game.model.dto.JoinRequest;
 import org.arieled91.hayequipo.game.service.GameService;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
 @Controller
 @RequestMapping("/api/games")
 public class GameController {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final GameService gameService;
+    private final MessageSource messages;
 
     @Autowired
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, MessageSource messages) {
         this.gameService = gameService;
+        this.messages = messages;
     }
 
-    @RequestMapping(value = "/userJoin", method = RequestMethod.POST)
-    public ResponseEntity userJoin(final UserJoin userJoinDto) {
+    @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
+    public ResponseEntity userJoin(final Long id) {
         try {
-            gameService.userJoin(userJoinDto);
-            logger.info("GameController - User joined the game " + userJoinDto);
+            gameService.userJoin(id);
+            logger.info("GameController - User joined the game " + id);
             return ResponseEntity.ok().build();
         }catch (Exception e){
-            logger.error("GameController - Error joining user to game " + userJoinDto, e);
+            logger.error("GameController - Error joining user to game " + id, e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @RequestMapping(value = "/guestJoin", method = RequestMethod.POST)
-    public ResponseEntity guestJoin(final GuestJoin guestJoinDto) {
+    @RequestMapping(value = "/join", method = RequestMethod.POST)
+    public ResponseEntity join(final JoinRequest joinRequest) {
         try {
-            gameService.guestJoin(guestJoinDto);
-            logger.info("GameController - User joined the game " + guestJoinDto);
+            gameService.commonJoin(joinRequest);
+            logger.info("GameController - User joined the game " + joinRequest);
             return ResponseEntity.ok().build();
         }catch (Exception e){
-            logger.error("GameController - Error joining user to game " + guestJoinDto, e);
+            logger.error("GameController - Error joining user to game " + joinRequest, e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -75,14 +75,31 @@ public class GameController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity add(@RequestBody final Game game) {
+    public ResponseEntity<?> add(@RequestBody final Game game) {
         try {
-            final GameResponse newGame = new GameResponse(gameService.addGame(game));
-            return ResponseEntity.ok(newGame);
+            return ResponseEntity.ok(new GameResponse(gameService.addGame(game)));
         }catch (Exception e){
             logger.error("GameController - Error adding new game: " + game.toString(), e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
+    @RequestMapping(value = "/{id}/close", method = RequestMethod.GET)
+    public ResponseEntity<?> close(@PathVariable Long id, final Locale locale) {
+        try {
+            return ResponseEntity.ok(gameService.close(id));
+        }catch (GameClosedException e){
+            logCloseError(id, e);
+            return ResponseEntity.badRequest().body(messages.getMessage("game.closed.error",null,locale));
+        }catch (Exception e){
+            logCloseError(id, e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    private void logCloseError(Long id, Exception e){
+        logger.error("GameController - Error closing game with id: "+id, e);
+    }
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 }

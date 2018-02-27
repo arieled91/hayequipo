@@ -85,9 +85,9 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         if (role == null) {
             role = new Role();
             role.setName(name);
+            role.setPrivileges(privileges);
+            return roleRepository.save(role);
         }
-        role.setPrivileges(privileges);
-        role = roleRepository.save(role);
         return role;
     }
 
@@ -101,9 +101,9 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
             user.setPassword(passwordEncoder.encode(password));
             user.setEmail(email);
             user.setEnabled(true);
+            user.setRoles(roles);
+            userRepository.save(user);
         }
-        user.setRoles(roles);
-        userRepository.save(user);
     }
 
 }

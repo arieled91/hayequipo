@@ -55,8 +55,10 @@ dependencies {
     compile("org.jetbrains:annotations:15.0")
 	compile("io.jsonwebtoken:jjwt:0.9.0")
 	compile("javax.xml.bind:jaxb-api:2.3.0")
+	compile("org.flywaydb:flyway-core:5.0.7")
 
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.springframework.security:spring-security-test")
 	testCompile("junit:junit")
+
 }

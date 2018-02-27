@@ -17,6 +17,7 @@ export class GameFormComponent implements OnInit {
   timeLabel = "Hora";
   locationDescLabel = "Lugar";
   locationAddrLabel = "Dirección";
+  capacityLabel = "Capacidad";
 
 
   @Input() game : Game;

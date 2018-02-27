@@ -24,8 +24,8 @@
     <div mdcDrawerToolbarSpacer></div>
     <div mdcDrawerHeader style="height: 90px">
       <div mdcDrawerHeaderContent style="margin-left: 15px; margin-top: 15px">
-        <span class="mat-title">{{userName()}}</span>
-        <button mat-icon-button [routerLink]="['/login']">
+        <span class="mat-title">{{user.firstName+" "+user.lastName}}</span>
+        <button mat-icon-button [routerLink]="['/login']" (click)="closeDrawerMenu()" *ngIf="user.email!==''">
           <mat-icon>exit_to_app</mat-icon>
         </button>
         <br>
@@ -34,7 +34,7 @@
     </div>
 
     <nav mdcDrawerContent mdcList="white">
-      <a *ngFor="let menu of menus" mdcListItem [routerLink]="[menu.link]" routerLinkActive="activeTabIndex">
+      <a *ngFor="let menu of menus" mdcListItem [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="closeDrawerMenu()">
         <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{menu.icon}}</i>{{menu.label}}
       </a>
     </nav>

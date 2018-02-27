@@ -45,24 +45,28 @@ public class GameDataLoader implements ApplicationListener<ContextRefreshedEvent
             game1.setDateTime(LocalDateTime.now().plusMinutes(1));
             game1.setDescription("Futbol 1");
             game1.setLocation(findAnyOrCreateLocation());
+            game1.setCapacity(10);
             gameRepository.save(game1);
 
             Game game2 = new Game();
             game2.setDateTime(LocalDateTime.now().plusHours(1));
             game2.setDescription("Futbol 2");
             game2.setLocation(findAnyOrCreateLocation());
+            game2.setCapacity(10);
             gameRepository.save(game2);
 
             Game game3 = new Game();
             game3.setDateTime(LocalDateTime.now().plusHours(24));
             game3.setDescription("Futbol 3");
             game3.setLocation(findAnyOrCreateLocation());
+            game3.setCapacity(10);
             gameRepository.save(game3);
 
             Game game4 = new Game();
             game4.setDateTime(LocalDateTime.now().plusHours(48));
             game4.setDescription("Futbol 4");
             game4.setLocation(findAnyOrCreateLocation());
+            game4.setCapacity(10);
             gameRepository.save(game4);
         }
     }

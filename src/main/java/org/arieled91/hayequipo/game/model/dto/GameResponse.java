@@ -4,20 +4,18 @@ import org.arieled91.hayequipo.game.model.Game;
 import org.arieled91.hayequipo.game.model.Location;
 import org.arieled91.hayequipo.game.model.Player;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-public class GameResponse {
+public class GameResponse implements Serializable{
+
     private final Long id;
-
     private final String description;
-
     private final LocalDateTime dateTime;
-
     private final Location location;
-
     private final Set<Player> players;
-
+    private final int capacity;
     private final boolean currentUserJoined;
 
     public GameResponse(Game game) {
@@ -30,6 +28,7 @@ public class GameResponse {
         this.players = game.getPlayers();
         this.description = game.getDescription();
         this.currentUserJoined = currentUserJoined;
+        this.capacity = game.getCapacity();
     }
 
     public Long getId() {
@@ -54,5 +53,9 @@ public class GameResponse {
 
     public boolean isCurrentUserJoined() {
         return currentUserJoined;
+    }
+
+    public int getCapacity() {
+        return capacity;
     }
 }

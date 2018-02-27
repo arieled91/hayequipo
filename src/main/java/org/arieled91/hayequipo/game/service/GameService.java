@@ -3,11 +3,12 @@ package org.arieled91.hayequipo.game.service;
 import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.service.UserService;
+import org.arieled91.hayequipo.game.exception.GameClosedException;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
 import org.arieled91.hayequipo.game.model.Game;
+import org.arieled91.hayequipo.game.model.GameStatus;
 import org.arieled91.hayequipo.game.model.Player;
-import org.arieled91.hayequipo.game.model.dto.GuestJoin;
-import org.arieled91.hayequipo.game.model.dto.UserJoin;
+import org.arieled91.hayequipo.game.model.dto.JoinRequest;
 import org.arieled91.hayequipo.game.repository.GameRepository;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.GAME_PRIORITY;
-import static org.arieled91.hayequipo.game.model.PlayerType.VIP;
 import static org.arieled91.hayequipo.game.model.PlayerType.NORMAL;
+import static org.arieled91.hayequipo.game.model.PlayerType.VIP;
 
 @Service
 @Transactional
@@ -39,25 +40,51 @@ public class GameService {
         this.userService = userService;
     }
 
-    public void userJoin(UserJoin join) {
-        User user = userService.findActiveUserByMail(join.getEmail()).orElseThrow(UserNotFoundException::new);
+    public void userJoin(Long gameId) {
+        final User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        userJoin(user, gameId);
+    }
+
+    public void userJoin(User user, Long gameId) {
         Player player = buildPlayer(user);
         if(player==null) throw new RuntimeException("Player cannot be null");
 
-        join(player, join.getGameId());
+        join(player, gameId);
     }
 
-    public void guestJoin(GuestJoin join) {
-        join(buildPlayer(join), join.getGameId());
+    public void commonJoin(JoinRequest request) {
+        final User currentUser = userService.getCurrentUser().orElse(null);
+        final User userJoin = userService.findActiveUserByMail(request.getEmail()).orElse(null);
+
+        //If an user is trying to add another user to the game
+        // only users can add other users to the game
+        if(currentUser!=null && userJoin!=null){
+            userJoin(userJoin, request.getGameId());
+            return;
+        }
+
+        //the player is a guest
+        join(buildPlayer(request), request.getGameId());
     }
 
     public void join(Player player, long gameId){
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        validateJoin(player, game);
         game.getPlayers().add(player);
         gameRepository.save(game);
     }
 
-    private Player buildPlayer(GuestJoin join) {
+    private void validateJoin(Player player, Game game){
+        if(game.getStatus() == GameStatus.CLOSED) throw new GameClosedException();
+
+        if(player.getFirstName()==null) throw new RuntimeException("Player firstName cannot be null");
+    }
+
+    private void validateClose(Game game){
+        if(game.getStatus() == GameStatus.CLOSED) throw new GameClosedException();
+    }
+
+    private Player buildPlayer(JoinRequest join) {
         Player player = new Player();
         player.setEmail(join.getEmail());
         player.setFirstName(join.getFirstName());
@@ -101,5 +128,12 @@ public class GameService {
 
     public Game addGame(Game newGame){
         return gameRepository.save(newGame);
+    }
+
+    public Game close(Long gameId){
+        final Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        validateClose(game);
+        game.close();
+        return game;
     }
 }

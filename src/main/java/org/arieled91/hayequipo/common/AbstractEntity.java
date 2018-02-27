@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @SuppressWarnings("SimplifiableIfStatement")
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable, Cloneable {
+public abstract class AbstractEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

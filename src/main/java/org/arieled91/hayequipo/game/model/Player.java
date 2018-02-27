@@ -3,12 +3,12 @@ package org.arieled91.hayequipo.game.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.common.AbstractEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Player extends AbstractEntity {
@@ -17,6 +17,7 @@ public class Player extends AbstractEntity {
     @Nullable private String lastName;
     @Nullable private String email;
     @NotNull private PlayerType type = PlayerType.GUEST;
+    @Nullable private Integer rosterOrder;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
@@ -24,11 +25,11 @@ public class Player extends AbstractEntity {
 
     public Player() {}
 
-    @NotNull public String getFirstName() {
+    public String getFirstName() {
         return user == null ? firstName : user.getFirstName();
     }
 
-    public void setFirstName(@NotNull String firstName) {
+    public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
@@ -52,15 +53,23 @@ public class Player extends AbstractEntity {
         return user;
     }
 
-    public void setUser(@NotNull User user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    @NotNull public PlayerType getType() {
+    public PlayerType getType() {
         return type;
     }
 
-    public void setType(@NotNull PlayerType type) {
+    public void setType(PlayerType type) {
         this.type = type;
+    }
+
+    @Nullable public Integer getRosterOrder() {
+        return rosterOrder;
+    }
+
+    public void setRosterOrder(@Nullable Integer rosterOrder) {
+        this.rosterOrder = rosterOrder;
     }
 }

@@ -5,6 +5,7 @@ export class Game {
   description : String = null;
   dateTime    : Moment = null;
   location    : Location = new Location();
+  capacity    : Number = null;
   currentUserJoined : boolean = false;
 }
 

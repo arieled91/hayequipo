@@ -9,7 +9,7 @@ import Api from "../../service/api.util";
 @Injectable()
 export class GameService {
 
-  addUrl = "/games/find";
+  addUrl = "/games/add";
   findUrl = "/games/find";
 
   constructor(private http: HttpClient) {}
