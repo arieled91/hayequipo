@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.GAME_PRIORITY;
@@ -108,7 +109,7 @@ public class GameService {
     }
 
     private Player buildPlayer(JoinRequest join) {
-        Player player = new Player();
+        final Player player = new Player();
         player.setEmail(join.getEmail());
         player.setFirstName(join.getFirstName());
         player.setLastName(join.getLastName());
@@ -116,8 +117,8 @@ public class GameService {
     }
 
     public List<Player> listPlayersOrdered(Game game){
-        Comparator<Player> playerType = Comparator.comparing(player -> player.getType().getOrder());
-        Comparator<Player> joinDate = Comparator.comparing(Player::getCreationTime);
+        final Comparator<Player> playerType = Comparator.comparing(player -> player.getType().getOrder());
+        final Comparator<Player> joinDate = Comparator.comparing(Player::getCreationTime);
 
         return game.getPlayers().stream()
                 .sorted(playerType.thenComparing(joinDate))
@@ -125,7 +126,7 @@ public class GameService {
     }
 
     private Player buildPlayer(User user) {
-        Player player = new Player();
+        final Player player = new Player();
         player.setUser(user);
         player.setType(userService.hasPrivilege(user, GAME_PRIORITY) ? VIP : NORMAL);
         return player;
@@ -134,15 +135,16 @@ public class GameService {
     public List<Game> findByDate(@Nullable LocalDate date){
         return date !=null ? gameRepository.findByDate(date) : List.of();
     }
+    public Optional<Game> findById(Long id){
+        return gameRepository.findById(id);
+    }
 
     public boolean isCurrentUserJoined(Game game) {
         return userService.getCurrentUser().map(user -> isUserInGame(user, game)).orElse(false);
     }
 
     public static boolean isUserInGame(User user, Game game){
-        return game.getPlayers().stream()
-                .filter(p -> p.getUser() != null && p.getUser().getId().equals(user.getId()))
-                .count() > 0;
+        return game.getPlayers().stream().anyMatch(p -> p.getUser() != null && p.getUser().getId().equals(user.getId()));
     }
 
     public Page<Game> listNextGames(Pageable pageable){

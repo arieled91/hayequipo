@@ -1,5 +1,5 @@
-<mat-list *ngIf="games.length > 0" style="border: solid #ebebeb 1px">
-  <mat-list-item *ngFor="let game of games" style="height: 80px;border-bottom: solid #ebebeb 1px" class="mat-list-option">
+<mat-list *ngIf="games.length > 0" class="game_list">
+  <mat-list-item *ngFor="let game of games" class="mat-list-option game_list_item" (click)="openGameFormDialog(game.id)">
     <mat-icon mat-list-icon *ngIf="!game.currentUserJoined">event</mat-icon>
     <mat-icon mat-list-icon style="color: limegreen" *ngIf="game.currentUserJoined">check</mat-icon>
     <h2 mat-line>{{game.description}}</h2>

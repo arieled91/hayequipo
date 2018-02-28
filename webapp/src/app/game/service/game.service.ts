@@ -9,8 +9,8 @@ import Api from "../../service/api.util";
 @Injectable()
 export class GameService {
 
-  addUrl = "/games/add";
-  findUrl = "/games/find";
+  private addUrl = "/games/add";
+  private findUrl = "/games/find";
 
   constructor(private http: HttpClient) {}
 
@@ -37,6 +37,12 @@ export class GameService {
   exitGame(gameId: Number) : Observable<any>{
     const userRemoveUrl = `/games/${gameId}/remove`;
     const requestUrl = Api.request(userRemoveUrl,"");
+    return this.http.get<Game>(requestUrl);
+  }
+
+  findById(gameId: Number) : Observable<any>{
+    const findUrl = `/games/${gameId}`;
+    let requestUrl = Api.request(findUrl, "");
     return this.http.get<Game>(requestUrl);
   }
 }

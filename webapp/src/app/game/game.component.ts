@@ -47,8 +47,6 @@ export class GameComponent implements OnInit, AfterContentInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // console.log('The dialog was closed');
-      // this.newGame = result;
       this.find();
     });
   }
