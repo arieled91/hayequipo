@@ -7,6 +7,7 @@ export class Game {
   location    : Location = new Location();
   capacity    : Number = null;
   currentUserJoined : boolean = false;
+  players     : Player[] = [];
 }
 
 export class Location {
@@ -14,4 +15,8 @@ export class Location {
   longitude   : Number = null;
   description : String = null;
   address     : String = null;
+}
+
+export class Player{
+
 }

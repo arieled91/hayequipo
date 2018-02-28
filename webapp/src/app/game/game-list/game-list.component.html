@@ -1,12 +1,12 @@
-<mat-list [hidden]="games.length === 0" style="border: solid #ebebeb 1px">
+<mat-list *ngIf="games.length > 0" style="border: solid #ebebeb 1px">
   <mat-list-item *ngFor="let game of games" style="height: 80px;border-bottom: solid #ebebeb 1px" class="mat-list-option">
     <mat-icon mat-list-icon *ngIf="!game.currentUserJoined">event</mat-icon>
-    <mat-icon mat-list-icon *ngIf="game.currentUserJoined">check</mat-icon>
-    <h2 mat-line>{{game.description}}
-        <span class="mdc-list-item__secondary-text">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
-      </h2>
+    <mat-icon mat-list-icon style="color: limegreen" *ngIf="game.currentUserJoined">check</mat-icon>
+    <h2 mat-line>{{game.description}}</h2>
+    <span matLine style="color: grey; margin-top: 5px">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
+
     <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined">
-      <mat-icon>add</mat-icon>
+      <mat-icon>person_add</mat-icon>
     </button>
     <button mat-mini-fab color="basic" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined">
       <mat-icon>remove</mat-icon>
