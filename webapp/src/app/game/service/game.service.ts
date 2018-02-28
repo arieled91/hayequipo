@@ -27,4 +27,16 @@ export class GameService {
     let requestUrl = Api.request(this.addUrl, "");
     return this.http.post<Game>(requestUrl, game);
   }
+
+  joinGame(gameId: Number) : Observable<any>{
+    const userJoinUrl = `/games/${gameId}/join`;
+    const requestUrl = Api.request(userJoinUrl,"");
+    return this.http.get<Game>(requestUrl);
+  }
+
+  exitGame(gameId: Number) : Observable<any>{
+    const userRemoveUrl = `/games/${gameId}/remove`;
+    const requestUrl = Api.request(userRemoveUrl,"");
+    return this.http.get<Game>(requestUrl);
+  }
 }

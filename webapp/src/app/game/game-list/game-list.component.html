@@ -5,8 +5,11 @@
     <h2 mat-line>{{game.description}}
         <span class="mdc-list-item__secondary-text">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
       </h2>
-    <button mat-mini-fab color="basic" (click)="joinGame()" style="float: right;">
-      <mat-icon>playlist_add</mat-icon>
+    <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button mat-mini-fab color="basic" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined">
+      <mat-icon>remove</mat-icon>
     </button>
     <!--<mat-icon>info</mat-icon>-->
   </mat-list-item>

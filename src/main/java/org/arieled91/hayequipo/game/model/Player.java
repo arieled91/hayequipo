@@ -55,6 +55,9 @@ public class Player extends AbstractEntity {
 
     public void setUser(User user) {
         this.user = user;
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.email = user.getEmail();
     }
 
     public PlayerType getType() {

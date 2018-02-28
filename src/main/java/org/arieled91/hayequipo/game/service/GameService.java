@@ -5,11 +5,13 @@ import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.arieled91.hayequipo.game.exception.GameClosedException;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
+import org.arieled91.hayequipo.game.exception.PlayerAlreadyJoinedException;
 import org.arieled91.hayequipo.game.model.Game;
 import org.arieled91.hayequipo.game.model.GameStatus;
 import org.arieled91.hayequipo.game.model.Player;
 import org.arieled91.hayequipo.game.model.dto.JoinRequest;
 import org.arieled91.hayequipo.game.repository.GameRepository;
+import org.arieled91.hayequipo.game.repository.PlayerRepository;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,17 +34,34 @@ import static org.arieled91.hayequipo.game.model.PlayerType.VIP;
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
     private final UserService userService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, UserService userService) {
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository, UserService userService) {
         this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
         this.userService = userService;
     }
 
     public void userJoin(Long gameId) {
         final User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         userJoin(user, gameId);
+    }
+
+    public void userRemove(Long gameId) {
+        final User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        userRemove(user, gameId);
+    }
+
+    public void userRemove(User user, Long gameId) {
+        final Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        final Player player = game.getPlayers().stream().filter(p -> p.getUser().equals(user)).findFirst().orElse(null);
+        if(player!=null){
+            game.getPlayers().remove(player);
+            gameRepository.save(game);
+            playerRepository.delete(player);
+        }
     }
 
     public void userJoin(User user, Long gameId) {
@@ -67,15 +86,19 @@ public class GameService {
         join(buildPlayer(request), request.getGameId());
     }
 
+    @Transactional
     public void join(Player player, long gameId){
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
         validateJoin(player, game);
+        playerRepository.save(player);
         game.getPlayers().add(player);
         gameRepository.save(game);
     }
 
     private void validateJoin(Player player, Game game){
         if(game.getStatus() == GameStatus.CLOSED) throw new GameClosedException();
+
+        if(game.getPlayers().stream().filter(p -> p.getUser().getId().equals(player.getUser().getId())).count() > 0) throw new PlayerAlreadyJoinedException();
 
         if(player.getFirstName()==null) throw new RuntimeException("Player firstName cannot be null");
     }

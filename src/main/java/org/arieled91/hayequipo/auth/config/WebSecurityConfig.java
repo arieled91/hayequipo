@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/actuator*",
                 "/actuator/**",
                 "/api/browser*"
-//                ,"/**" //do NOT uncomment for prod
+                ,"/**" //do NOT uncomment for prod
                 ).permitAll()
 
             // we don't need CSRF because our token is invulnerable

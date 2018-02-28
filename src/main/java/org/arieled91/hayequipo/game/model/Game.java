@@ -32,7 +32,7 @@ public class Game extends AbstractEntity{
     @JoinTable(
             name = "players",
             joinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"))
     private Set<Player> players;
 
     public Game() {}

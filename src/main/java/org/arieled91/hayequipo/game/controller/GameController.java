@@ -35,7 +35,7 @@ public class GameController {
     }
 
     @RequestMapping(value = "/{id}/join", method = RequestMethod.GET)
-    public ResponseEntity userJoin(final Long id) {
+    public ResponseEntity userJoin(@PathVariable(value="id") final Long id) {
         try {
             gameService.userJoin(id);
             logger.info("GameController - User joined the game " + id);
@@ -54,6 +54,19 @@ public class GameController {
             return ResponseEntity.ok().build();
         }catch (Exception e){
             logger.error("GameController - Error joining user to game " + joinRequest, e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value = "/{id}/remove", method = RequestMethod.GET)
+    public ResponseEntity userRemove(@PathVariable(value="id") final Long id) {
+        try {
+            gameService.userRemove(id);
+            logger.info("GameController - User removed from game " + id);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            logger.error("GameController - Error removing user from game " + id, e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
