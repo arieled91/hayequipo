@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Game} from "../game.model";
 import {GameService} from "../service/game.service";
 import {MatDialog} from "@angular/material";
@@ -12,6 +12,9 @@ import {GameDialogComponent} from "../game-dialog.component";
 export class GameListComponent implements OnInit {
 
   @Input() games : Game[];
+  @Output() onDialogClose = new EventEmitter<boolean>();
+
+  confirmExitGameLabel = "¿Esta seguro que desea traer facturas?";
 
   constructor(private gameService: GameService, public dialog: MatDialog ) {
   }
@@ -20,14 +23,19 @@ export class GameListComponent implements OnInit {
 
   joinGame(id) {
     this.gameService.joinGame(id).subscribe(
-      data => this.games.find(game => game.id == id).currentUserJoined = true
+      data => {
+        this.games.find(game => game.id == id).currentUserJoined = true;
+        alert("asd233");
+      }
     )
   }
 
   exitGame(id){
-    this.gameService.exitGame(id).subscribe(
-      data => this.games.find(game => game.id == id).currentUserJoined = false
-    )
+    if(confirm(this.confirmExitGameLabel)) {
+      this.gameService.exitGame(id).subscribe(
+        data => this.games.find(game => game.id == id).currentUserJoined = false
+      )
+    }
   }
 
   openGameFormDialog(id){
@@ -38,7 +46,7 @@ export class GameListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // this.find(); //todo update list ?
+      this.onDialogClose.emit(result.reload);
     });
   }
 }

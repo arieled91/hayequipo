@@ -151,8 +151,8 @@ public class GameService {
         return gameRepository.findByDateTimeGreaterThanOrderByDateTime(LocalDateTime.now(), pageable);
     }
 
-    public Game addGame(Game newGame){
-        return gameRepository.save(newGame);
+    public Game save(Game game){
+        return gameRepository.save(game);
     }
 
     public Game close(Long gameId){

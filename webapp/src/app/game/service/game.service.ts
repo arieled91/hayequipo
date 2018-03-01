@@ -5,12 +5,13 @@ import {DatePipe} from "@angular/common";
 import {Observable} from "rxjs/Observable";
 import {isNullOrUndefined} from "util";
 import Api from "../../service/api.util";
+import moment = require("moment");
 
 @Injectable()
 export class GameService {
 
-  private addUrl = "/games/add";
-  private findUrl = "/games/find";
+  private gamesUrl = Api.URL+"/controller/games";
+  private findUrl = "/controller/games/find";
 
   constructor(private http: HttpClient) {}
 
@@ -21,28 +22,21 @@ export class GameService {
     return this.http.get<Game>(requestUrl);
   }
 
-  addNewGame(game: Game) : Observable<any>{
-    game.dateTime.utc(true); //fixes utc time
-    if(isNullOrUndefined(game)) throw new Error("addNewGame - Game cannot be: "+game);
-    let requestUrl = Api.request(this.addUrl, "");
-    return this.http.post<Game>(requestUrl, game);
+  saveGame(game: Game) : Observable<any>{
+    game.dateTime = moment(game.dateTime).utc(true); //fixes utc time
+    if(isNullOrUndefined(game)) throw new Error("save - Game cannot be: "+game);
+    return this.http.post<Game>(this.gamesUrl+"/save", game);
   }
 
   joinGame(gameId: Number) : Observable<any>{
-    const userJoinUrl = `/games/${gameId}/join`;
-    const requestUrl = Api.request(userJoinUrl,"");
-    return this.http.get<Game>(requestUrl);
+    return this.http.get<Game>(`${this.gamesUrl}/${gameId}/join`);
   }
 
   exitGame(gameId: Number) : Observable<any>{
-    const userRemoveUrl = `/games/${gameId}/remove`;
-    const requestUrl = Api.request(userRemoveUrl,"");
-    return this.http.get<Game>(requestUrl);
+    return this.http.get<Game>(`${this.gamesUrl}/${gameId}/remove`);
   }
 
   findById(gameId: Number) : Observable<any>{
-    const findUrl = `/games/${gameId}`;
-    let requestUrl = Api.request(findUrl, "");
-    return this.http.get<Game>(requestUrl);
+    return this.http.get<Game>(`${this.gamesUrl}/${gameId}`);
   }
 }

@@ -35,7 +35,6 @@ export class GameComponent implements OnInit, AfterContentInit{
     this.gameService.findByDate(this.gameDate).subscribe(
       data => this.games = data
     );
-    console.log(this.games);
   }
 
 
@@ -46,8 +45,8 @@ export class GameComponent implements OnInit, AfterContentInit{
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.find();
+    dialogRef.afterClosed().subscribe(data => {
+      if(data.reload)this.find();
     });
   }
 

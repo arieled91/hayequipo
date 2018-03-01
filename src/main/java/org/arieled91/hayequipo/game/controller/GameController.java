@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 
 @Controller
-@RequestMapping("/api/games")
+@RequestMapping("/api/controller/games")
 public class GameController {
 
     private final GameService gameService;
@@ -100,15 +100,16 @@ public class GameController {
         }
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<?> add(@RequestBody final Game game) {
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
+    public ResponseEntity<?> save(@RequestBody final Game game) {
         try {
-            return ResponseEntity.ok(new GameResponse(gameService.addGame(game)));
+            return ResponseEntity.ok(new GameResponse(gameService.save(game)));
         }catch (final Exception e){
             logger.error("GameController - Error adding new game: " + game.toString(), e);
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @RequestMapping(value = "/{id}/close", method = RequestMethod.GET)
     public ResponseEntity<?> close(@PathVariable Long id, final Locale locale) {

@@ -17,7 +17,7 @@ public interface GameRepository extends JpaRepository<Game, Long>{
     @Query("select g from Game g where " +
             "function('year', g.dateTime) = function('year', :date) and " +
             "function('month', g.dateTime) = function('month', :date) and " +
-            "function('day', g.dateTime) = function('day', :date)")
+            "function('day', g.dateTime) = function('day', :date) order by g.dateTime")
     List<Game> findByDate(@Param("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date);
 
     List<Game> findByDateTimeBetween(
