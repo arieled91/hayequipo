@@ -28,6 +28,7 @@ import {
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import { PlayerListComponent } from './game/player-list/player-list.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {MatButtonModule} from '@angular/material/button';
     LoginComponent,
     GameFormComponent,
     GameDialogComponent,
+    PlayerListComponent,
   ],
   imports: [
     BrowserModule,

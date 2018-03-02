@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Game} from "../game.model";
 import {GameService} from "../service/game.service";
-import {MatDialog} from "@angular/material";
+import {MatDialog, MatSnackBar} from "@angular/material";
 import {GameDialogComponent} from "../game-dialog.component";
 
 @Component({
@@ -14,9 +14,9 @@ export class GameListComponent implements OnInit {
   @Input() games : Game[];
   @Output() onDialogClose = new EventEmitter<boolean>();
 
-  confirmExitGameLabel = "¿Esta seguro que desea traer facturas?";
+  confirmExitGameLabel = "¿Estás seguro?";
 
-  constructor(private gameService: GameService, public dialog: MatDialog ) {
+  constructor(private gameService: GameService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
 
   ngOnInit() {}
@@ -25,7 +25,7 @@ export class GameListComponent implements OnInit {
     this.gameService.joinGame(id).subscribe(
       data => {
         this.games.find(game => game.id == id).currentUserJoined = true;
-        alert("asd233");
+        this.snackBar.open('¡Anotado! Recordá que si te bajas traés facturas','',{duration: 3000});
       }
     )
   }
@@ -33,7 +33,10 @@ export class GameListComponent implements OnInit {
   exitGame(id){
     if(confirm(this.confirmExitGameLabel)) {
       this.gameService.exitGame(id).subscribe(
-        data => this.games.find(game => game.id == id).currentUserJoined = false
+        data => {
+          this.games.find(game => game.id == id).currentUserJoined = false;
+          this.snackBar.open('¡Esperamos las facturas!','',{duration: 4000});
+        }
       )
     }
   }

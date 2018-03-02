@@ -18,5 +18,7 @@ export class Location {
 }
 
 export class Player{
-
+  firstName : String = "";
+  lastName  : String = "";
+  email     : String = "";
 }

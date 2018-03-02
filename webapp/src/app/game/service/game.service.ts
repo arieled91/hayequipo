@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Game} from "../game.model";
+import {Game, Player} from "../game.model";
 import {DatePipe} from "@angular/common";
 import {Observable} from "rxjs/Observable";
 import {isNullOrUndefined} from "util";
@@ -38,5 +38,9 @@ export class GameService {
 
   findById(gameId: Number) : Observable<any>{
     return this.http.get<Game>(`${this.gamesUrl}/${gameId}`);
+  }
+
+  listPlayers(gameId: Number) : Observable<any>{
+    return this.http.get<Array<Player>>(`${this.gamesUrl}/${gameId}/players`);
   }
 }

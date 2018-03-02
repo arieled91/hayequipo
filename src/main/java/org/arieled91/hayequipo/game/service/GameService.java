@@ -116,6 +116,10 @@ public class GameService {
         return player;
     }
 
+    public List<Player> listPlayersOrdered(Long gameId){
+        final Game game = gameRepository.findById(gameId).orElseThrow(GameNotFoundException::new);
+        return listPlayersOrdered(game);
+    }
     public List<Player> listPlayersOrdered(Game game){
         final Comparator<Player> playerType = Comparator.comparing(player -> player.getType().getOrder());
         final Comparator<Player> joinDate = Comparator.comparing(Player::getCreationTime);

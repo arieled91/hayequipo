@@ -1,6 +1,5 @@
 import {Component, Inject, Input} from "@angular/core";
 import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from "@angular/material";
-import {Game} from "./game.model";
 
 @Component({
   selector: 'game-dialog',
@@ -11,9 +10,9 @@ export class GameDialogComponent {
   @Input() private id : Number;
 
   constructor(
-    public dialogRef: MatDialogRef<GameDialogComponent>,
+    private dialogRef: MatDialogRef<GameDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
-    public snackBar: MatSnackBar
+    private snackBar: MatSnackBar
   ) {
     this.id = data.id;
   }
@@ -21,12 +20,12 @@ export class GameDialogComponent {
   onSaved(close: boolean){
     if(close) {
       this.dialogRef.close({reload : true});
-      this.snackBar.open('Guardado', '',{duration: 1500});
+      this.snackBar.open('Guardado', '',{duration: 1000});
     }
   }
   onCancel(){
     this.dialogRef.close({reload : false});
-    this.snackBar.open('Cancelado','',{duration: 1500});
+    this.snackBar.open('Cancelado','',{duration: 1000});
   }
 
 }

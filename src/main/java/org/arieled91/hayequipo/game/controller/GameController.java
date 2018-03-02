@@ -124,6 +124,16 @@ public class GameController {
         }
     }
 
+    @RequestMapping(value = "/{id}/players", method = RequestMethod.GET)
+    public ResponseEntity<?> listPlayers(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(gameService.listPlayersOrdered(id));
+        }catch (final Exception e){
+            logCloseError(id, e);
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     private void logCloseError(Long id, Exception e){
         logger.error("GameController - Error closing game with id: "+id, e);
     }
