@@ -5,7 +5,7 @@ import {DatePipe} from "@angular/common";
 import {Observable} from "rxjs/Observable";
 import {isNullOrUndefined} from "util";
 import Api from "../../service/api.util";
-import moment = require("moment");
+import * as moment from 'moment';
 
 @Injectable()
 export class GameService {

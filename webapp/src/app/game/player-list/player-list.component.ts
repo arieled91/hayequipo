@@ -11,6 +11,7 @@ export class PlayerListComponent implements OnInit {
 
   @Input() id : Number = null;
   players;
+  playersLabel = "Anotados";
 
   constructor(private gameService: GameService) { }
 

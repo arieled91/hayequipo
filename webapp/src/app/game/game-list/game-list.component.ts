@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Game} from "../game.model";
 import {GameService} from "../service/game.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
-import {GameDialogComponent} from "../game-dialog.component";
+import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
 
 @Component({
   selector: 'app-game-list',
@@ -41,7 +41,7 @@ export class GameListComponent implements OnInit {
     }
   }
 
-  openGameFormDialog(id){
+  openGameFormDialog(id: Number){
     let dialogRef = this.dialog.open(GameDialogComponent, {
       minWidth: '50%',
       minHeight: '50%',
@@ -50,6 +50,14 @@ export class GameListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       this.onDialogClose.emit(result.reload);
+    });
+  }
+
+  openPlayersDialog(id: Number) {
+    this.dialog.open(PlayersDialogComponent, {
+      minWidth: '100px',
+      minHeight: '100px',
+      data: {id : id}
     });
   }
 }

@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Game} from "../game.model";
+import {fieldTypes, Game} from "../game.model";
 import {isNullOrUndefined} from "util";
 import {GameService} from "../service/game.service";
-import moment = require("moment");
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-game-form',
@@ -19,8 +19,9 @@ export class GameFormComponent implements OnInit {
   timeLabel = "Hora";
   locationDescLabel = "Lugar";
   locationAddrLabel = "Dirección";
-  capacityLabel = "Capacidad";
+  fieldTypeLabel = "Tipo de Cancha";
   game : Game = new Game();
+  fields = fieldTypes;
 
   @Output() onSaved = new EventEmitter<boolean>();
   @Output() onCancel = new EventEmitter<void>();
@@ -56,4 +57,7 @@ export class GameFormComponent implements OnInit {
     return isNullOrUndefined(this.game.dateTime) ? this.game.dateTime : moment(this.game.dateTime).format("HH:mm")
   }
 
+  getCapacityValue() {
+    return this.fields.find(g => g.capacity==this.game.capacity)
+  }
 }

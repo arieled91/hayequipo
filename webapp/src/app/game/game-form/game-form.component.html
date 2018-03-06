@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <form #GameForm="ngForm">
 
     <header>
       <h1 class="mat-headline">{{title}}</h1>
@@ -7,28 +7,28 @@
 
     <div class="mdc-layout-grid__inner">
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12-desktop">
-        <input matInput
+        <input matInput name="gameDescription"
                placeholder={{descriptionLabel}}
                [required]="true"
                [(ngModel)] ="game.description">
       </mat-form-field>
 
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-        <input matInput
+        <input matInput name="locationDescription"
                placeholder="{{locationDescLabel}}"
                [required]="true"
                [(ngModel)] ="game.location.description">
       </mat-form-field>
 
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-        <input matInput
+        <input matInput name="locationAddress"
                placeholder={{locationAddrLabel}}
                [required]="true"
                [(ngModel)] ="game.location.address">
       </mat-form-field>
 
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop">
-        <input matInput
+        <input matInput name="gameDate"
                [matDatepicker]="dateTimepicker"
                placeholder={{dateLabel}}
                [required]="true"
@@ -39,24 +39,32 @@
 
 
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
-        <input matInput
+        <input matInput name="gameTime"
                type="time"
                placeholder={{timeLabel}}
                [required]="true"
                [ngModel] ="getGameTime()" (ngModelChange)="setTime($event)">
       </mat-form-field>
 
+      <!--<mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell&#45;&#45;span-3-desktop">-->
+        <!--<input matInput-->
+               <!--type="number"-->
+               <!--placeholder={{capacityLabel}}-->
+               <!--[required]="true"-->
+               <!--[(ngModel)] ="game.capacity">-->
+      <!--</mat-form-field>-->
+
       <mat-form-field class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop">
-        <input matInput
-               type="number"
-               placeholder={{capacityLabel}}
-               [required]="true"
-               [(ngModel)] ="game.capacity">
+        <mat-select name="gameCapacity"
+          placeholder={{fieldTypeLabel}}
+          [(ngModel)]="game.capacity"
+          [required]="true">
+          <mat-option *ngFor="let field of fields" [value]="field.capacity">{{field.label}}</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 
-    <button mat-raised-button color="primary" (click)="save()" style="float: right; margin-left: 20px">Guardar</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="GameForm.form.invalid" style="float: right; margin-left: 20px">Guardar</button>
     <button mat-raised-button (click)="cancel()" style="float: right">Cancelar</button>
-  </div>
-  <app-player-list [id]="id"></app-player-list>
+  </form>
 </div>

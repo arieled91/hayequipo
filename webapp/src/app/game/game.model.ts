@@ -22,3 +22,10 @@ export class Player{
   lastName  : String = "";
   email     : String = "";
 }
+
+export const fieldTypes = [
+  {capacity: 10, label : "Fútbol 5"},
+  {capacity: 12, label : "Fútbol 6"},
+  {capacity: 14, label : "Fútbol 7"},
+  {capacity: 22, label : "Profesional"}
+];

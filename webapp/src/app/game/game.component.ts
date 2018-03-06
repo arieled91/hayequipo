@@ -1,8 +1,7 @@
-import {AfterContentInit, Component, OnInit} from '@angular/core';
+import {AfterContentInit, Component, Inject, Input, OnInit} from '@angular/core';
 import {GameService} from "./service/game.service";
 import {MDCDialog} from '@material/dialog';
-import {MatDialog} from "@angular/material";
-import {GameDialogComponent} from "./game-dialog.component";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
 
 @Component({
   selector: 'app-game',
@@ -52,5 +51,51 @@ export class GameComponent implements OnInit, AfterContentInit{
 
   onGameDialogClose(refresh: boolean){
     if(refresh) this.find()
+  }
+}
+
+
+@Component({
+  selector: 'game-dialog',
+  template: '<app-game-form [id]="id" (onSaved)="onSaved($event)" (onCancel)="onCancel()"></app-game-form>',
+})
+export class GameDialogComponent {
+
+  @Input() private id : Number;
+
+  constructor(
+    private dialogRef: MatDialogRef<GameDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data,
+    private snackBar: MatSnackBar
+  ) {
+    this.id = data.id;
+  }
+
+  onSaved(close: boolean){
+    if(close) {
+      this.dialogRef.close({reload : true});
+      this.snackBar.open('Guardado', '',{duration: 1000});
+    }
+  }
+  onCancel(){
+    this.dialogRef.close({reload : false});
+    this.snackBar.open('Cancelado','',{duration: 1000});
+  }
+}
+
+@Component({
+  selector: 'players-dialog',
+  template: '<app-player-list [id]="id"></app-player-list>',
+})
+export class PlayersDialogComponent {
+
+  @Input() private id : Number;
+
+  constructor(
+    private dialogRef: MatDialogRef<GameDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data,
+    private snackBar: MatSnackBar
+  ) {
+    this.id = data.id;
   }
 }

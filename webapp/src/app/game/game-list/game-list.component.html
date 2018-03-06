@@ -10,7 +10,10 @@
       <mat-icon>person_add</mat-icon>
     </button>
     <button mat-mini-fab color="basic" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined">
-      <mat-icon>remove</mat-icon>
+      <mat-icon>undo</mat-icon>
+    </button>
+    <button mat-icon-button style="margin-left: 15px">
+      <mat-icon (click)="openPlayersDialog(game.id)">list</mat-icon>
     </button>
     <button mat-icon-button style="margin-left: 15px">
       <mat-icon (click)="openGameFormDialog(game.id)">open_in_new</mat-icon>

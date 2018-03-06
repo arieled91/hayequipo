@@ -15,8 +15,7 @@ import {AuthenticationService} from "./auth/service/authentication.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {GameFormComponent} from './game/game-form/game-form.component';
-import {GameComponent} from "./game/game.component";
-import {GameDialogComponent} from "./game/game-dialog.component";
+import {GameComponent, GameDialogComponent, PlayersDialogComponent} from "./game/game.component";
 
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatDatepickerModule} from '@angular/material/datepicker';
@@ -24,7 +23,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {
   MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule,
-  MatListModule, MatSnackBarModule
+  MatListModule, MatSnackBarModule, MatSelectModule
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -39,6 +38,7 @@ import { PlayerListComponent } from './game/player-list/player-list.component';
     LoginComponent,
     GameFormComponent,
     GameDialogComponent,
+    PlayersDialogComponent,
     PlayerListComponent,
   ],
   imports: [
@@ -63,6 +63,7 @@ import { PlayerListComponent } from './game/player-list/player-list.component';
     MatGridListModule,
     MatListModule,
     MatSnackBarModule,
+    MatSelectModule,
   ],
   providers: [
     GameService,
