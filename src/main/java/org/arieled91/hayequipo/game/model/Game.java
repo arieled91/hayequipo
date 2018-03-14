@@ -26,7 +26,7 @@ public class Game extends AbstractEntity{
 
     @NotNull private Integer capacity;
 
-    @NotNull private GameStatus status = GameStatus.OPEN;
+    @NotNull private Status status = Status.OPEN;
 
     @ManyToMany
     @JoinTable(
@@ -78,16 +78,16 @@ public class Game extends AbstractEntity{
         this.capacity = capacity;
     }
 
-    public GameStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(GameStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     public void close(){
-        setStatus(GameStatus.CLOSED);
+        setStatus(Status.CLOSED);
     }
 
     public void sortPlayers(){
@@ -104,6 +104,10 @@ public class Game extends AbstractEntity{
 
     public boolean isFull(){
         return getPlayers().size() >= getCapacity();
+    }
+
+    public enum Status{
+        OPEN, CLOSED
     }
 
     @JsonIgnore

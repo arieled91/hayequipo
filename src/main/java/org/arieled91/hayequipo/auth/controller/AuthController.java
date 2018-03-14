@@ -1,9 +1,8 @@
 package org.arieled91.hayequipo.auth.controller;
 
-import com.sun.mail.iap.Response;
-import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
+import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;

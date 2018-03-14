@@ -17,6 +17,7 @@ public class GameResponse implements Serializable{
     private final Set<Player> players;
     private final int capacity;
     private final boolean currentUserJoined;
+    private final Game.Status status;
 
     public GameResponse(Game game) {
         this(game, false);
@@ -29,6 +30,7 @@ public class GameResponse implements Serializable{
         this.description = game.getDescription();
         this.currentUserJoined = currentUserJoined;
         this.capacity = game.getCapacity();
+        this.status = game.getStatus();
     }
 
     public Long getId() {
@@ -57,5 +59,9 @@ public class GameResponse implements Serializable{
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public Game.Status getStatus() {
+        return status;
     }
 }

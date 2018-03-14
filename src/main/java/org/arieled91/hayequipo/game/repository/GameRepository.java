@@ -29,4 +29,9 @@ public interface GameRepository extends JpaRepository<Game, Long>{
             @Param("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
             Pageable pageable
     );
+
+    List<Game> findByStatusAndDateTimeLessThan(
+            @Param("status") Game.Status status,
+            @Param("dateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateTime
+    );
 }

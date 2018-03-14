@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Game} from "../game.model";
+import {Game, GameStatus} from "../game.model";
 import {GameService} from "../service/game.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
 import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
@@ -15,6 +15,7 @@ export class GameListComponent implements OnInit {
   @Output() onDialogClose = new EventEmitter<boolean>();
 
   confirmExitGameLabel = "¿Estás seguro?";
+  Status = GameStatus;
 
   constructor(private gameService: GameService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }
@@ -25,7 +26,7 @@ export class GameListComponent implements OnInit {
     this.gameService.joinGame(id).subscribe(
       data => {
         this.games.find(game => game.id == id).currentUserJoined = true;
-        this.snackBar.open('¡Anotado! Recordá que si te bajas traés facturas','',{duration: 3000});
+        this.snackBar.open('¡Anotado! Recordá que si te bajas traés facturas','',{duration: 4000});
       }
     )
   }

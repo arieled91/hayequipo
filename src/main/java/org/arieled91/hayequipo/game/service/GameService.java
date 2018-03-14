@@ -7,12 +7,13 @@ import org.arieled91.hayequipo.game.exception.GameClosedException;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
 import org.arieled91.hayequipo.game.exception.PlayerAlreadyJoinedException;
 import org.arieled91.hayequipo.game.model.Game;
-import org.arieled91.hayequipo.game.model.GameStatus;
 import org.arieled91.hayequipo.game.model.Player;
 import org.arieled91.hayequipo.game.model.dto.JoinRequest;
 import org.arieled91.hayequipo.game.repository.GameRepository;
 import org.arieled91.hayequipo.game.repository.PlayerRepository;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,7 +98,7 @@ public class GameService {
     }
 
     private void validateJoin(Player player, Game game){
-        if(game.getStatus() == GameStatus.CLOSED) throw new GameClosedException();
+        if(game.getStatus() == Game.Status.CLOSED) throw new GameClosedException();
 
         if(game.getPlayers().stream().filter(p -> p.getUser().getId().equals(player.getUser().getId())).count() > 0) throw new PlayerAlreadyJoinedException();
 
@@ -105,7 +106,7 @@ public class GameService {
     }
 
     private void validateClose(Game game){
-        if(game.getStatus() == GameStatus.CLOSED) throw new GameClosedException();
+        if(game.getStatus() == Game.Status.CLOSED) throw new GameClosedException();
     }
 
     private Player buildPlayer(JoinRequest join) {
@@ -164,5 +165,14 @@ public class GameService {
         validateClose(game);
         game.close();
         return game;
+    }
+
+    public void closePastGames(){
+        final List<Game> pastGames = gameRepository.findByStatusAndDateTimeLessThan(Game.Status.OPEN, LocalDateTime.now());
+
+        pastGames.forEach(game -> {
+            game.close();
+            gameRepository.save(game);
+        });
     }
 }

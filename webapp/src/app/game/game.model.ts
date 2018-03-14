@@ -7,6 +7,7 @@ export class Game {
   location    : Location = new Location();
   capacity    : Number = null;
   currentUserJoined : boolean = false;
+  status      : String = null;
   players     : Player[] = [];
 }
 
@@ -29,3 +30,8 @@ export const fieldTypes = [
   {capacity: 14, label : "Fútbol 7"},
   {capacity: 22, label : "Profesional"}
 ];
+
+export enum GameStatus{
+  OPEN = "OPEN",
+  CLOSED = "CLOSED"
+}
