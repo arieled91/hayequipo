@@ -16,15 +16,17 @@ import static java.util.Comparator.*;
 @Entity
 public class Game extends AbstractEntity{
 
+    private static final long serialVersionUID = -5091912854447609619L;
+
     private String description = "";
 
-    @NotNull private LocalDateTime dateTime;
+    @NotNull private LocalDateTime dateTime = null;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @Nullable
-    private Location location;
+    private Location location = null;
 
-    @NotNull private Integer capacity;
+    @NotNull private Integer capacity = null;
 
     @NotNull private Status status = Status.OPEN;
 
@@ -33,7 +35,7 @@ public class Game extends AbstractEntity{
             name = "players",
             joinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"))
-    private Set<Player> players;
+    private Set<Player> players = null;
 
     public Game() {}
 
@@ -83,7 +85,7 @@ public class Game extends AbstractEntity{
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        this.status = status!=null ? status : Status.OPEN;
     }
 
     public void close(){
@@ -91,9 +93,9 @@ public class Game extends AbstractEntity{
     }
 
     public void sortPlayers(){
-        Comparator<Player> playerType = comparing(player -> player.getType().getOrder());
-        Comparator<Player> joinDate = comparing(Player::getCreationTime);
-        Comparator<Player> order = comparing(Player::getRosterOrder, nullsFirst(naturalOrder()));
+        final Comparator<Player> playerType = comparing(player -> player.getType().getOrder());
+        final Comparator<Player> joinDate = comparing(Player::getCreationTime);
+        final Comparator<Player> order = comparing(Player::getRosterOrder, nullsFirst(naturalOrder()));
 
         final Set<Player> sorted = getPlayers().stream()
                 .sorted(order.thenComparing(playerType.thenComparing(joinDate)))
@@ -111,13 +113,13 @@ public class Game extends AbstractEntity{
     }
 
     @JsonIgnore
-    private Set<Player> savePlayersOrder(Set<Player> players){
+    private Set<Player> savePlayersOrder(Set<Player> playersToSave){
         int index = 0;
-        for (Player player : players) {
+        for (final Player player : playersToSave) {
             player.setRosterOrder(index++);
         }
 
-        return players;
+        return playersToSave;
     }
 
     @Override

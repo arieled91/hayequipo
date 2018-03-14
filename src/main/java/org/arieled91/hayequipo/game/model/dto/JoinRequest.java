@@ -7,9 +7,11 @@ import java.io.Serializable;
 
 public class JoinRequest implements Serializable{
 
-    @Nullable private String firstName;
-    @Nullable private String lastName;
-    @Nullable private String email;
+    private static final long serialVersionUID = 7867190867582929733L;
+
+    @Nullable private String firstName = null;
+    @Nullable private String lastName = null;
+    @Nullable private String email = null;
     @NotNull private Long gameId = 0L;
 
     public JoinRequest() {
@@ -48,5 +50,15 @@ public class JoinRequest implements Serializable{
 
     public void setGameId(@NotNull Long gameId) {
         this.gameId = gameId;
+    }
+
+    @Override
+    public String toString() {
+        return "JoinRequest{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", gameId=" + gameId +
+                '}';
     }
 }

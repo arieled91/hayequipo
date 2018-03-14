@@ -12,9 +12,9 @@ public class Location extends AbstractEntity {
 
     @NotEmpty @NotNull
     private String address = "";
-    @Nullable private Double latitude;
-    @Nullable private Double longitude;
-    private String description;
+    @Nullable private Double latitude = null;
+    @Nullable private Double longitude = null;
+    private String description = null;
 
     public Location() {
     }
@@ -52,5 +52,16 @@ public class Location extends AbstractEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "address='" + address + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
