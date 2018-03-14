@@ -4,19 +4,20 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {HttpClient} from "@angular/common/http";
-import {TokenResponse, User} from "../auth.interfaces";
+import {TokenResponse, User, UserRegistration} from "../auth.model";
 import Api from "../../service/api.util";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class AuthenticationService {
   private pingUrl = Api.BASE_URL+'/api/ping';
   private authUrl = Api.BASE_URL+'/auth/login';
   private userUrl = Api.BASE_URL+'/auth/user';
+  private registrationUrl = Api.BASE_URL+'/auth/registration';
   private options = {headers: {'Content-Type': 'application/json'}};
 
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   login(username: string, password: string): Observable<boolean> {
     return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}), this.options)
@@ -35,6 +36,11 @@ export class AuthenticationService {
           return false;
         }
       }).catch((error:any) => Observable.throw(error.error || 'Server error'));
+  }
+
+  register(user: UserRegistration) : Observable<any>{
+    if(isNullOrUndefined(user)) throw new Error("Register - UserRegistration cannot be: "+user);
+    return this.http.post<UserRegistration>(this.registrationUrl, user);
   }
 
   static getUser(): any{
@@ -57,6 +63,8 @@ export class AuthenticationService {
   }
 
   ping(){
-    return this.http.get<User>(this.pingUrl).subscribe()
+    return this.http.get<User>(this.pingUrl).subscribe(
+      data => console.log(data)
+    )
   }
 }

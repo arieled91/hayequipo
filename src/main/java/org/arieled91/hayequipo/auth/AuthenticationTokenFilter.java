@@ -37,7 +37,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
 
-        final String requestHeader = request.getHeader(this.tokenHeader);
+        final String requestHeader = request.getHeader(tokenHeader);
 
         String username = null;
         String authToken = null;
@@ -45,9 +45,9 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
             authToken = requestHeader.substring(7);
             try {
                 username = tokenUtil.getUsernameFromToken(authToken);
-            } catch (IllegalArgumentException e) {
+            } catch (final IllegalArgumentException e) {
                 logger.error("an error occured during getting username from token", e);
-            } catch (ExpiredJwtException e) {
+            } catch (final ExpiredJwtException e) {
                 logger.warn("the token is expired and not valid anymore", e);
             }
         } /*else {
@@ -60,12 +60,12 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
             // It is not compelling necessary to load the use details from the database. You could also store the information
             // in the token and read it from it. It's up to you ;)
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
             // For simple validation it is completely sufficient to just check the token integrity. You don't have to call
             // the database compellingly. Again it's up to you ;)
             if (tokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 logger.info("authenticated user " + username + ", setting security context");
                 SecurityContextHolder.getContext().setAuthentication(authentication);

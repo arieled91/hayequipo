@@ -28,6 +28,7 @@ import {
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import { PlayerListComponent } from './game/player-list/player-list.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { PlayerListComponent } from './game/player-list/player-list.component';
     GameDialogComponent,
     PlayersDialogComponent,
     PlayerListComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

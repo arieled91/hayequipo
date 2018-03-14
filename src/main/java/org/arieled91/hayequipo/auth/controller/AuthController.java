@@ -39,7 +39,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletException;
@@ -96,18 +100,34 @@ public class AuthController {
 
     // Registration
 
-    @RequestMapping(value = "/auth/registration", method = RequestMethod.POST)
-    public String registerUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
+    @RequestMapping(value = "/auth/formRegistration", method = RequestMethod.POST)
+    public String formRegisterUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
         logger.debug("Registering user account with information: {}", accountDto);
 
         try {
             final User registered = userService.registerNewUserAccount(accountDto);
             eventPublisher.publishEvent(new OnRegistrationEvent(registered, request.getLocale(), getAppUrl(request)));
             return "redirect:/registration?sent";
-        }catch (UserAlreadyExistsException e){
+        }catch (final UserAlreadyExistsException e){
             return "redirect:/registration?emailError";
-        }catch (Exception e){
+        }catch (final Exception e){
             return "redirect:/registration?error";
+        }
+    }
+
+    @RequestMapping(value = "/auth/registration", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> registerUserAccount(@RequestBody final User accountDto, final HttpServletRequest request) {
+        logger.debug("Registering user account with information: {}", accountDto);
+
+        try {
+            final User registered = userService.registerNewUserAccount(accountDto);
+            eventPublisher.publishEvent(new OnRegistrationEvent(registered, request.getLocale(), getAppUrl(request)));
+            return ResponseEntity.ok("sent");
+        }catch (final UserAlreadyExistsException e){
+            return ResponseEntity.ok("emailError");
+        }catch (final Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -125,7 +145,7 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/upgrade", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity upgradeUser(final String email) {
+    public ResponseEntity<?> upgradeUser(final String email) {
         try {
             userService.upgradeUser(email);
             return ResponseEntity.ok().build();
@@ -134,9 +154,9 @@ public class AuthController {
         }
     }
 
-    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/registrationConfirm", method = RequestMethod.GET)
     public String confirmRegistration(final HttpServletRequest request, final Model model, @RequestParam("token") final String token, RedirectAttributes redirect) throws UnsupportedEncodingException {
-        Locale locale = request.getLocale();
+        final Locale locale = request.getLocale();
         final String result = userService.validateVerificationToken(token);
         if (UserService.Token.VALID.key().equals(result)) {
             final User user = userService.getUser(token);
@@ -148,7 +168,7 @@ public class AuthController {
             eventPublisher.publishEvent(new OnRegistrationConfirmEvent(user));
 //            model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
 //            return "redirect:/login?signedup";
-            return "redirect:/";
+            return "redirect:/info?registrationComplete";
         }
 
         redirect.addAttribute("message", messages.getMessage("auth.message." + result, null, locale));
@@ -169,7 +189,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/api/ping", method = RequestMethod.GET)
-    public ResponseEntity ping() {
+    public ResponseEntity<?> ping() {
         return ResponseEntity.ok().build();
     }
 
@@ -211,7 +231,7 @@ public class AuthController {
     @RequestMapping(value = "/auth/updatePassword", method = RequestMethod.POST)
     @ResponseBody
     public GenericResponse changeUserPassword(final Locale locale, @Valid Password password) {
-        String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
+        final String email = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         final User user = userService.findActiveUserByMail(email).orElseThrow(UserNotFoundException::new);
 
         if (!userService.checkIfValidOldPassword(user, password.getOldPassword())) {
@@ -264,9 +284,9 @@ public class AuthController {
 
 
     public void authWithAuthManager(HttpServletRequest request, String username, String password) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+        final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
         authToken.setDetails(new WebAuthenticationDetails(request));
-        Authentication authentication = authenticationManager.authenticate(authToken);
+        final Authentication authentication = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext()
                 .setAuthentication(authentication);
         // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
@@ -310,17 +330,17 @@ public class AuthController {
     }
 
     private void authWithoutPassword(User user){
-        List<Privilege> privileges = user.getRoles()
+        final List<Privilege> privileges = user.getRoles()
                 .stream()
                 .map(Role::getPrivileges)
                 .flatMap(Collection::stream)
                 .distinct()
                 .collect(Collectors.toList());
-        List<GrantedAuthority> authorities = privileges.stream()
+        final List<GrantedAuthority> authorities = privileges.stream()
                 .map(p -> new SimpleGrantedAuthority(p.getName()))
                 .collect(Collectors.toList());
 
-        Authentication authentication =
+        final Authentication authentication =
                 new UsernamePasswordAuthenticationToken(user.getUsername(), null,authorities);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);

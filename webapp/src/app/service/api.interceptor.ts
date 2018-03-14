@@ -8,6 +8,9 @@ import {Router} from '@angular/router';
 
 @Injectable()
 export class ApiHttpInterceptor implements HttpInterceptor {
+
+  skipSecurityRoutes = ["/register","/login"];
+
   constructor(private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -35,10 +38,14 @@ export class ApiHttpInterceptor implements HttpInterceptor {
 
         //if unauthorized navigate to login
         console.log(error.status);
-        if(error.status===401) this.router.navigate(['login']);
+        if(error.status===401 && this.isSecureUrl()) this.router.navigate(['login']);
 
         //return the error to the method that called it
         return Observable.throw(error);
       }) as any;
+  }
+
+  isSecureUrl(){
+    return this.skipSecurityRoutes.filter(url => url===this.router.url).length === 0;
   }
 }

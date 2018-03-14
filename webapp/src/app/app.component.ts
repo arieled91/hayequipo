@@ -2,7 +2,7 @@ import {AfterContentInit, ChangeDetectorRef, Component, ElementRef, OnInit, View
 import {appMenus} from "./app.menu";
 import {MDCTemporaryDrawer} from '@material/drawer';
 import {AuthenticationService} from "./auth/service/authentication.service";
-import {User} from "./auth/auth.interfaces";
+import {User} from "./auth/auth.model";
 
 @Component({
   selector: 'app-root',

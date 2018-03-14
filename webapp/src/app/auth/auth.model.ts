@@ -8,3 +8,10 @@ export class User{
   email     : String = "";
   privileges: String[] = [];
 }
+
+export class UserRegistration{
+  firstName : String = null;
+  lastName  : String = null;
+  email     : String = null;
+  password  : String = null;
+}
