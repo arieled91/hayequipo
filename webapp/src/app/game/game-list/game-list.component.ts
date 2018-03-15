@@ -16,6 +16,7 @@ export class GameListComponent implements OnInit {
 
   confirmExitGameLabel = "¿Estás seguro?";
   Status = GameStatus;
+  itemsVisibility = [];
 
   constructor(private gameService: GameService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }

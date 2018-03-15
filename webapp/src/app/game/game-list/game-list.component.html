@@ -1,22 +1,31 @@
 <mat-list *ngIf="games.length > 0" class="game_list">
-  <mat-list-item *ngFor="let game of games" class="game_list_item">
-    <mat-icon mat-list-icon *ngIf="!game.currentUserJoined">event</mat-icon>
-    <mat-icon mat-list-icon style="color: limegreen" *ngIf="game.currentUserJoined && game.status!==Status.CLOSED">event_available</mat-icon>
-    <mat-icon mat-list-icon *ngIf="game.status===Status.CLOSED">event_busy</mat-icon>
+  <div *ngFor="let game of games; let i = index;" class="game_list_item">
+    <mat-list-item (click)="itemsVisibility[i] = !itemsVisibility[i]" style="cursor: pointer">
+      <mat-icon mat-list-icon *ngIf="!game.currentUserJoined">event</mat-icon>
+      <mat-icon mat-list-icon style="color: limegreen" *ngIf="game.currentUserJoined && game.status!==Status.CLOSED">event_available</mat-icon>
+      <mat-icon mat-list-icon *ngIf="game.status===Status.CLOSED">event_busy</mat-icon>
 
-    <h2 mat-line>{{game.description}}</h2>
-    <span matLine style="color: grey; margin-top: 5px">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
-    <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined && game.status!==Status.CLOSED">
-      <mat-icon>person_add</mat-icon>
-    </button>
-    <button mat-mini-fab color="basic" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined && game.status!==Status.CLOSED">
-      <mat-icon>clear</mat-icon>
-    </button>
-    <button mat-icon-button style="margin-left: 15px">
-      <mat-icon (click)="openPlayersDialog(game.id)">list</mat-icon>
-    </button>
-    <button mat-icon-button *ngIf="game.status!==Status.CLOSED" style="margin-left: 15px">
-      <mat-icon (click)="openGameFormDialog(game.id)">open_in_new</mat-icon>
-    </button>
-  </mat-list-item>
+      <h2 mat-line>{{game.description}}</h2>
+      <span matLine style="color: grey; margin-top: 5px">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
+      <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined && game.status!==Status.CLOSED">
+        <mat-icon>person_add</mat-icon>
+      </button>
+    </mat-list-item>
+    <div style="margin-bottom: 10px; padding-left: 15px" *ngIf="itemsVisibility[i]">
+      <mat-chip-list>
+        <mat-icon mat-list-icon></mat-icon>
+        <button mat-mini-fab color="basic" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined && game.status!==Status.CLOSED">
+          <mat-icon>clear</mat-icon>
+        </button>
+        <mat-chip style="margin-left: 15px; cursor: pointer" (click)="openPlayersDialog(game.id)">
+          <mat-icon>group</mat-icon>
+          <span style="margin-left: 5px">Players</span>
+        </mat-chip>
+        <mat-chip *ngIf="game.status!==Status.CLOSED" style="margin-left: 15px; cursor: pointer" (click)="openGameFormDialog(game.id)">
+          <mat-icon>open_in_new</mat-icon>
+          <span style="margin-left: 5px">Open</span>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+  </div>
 </mat-list>

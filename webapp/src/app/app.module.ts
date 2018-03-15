@@ -23,7 +23,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {
   MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule,
-  MatListModule, MatSnackBarModule, MatSelectModule
+  MatListModule, MatSnackBarModule, MatSelectModule, MatChipsModule
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -66,6 +66,7 @@ import { RegisterComponent } from './auth/register/register.component';
     MatListModule,
     MatSnackBarModule,
     MatSelectModule,
+    MatChipsModule,
   ],
   providers: [
     GameService,
