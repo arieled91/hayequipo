@@ -11,6 +11,8 @@ export class ApiHttpInterceptor implements HttpInterceptor {
 
   skipSecurityRoutes = ["/register","/login"];
 
+  errorMessage = "Error. Por favor intente más tarde.";
+
   constructor(private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -40,6 +42,8 @@ export class ApiHttpInterceptor implements HttpInterceptor {
         console.log(error.status);
         if(error.status===401 && this.isSecureUrl()) this.router.navigate(['login']);
 
+        if(error.status===404) alert(this.errorMessage);
+        console.log(error);
         //return the error to the method that called it
         return Observable.throw(error);
       }) as any;
