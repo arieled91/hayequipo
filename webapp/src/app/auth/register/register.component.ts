@@ -16,7 +16,8 @@ export class RegisterComponent implements OnInit {
   firstNameLabel = "Nombre";
   lastNameLabel = "Apellido";
   confirmPasswordLabel = "Confirmar Contraseña";
-  registerBtn = "ENVIAR";
+  registerBtn = "Enviar";
+  cancelBtn = "Cancelar";
   requiredLabel = "Campo requerido";
   passwordsDontMatchLabel = "las contraseñas no coinciden";
 

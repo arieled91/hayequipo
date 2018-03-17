@@ -15,6 +15,9 @@ export class GameListComponent implements OnInit {
   @Output() onDialogClose = new EventEmitter<boolean>();
 
   confirmExitGameLabel = "¿Estás seguro?";
+  cancelBtn = "Salir";
+  playersBtn = "Anotados";
+  openBtn = "Ver Más";
   Status = GameStatus;
   itemsVisibility = [];
 
@@ -37,7 +40,7 @@ export class GameListComponent implements OnInit {
       this.gameService.exitGame(id).subscribe(
         data => {
           this.games.find(game => game.id == id).currentUserJoined = false;
-          this.snackBar.open('¡Esperamos las facturas!','',{duration: 4000});
+          this.snackBar.open('¡Tenés que traer facturas!','',{duration: 4000});
         }
       )
     }

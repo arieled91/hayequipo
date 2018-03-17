@@ -33,18 +33,12 @@
 
       <mat-grid-tile>
         <button mat-raised-button color="primary" [disabled]="loading" style="float: right; margin-left: 20px">{{loginBtn}}</button>
+        <button mat-raised-button [routerLink]="['/register']" style="float: right; margin-left: 20px">{{registerBtn}}</button>
       </mat-grid-tile>
 
       <mat-grid-tile *ngIf="error" class="alert-error">{{error}}</mat-grid-tile>
     </mat-grid-list>
 
-
-
-    <!--<div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">-->
-      <!--<label for="password">Password&nbsp;</label>-->
-      <!--<input type="password" class="form-control" name="password" id="password" [(ngModel)]="model.password" #password="ngModel" required />-->
-      <!--<span *ngIf="f.submitted && !password.valid" class="help-block">Password is required</span>-->
-    <!--</div>-->
 
 
   </form>

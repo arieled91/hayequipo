@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
   title = "";
   usernameLabel = "Usuario";
   passwordLabel = "Contraseña";
-  loginBtn = "INGRESÁ";
+  loginBtn = "Ingresá";
+  registerBtn = "Registrate";
   passwordRequiredLabel = "Se requiere una contraseña";
   usernameRequiredLabel = "Se requiere un usuario";
   userPassIncorrectError = "Usuario o contraseña inválidos";
