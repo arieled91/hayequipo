@@ -57,7 +57,10 @@ export class GameComponent implements OnInit, AfterContentInit{
 
 @Component({
   selector: 'game-dialog',
-  template: '<app-game-form [id]="id" (onSaved)="onSaved($event)" (onCancel)="onCancel()"></app-game-form>',
+  template:`
+    <mat-dialog-content style="padding-bottom: 5px">
+        <app-game-form [id]="id" (onSaved)="onSaved($event)" (onCancel)="onCancel()"></app-game-form>
+    </mat-dialog-content>`
 })
 export class GameDialogComponent {
 
