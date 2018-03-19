@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class GenericResponse {
 
     private String message;
-    private String error;
+    private String error = null;
 
     public GenericResponse(final String message) {
         super();
@@ -24,7 +24,7 @@ public class GenericResponse {
 
     public GenericResponse(List<ObjectError> allErrors, String error) {
         this.error = error;
-        String temp = allErrors.stream()
+        final String temp = allErrors.stream()
                 .map(e -> {
                     if (e instanceof FieldError) {
                         return "{\"field\":\"" + ((FieldError) e).getField() + "\",\"defaultMessage\":\"" + e.getDefaultMessage() + "\"}";

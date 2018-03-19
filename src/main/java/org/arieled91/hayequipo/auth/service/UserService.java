@@ -1,21 +1,38 @@
 package org.arieled91.hayequipo.auth.service;
 
+import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
-import org.arieled91.hayequipo.auth.model.*;
+import org.arieled91.hayequipo.auth.model.Privilege;
+import org.arieled91.hayequipo.auth.model.PrivilegeType;
+import org.arieled91.hayequipo.auth.model.Role;
+import org.arieled91.hayequipo.auth.model.RoleType;
+import org.arieled91.hayequipo.auth.model.User;
+import org.arieled91.hayequipo.auth.model.VerificationToken;
 import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
 import org.arieled91.hayequipo.auth.repository.VerificationTokenRepository;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,19 +49,40 @@ public class UserService {
 
     private final VerificationTokenRepository tokenRepository;
 
+    private final AuthenticationManager authenticationManager;
+
+    private final UserDetailsService userDetailsService;
+
+    private final TokenUtil tokenUtil;
+
 //    public static String QR_PREFIX = "https://chart.googleapis.com/chart?chs=200x200&chld=M%%7C0&cht=qr&chl=";
 //    public static String APP_NAME = "SpringRegistration";
 
     @Autowired
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, SessionRegistry sessionRegistry, VerificationTokenRepository tokenRepository) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, SessionRegistry sessionRegistry, VerificationTokenRepository tokenRepository, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, TokenUtil tokenUtil) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.sessionRegistry = sessionRegistry;
         this.tokenRepository = tokenRepository;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.tokenUtil = tokenUtil;
     }
 
     // API
+
+    public String autenticate(final String username, final String password, Device device){
+        // Perform the security
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken( username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Reload password post-security so we can generate token
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        return tokenUtil.generateTokenWithHeader(userDetails, device);
+    }
     
     public User registerNewUserAccount(final User user) {
         if(findActiveUserByMail(user.getEmail()).isPresent()) throw new UserAlreadyExistsException();
@@ -54,7 +92,7 @@ public class UserService {
         return repository.save(user);
     }
 
-    public User getUser(final String verificationToken) {
+    public @Nullable User getUser(final String verificationToken) {
         final VerificationToken token = tokenRepository.findByToken(verificationToken);
         if (token != null) {
             return token.getUser();

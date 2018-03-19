@@ -11,14 +11,15 @@ import java.util.Date;
 public class VerificationToken extends AbstractEntity{
 
     private static final int EXPIRATION = 60 * 24;
+    private static final long serialVersionUID = -9215865487791910405L;
 
-    private String token;
+    private String token = null;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
-    private User user;
+    private User user = null;
 
-    private Date expiryDate;
+    private Date expiryDate = null;
 
     public VerificationToken() {
         super();
@@ -28,7 +29,7 @@ public class VerificationToken extends AbstractEntity{
         super();
 
         this.token = token;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
+        expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
     public VerificationToken(final String token, final User user) {
@@ -36,7 +37,7 @@ public class VerificationToken extends AbstractEntity{
 
         this.token = token;
         this.user = user;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
+        expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
     public String getToken() {
@@ -70,9 +71,9 @@ public class VerificationToken extends AbstractEntity{
         return new Date(cal.getTime().getTime());
     }
 
-    public void updateToken(final String token) {
-        this.token = token;
-        this.expiryDate = calculateExpiryDate(EXPIRATION);
+    public void updateToken(final String newToken) {
+        token = newToken;
+        expiryDate = calculateExpiryDate(EXPIRATION);
     }
 
     //
@@ -114,13 +115,8 @@ public class VerificationToken extends AbstractEntity{
             return false;
         }
         if (user == null) {
-            if (other.user != null) {
-                return false;
-            }
-        } else if (!user.equals(other.user)) {
-            return false;
-        }
-        return true;
+            return other.user == null;
+        } else return user.equals(other.user);
     }
 
     @Override

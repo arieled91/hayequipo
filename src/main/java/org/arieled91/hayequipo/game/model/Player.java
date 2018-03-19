@@ -13,15 +13,16 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Player extends AbstractEntity {
 
-    @NotNull private String firstName = "";
-    @Nullable private String lastName;
-    @Nullable private String email;
-    @NotNull private PlayerType type = PlayerType.GUEST;
-    @Nullable private Integer rosterOrder;
+    private static final long serialVersionUID = 5865761740543149559L;
+    private @NotNull String firstName = "";
+    private @Nullable String lastName = null;
+    private @Nullable String email = null;
+    private @NotNull PlayerType type = PlayerType.GUEST;
+    private @Nullable Integer rosterOrder = null;
 
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    private User user = null;
 
     public Player() {}
 
@@ -33,7 +34,7 @@ public class Player extends AbstractEntity {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public @Nullable String getLastName() {
         return user == null ? lastName : user.getLastName();
     }
 
@@ -41,7 +42,7 @@ public class Player extends AbstractEntity {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
+    public @Nullable String getEmail() {
         return user == null ? email : user.getEmail();
     }
 
@@ -68,7 +69,7 @@ public class Player extends AbstractEntity {
         this.type = type;
     }
 
-    @Nullable public Integer getRosterOrder() {
+    public @Nullable Integer getRosterOrder() {
         return rosterOrder;
     }
 

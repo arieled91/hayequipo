@@ -11,10 +11,12 @@ import java.util.Set;
 @Entity
 public class Privilege extends AbstractEntity {
 
-    private String name;
+    private static final long serialVersionUID = 6384509731809068814L;
+    private String name = null;
 
-    @NotNull @JsonIgnore @ManyToMany(mappedBy = "privileges")
-    private Set<Role> roles = Set.of();
+    @ManyToMany(mappedBy = "privileges")
+    @JsonIgnore
+    private @NotNull Set<Role> roles = Set.of();
 
     public Privilege() {
     }
@@ -27,7 +29,7 @@ public class Privilege extends AbstractEntity {
         this.name = name;
     }
 
-    @NotNull public Set<Role> getRoles() {
+    public @NotNull Set<Role> getRoles() {
         return roles;
     }
 

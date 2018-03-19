@@ -20,15 +20,14 @@ public class Game extends AbstractEntity{
 
     private String description = "";
 
-    @NotNull private LocalDateTime dateTime = null;
+    private @NotNull LocalDateTime dateTime = null;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @Nullable
-    private Location location = null;
+    private @Nullable Location location = null;
 
-    @NotNull private Integer capacity = null;
+    private @NotNull Integer capacity = null;
 
-    @NotNull private Status status = Status.OPEN;
+    private @NotNull Status status = Status.OPEN;
 
     @ManyToMany
     @JoinTable(
@@ -63,8 +62,7 @@ public class Game extends AbstractEntity{
         this.dateTime = dateTime;
     }
 
-    @Nullable
-    public Location getLocation() {
+    public @Nullable Location getLocation() {
         return location;
     }
 

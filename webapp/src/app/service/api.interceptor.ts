@@ -50,6 +50,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   }
 
   isSecureUrl(){
-    return this.skipSecurityRoutes.filter(url => url===this.router.url).length === 0;
+    console.log("is secure url");
+    return this.skipSecurityRoutes.find(url => url===this.router.url).length === 0;
   }
 }

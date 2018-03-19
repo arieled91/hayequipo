@@ -7,20 +7,19 @@ public class AuthenticationRequest implements Serializable {
 
     private static final long serialVersionUID = -8445943548965154778L;
 
-    private String username;
-    private String password;
+    private String username = "";
+    private String password = "";
 
     public AuthenticationRequest() {
         super();
     }
 
     public AuthenticationRequest(String username, String password) {
-        this.setUsername(username);
-        this.setPassword(password);
+        setUsername(username);
     }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 
     public void setUsername(String username) {
@@ -28,7 +27,7 @@ public class AuthenticationRequest implements Serializable {
     }
 
     public String getPassword() {
-        return this.password;
+        return password;
     }
 
     public void setPassword(String password) {

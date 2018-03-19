@@ -16,17 +16,16 @@ import java.util.stream.Collectors;
 @Entity
 public class User extends AbstractEntity {
 
-    @NotEmpty @NotNull
-    private String firstName = "";
+    private static final long serialVersionUID = 4296786973725388580L;
 
-    @NotEmpty @NotNull
-    private String lastName = "";
+    private @NotEmpty @NotNull String firstName = "";
 
-    @NotEmpty @NotNull
-    private String email = "";
+    private @NotEmpty @NotNull String lastName = "";
 
-    @NotEmpty @NotNull @JsonIgnore
-    private String password = "";
+    private @NotEmpty @NotNull String email = "";
+
+    @JsonIgnore
+    private @NotEmpty @NotNull String password = "";
 
     @JsonIgnore
     private boolean enabled;
@@ -34,15 +33,17 @@ public class User extends AbstractEntity {
     @JsonIgnore
     private boolean tokenExpired;
 
-    @NotNull @JsonIgnore @ManyToMany @JoinTable(
+    @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles = Set.of();
+    @ManyToMany
+    @JsonIgnore
+    private @NotNull Set<Role> roles = Set.of();
 
     public User() {}
 
-    @NotNull public String getFirstName() {
+    public @NotNull String getFirstName() {
         return firstName;
     }
 
@@ -50,7 +51,7 @@ public class User extends AbstractEntity {
         this.firstName = firstName;
     }
 
-    @NotNull public String getLastName() {
+    public @NotNull String getLastName() {
         return lastName;
     }
 
@@ -58,7 +59,7 @@ public class User extends AbstractEntity {
         this.lastName = lastName;
     }
 
-    @NotNull public String getEmail() {
+    public @NotNull String getEmail() {
         return email;
     }
 
@@ -66,7 +67,7 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
-    @NotNull public String getPassword() {
+    public @NotNull String getPassword() {
         return password;
     }
 
@@ -98,8 +99,8 @@ public class User extends AbstractEntity {
         this.roles = roles;
     }
 
-    @JsonIgnore @NotNull
-    public String getUsername(){
+    @JsonIgnore
+    public @NotNull String getUsername(){
         return getEmail();
     }
 

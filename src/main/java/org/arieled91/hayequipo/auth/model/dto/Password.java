@@ -3,10 +3,10 @@ package org.arieled91.hayequipo.auth.model.dto;
 
 public class Password {
 
-    private String oldPassword;
+    private String oldPassword = null;
 
 //    @ValidPassword
-    private String newPassword;
+    private String newPassword = null;
 
     public String getOldPassword() {
         return oldPassword;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserRegistration} from "../auth.model";
 import {AuthenticationService} from "../service/authentication.service";
 import {Router} from "@angular/router";
@@ -38,8 +38,9 @@ export class RegisterComponent implements OnInit {
     }else this.error = "";
 
     this.authService.register(this.user).subscribe(
-      data => this.router.navigate(['login']
-    ));
+      data => this.router.navigate(['login']),
+        error => this.error = error.error.message
+    );
   }
 
 }

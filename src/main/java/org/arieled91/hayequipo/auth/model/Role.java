@@ -14,19 +14,21 @@ import java.util.Set;
 @Entity
 public class Role extends AbstractEntity{
 
-    private String name;
+    private static final long serialVersionUID = 5633612503495481765L;
+    private String name = null;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    private Set<User> users = null;
 
-    @NotNull @ManyToMany @JoinTable(
-        name = "roles_privileges",
-        joinColumns = @JoinColumn(
-            name = "role_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(
-            name = "privilege_id", referencedColumnName = "id"))
-    private Set<Privilege> privileges = Set.of();
+    @JoinTable(
+            name = "roles_privileges",
+            joinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "privilege_id", referencedColumnName = "id"))
+    @ManyToMany
+    private @NotNull Set<Privilege> privileges = Set.of();
 
     public Role() {
     }
@@ -49,7 +51,7 @@ public class Role extends AbstractEntity{
         this.users = users;
     }
 
-    @NotNull public Set<Privilege> getPrivileges() {
+    public @NotNull Set<Privilege> getPrivileges() {
         return privileges;
     }
 

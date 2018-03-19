@@ -41,7 +41,7 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
 
     @Override
     @Transactional
-    public void onApplicationEvent(@NotNull final ContextRefreshedEvent event) {
+    public void onApplicationEvent(final @NotNull ContextRefreshedEvent event) {
         if (alreadySetup) {
             return;
         }
@@ -59,7 +59,7 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         final Set<Privilege> userPrivileges = Set.of(readPrivilege, writePrivilege, passwordPrivilege);
 
         final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullPrivileges);
-        Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
+        final Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
         createRoleIfNotFound(ROLE_MODERATOR.name(), fullPrivileges);
 
         // == create initial user
@@ -93,9 +93,8 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
 
     @Transactional
     public void createUserIfNotFound(final String email, final String firstName, final String lastName, final String password, final Set<Role> roles) {
-        User user = userRepository.findByEmailAndEnabledIsTrue(email);
-        if (user == null) {
-            user = new User();
+        if (userRepository.findByEmailAndEnabledIsTrue(email) == null) {
+            final User user = new User();
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setPassword(passwordEncoder.encode(password));

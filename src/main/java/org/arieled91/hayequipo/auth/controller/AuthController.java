@@ -19,6 +19,7 @@ import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
@@ -81,6 +82,9 @@ public class AuthController {
 
     private final TokenUtil tokenUtil;
 
+    @Value("${backend.url}")
+    private String backendUrl = "";
+
 //    @Autowired
 //    private AuthenticationManager authenticationManager;
 
@@ -123,9 +127,10 @@ public class AuthController {
         try {
             final User registered = userService.registerNewUserAccount(accountDto);
             eventPublisher.publishEvent(new OnRegistrationEvent(registered, request.getLocale(), getAppUrl(request)));
-            return ResponseEntity.ok("sent");
+            return ResponseEntity.ok().build();
         }catch (final UserAlreadyExistsException e){
-            return ResponseEntity.ok("emailError");
+            final Locale locale = request.getLocale();
+            return ResponseEntity.badRequest().body(new GenericResponse(messages.getMessage("message.emailInvalidEmail",null,locale),"userAlreadyExists"));
         }catch (final Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -164,8 +169,10 @@ public class AuthController {
             // model.addAttribute("qr", userService.generateQRUrl(user));
             // return "redirect:/qrcode.html?lang=" + locale.getLanguage();
             // }
-            authWithoutPassword(user);
-            eventPublisher.publishEvent(new OnRegistrationConfirmEvent(user));
+            if(user!=null) {
+                authWithoutPassword(user);
+                eventPublisher.publishEvent(new OnRegistrationConfirmEvent(user));
+            }
 //            model.addAttribute("message", messages.getMessage("message.accountVerified", null, locale));
 //            return "redirect:/login?signedup";
             return "redirect:/info?registrationComplete";
@@ -254,42 +261,14 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-
-        // Perform the security
-        final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
-                        authenticationRequest.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        // Reload password post-security so we can generate token
-
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
-
-        final String token = tokenUtil.generateTokenWithHeader(userDetails, device);
-
-        // Return the token
-        return ResponseEntity.ok(new AuthenticationResponse(token));
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authentication, Device device) throws AuthenticationException {
+        return ResponseEntity.ok(new AuthenticationResponse(userService.autenticate(authentication.getUsername(), authentication.getPassword(), device)));
     }
 
     @RequestMapping(value = "/auth/formLogin", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<AuthenticationResponse> formLogin(AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
         return login(authenticationRequest, device);
-    }
-
-
-
-    public void authWithAuthManager(HttpServletRequest request, String username, String password) {
-        final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
-        authToken.setDetails(new WebAuthenticationDetails(request));
-        final Authentication authentication = authenticationManager.authenticate(authToken);
-        SecurityContextHolder.getContext()
-                .setAuthentication(authentication);
-        // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
 
 
@@ -318,13 +297,24 @@ public class AuthController {
     }
 
     private String getAppUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+        final String url = backendUrl != null && !backendUrl.isEmpty() ? backendUrl : "http://" + request.getServerName() + ":" + request.getServerPort();
+        return url + request.getContextPath();
+    }
+
+
+    public void authWithAuthManager(HttpServletRequest request, String username, String password) {
+        final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(username, password);
+        authToken.setDetails(new WebAuthenticationDetails(request));
+        final Authentication authentication = authenticationManager.authenticate(authToken);
+        SecurityContextHolder.getContext()
+                .setAuthentication(authentication);
+        // request.getSession().setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
 
     public void authWithHttpServletRequest(HttpServletRequest request, String username, String password) {
         try {
             request.login(username, password);
-        } catch (ServletException e) {
+        } catch (final ServletException e) {
             logger.error("Error while login ", e);
         }
     }

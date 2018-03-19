@@ -10,17 +10,16 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class Location extends AbstractEntity {
 
-    @NotEmpty @NotNull
-    private String address = "";
-    @Nullable private Double latitude = null;
-    @Nullable private Double longitude = null;
+    private static final long serialVersionUID = -984611830433786622L;
+    private @NotEmpty @NotNull String address = "";
+    private @Nullable Double latitude = null;
+    private @Nullable Double longitude = null;
     private String description = null;
 
     public Location() {
     }
 
-    @NotNull
-    public String getAddress() {
+    public @NotNull String getAddress() {
         return address;
     }
 
@@ -28,8 +27,7 @@ public class Location extends AbstractEntity {
         this.address = address;
     }
 
-    @Nullable
-    public Double getLatitude() {
+    public @Nullable Double getLatitude() {
         return latitude;
     }
 
@@ -37,8 +35,7 @@ public class Location extends AbstractEntity {
         this.latitude = latitude;
     }
 
-    @Nullable
-    public Double getLongitude() {
+    public @Nullable Double getLongitude() {
         return longitude;
     }
 
