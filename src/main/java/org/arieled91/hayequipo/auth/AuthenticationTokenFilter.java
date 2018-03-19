@@ -22,7 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
-    private final Log logger = LogFactory.getLog(this.getClass());
+    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
+    private final Log logger = LogFactory.getLog(getClass());
 
     @Autowired
     private UserDetailsService userDetailsService;

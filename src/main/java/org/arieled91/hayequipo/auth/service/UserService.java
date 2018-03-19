@@ -9,6 +9,7 @@ import org.arieled91.hayequipo.auth.model.Role;
 import org.arieled91.hayequipo.auth.model.RoleType;
 import org.arieled91.hayequipo.auth.model.User;
 import org.arieled91.hayequipo.auth.model.VerificationToken;
+import org.arieled91.hayequipo.auth.model.dto.UserRequest;
 import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
 import org.arieled91.hayequipo.auth.repository.VerificationTokenRepository;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +32,7 @@ import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -72,10 +75,10 @@ public class UserService {
 
     // API
 
-    public String autenticate(final String username, final String password, Device device){
+    public String autenticate(final String username, final String password, Device device) throws AuthenticationException {
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken( username, password));
+                new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Reload password post-security so we can generate token
@@ -84,10 +87,14 @@ public class UserService {
         return tokenUtil.generateTokenWithHeader(userDetails, device);
     }
     
-    public User registerNewUserAccount(final User user) {
-        if(findActiveUserByMail(user.getEmail()).isPresent()) throw new UserAlreadyExistsException();
+    public User registerNewUserAccount(final UserRequest request) {
+        if(findActiveUserByMail(request.getEmail()).isPresent()) throw new UserAlreadyExistsException();
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        final User user = new User();
+        user.setEmail(Objects.requireNonNull(request.getEmail(),"Email cannot be null"));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPassword(passwordEncoder.encode(Objects.requireNonNull(request.getPassword(),"Password cannot be null")));
         user.setRoles(Set.of(roleRepository.findByName("ROLE_USER")));
         return repository.save(user);
     }

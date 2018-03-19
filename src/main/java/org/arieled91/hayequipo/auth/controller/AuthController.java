@@ -2,7 +2,6 @@ package org.arieled91.hayequipo.auth.controller;
 
 import org.arieled91.hayequipo.auth.OnRegistrationConfirmEvent;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
-import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.InvalidOldPasswordException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
@@ -15,6 +14,7 @@ import org.arieled91.hayequipo.auth.model.dto.AuthenticationRequest;
 import org.arieled91.hayequipo.auth.model.dto.AuthenticationResponse;
 import org.arieled91.hayequipo.auth.model.dto.GenericResponse;
 import org.arieled91.hayequipo.auth.model.dto.Password;
+import org.arieled91.hayequipo.auth.model.dto.UserRequest;
 import org.arieled91.hayequipo.auth.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,8 +35,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,11 +63,6 @@ public class AuthController {
 
     private final UserService userService;
 
-    private final UserDetailsService userDetailsService;
-
-//    @Autowired
-//    private ISecurityUserService securityUserService;
-
     private final MessageSource messages;
 
     private final JavaMailSender mailSender;
@@ -80,32 +73,26 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final TokenUtil tokenUtil;
-
     @Value("${backend.url}")
-    private String backendUrl = "";
+    private final String backendUrl = "";
 
-//    @Autowired
-//    private AuthenticationManager authenticationManager;
 
 
     @Autowired
-    public AuthController(UserService userService, UserDetailsService userDetailsService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env, AuthenticationManager authenticationManager, TokenUtil tokenUtil) {
+    public AuthController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env, AuthenticationManager authenticationManager) {
         super();
         this.userService = userService;
-        this.userDetailsService = userDetailsService;
         this.messages = messages;
         this.mailSender = mailSender;
         this.eventPublisher = eventPublisher;
         this.env = env;
         this.authenticationManager=authenticationManager;
-        this.tokenUtil = tokenUtil;
     }
 
     // Registration
 
     @RequestMapping(value = "/auth/formRegistration", method = RequestMethod.POST)
-    public String formRegisterUserAccount(@Valid final User accountDto, final HttpServletRequest request) {
+    public String formRegisterUserAccount(final @Valid UserRequest accountDto, final HttpServletRequest request) {
         logger.debug("Registering user account with information: {}", accountDto);
 
         try {
@@ -121,11 +108,11 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/registration", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<?> registerUserAccount(@RequestBody final User accountDto, final HttpServletRequest request) {
-        logger.debug("Registering user account with information: {}", accountDto);
+    public ResponseEntity<?> registerUserAccount(@RequestBody final UserRequest userRequest, final HttpServletRequest request) {
+        logger.debug("Registering user account with information: {}", userRequest);
 
         try {
-            final User registered = userService.registerNewUserAccount(accountDto);
+            final User registered = userService.registerNewUserAccount(userRequest);
             eventPublisher.publishEvent(new OnRegistrationEvent(registered, request.getLocale(), getAppUrl(request)));
             return ResponseEntity.ok().build();
         }catch (final UserAlreadyExistsException e){
@@ -261,14 +248,22 @@ public class AuthController {
 
     @RequestMapping(value = "/auth/login", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authentication, Device device) throws AuthenticationException {
-        return ResponseEntity.ok(new AuthenticationResponse(userService.autenticate(authentication.getUsername(), authentication.getPassword(), device)));
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authentication, Device device, final Locale locale) throws AuthenticationException {
+        try {
+            return ResponseEntity.ok(new AuthenticationResponse(userService.autenticate(authentication.getUsername(), authentication.getPassword(), device)));
+        }catch (final AuthenticationException e){
+            logger.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(new GenericResponse(messages.getMessage("auth.message.invalidUserOrPass",null, locale)));
+        }catch (final Exception e){
+            logger.error(e.getMessage(), e);
+            return ResponseEntity.badRequest().body(new GenericResponse("Unknown error"));
+        }
     }
 
     @RequestMapping(value = "/auth/formLogin", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<AuthenticationResponse> formLogin(AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
-        return login(authenticationRequest, device);
+    public ResponseEntity<?> formLogin(AuthenticationRequest authenticationRequest, Device device, final Locale locale) throws AuthenticationException {
+        return login(authenticationRequest, device, locale);
     }
 
 

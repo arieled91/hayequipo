@@ -20,7 +20,7 @@ import java.util.List;
 @Service("userDetailsService")
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -62,11 +62,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     private List<String> getPrivileges(final Collection<Role> roles) {
-        final List<String> privileges = new ArrayList<>();
         final List<Privilege> collection = new ArrayList<>();
         for (final Role role : roles) {
             collection.addAll(role.getPrivileges());
         }
+        final List<String> privileges = new ArrayList<>();
         for (final Privilege item : collection) {
             privileges.add(item.getName());
         }
