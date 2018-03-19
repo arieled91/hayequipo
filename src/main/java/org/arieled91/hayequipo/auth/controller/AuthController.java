@@ -52,6 +52,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
@@ -72,11 +73,6 @@ public class AuthController {
     private final Environment env;
 
     private final AuthenticationManager authenticationManager;
-
-    @Value("${backend.url}")
-    private final String backendUrl = "";
-
-
 
     @Autowired
     public AuthController(UserService userService, MessageSource messages, JavaMailSender mailSender, ApplicationEventPublisher eventPublisher, Environment env, AuthenticationManager authenticationManager) {
@@ -178,7 +174,9 @@ public class AuthController {
     public GenericResponse resendRegistrationToken(final HttpServletRequest request, @RequestParam("token") final String existingToken) {
         final VerificationToken newToken = userService.generateNewVerificationToken(existingToken);
         final User user = userService.getUser(newToken.getToken());
-        mailSender.send(constructResendVerificationTokenEmail(getAppUrl(request), request.getLocale(), newToken, user));
+
+        mailSender.send(constructResendVerificationTokenEmail(getAppUrl(request), request.getLocale(), newToken, Objects.requireNonNull(user,"User cannot be null")));
+
         return new GenericResponse(messages.getMessage("message.resendToken", null, request.getLocale()));
     }
 
@@ -292,8 +290,7 @@ public class AuthController {
     }
 
     private String getAppUrl(HttpServletRequest request) {
-        final String url = backendUrl != null && !backendUrl.isEmpty() ? backendUrl : "http://" + request.getServerName() + ":" + request.getServerPort();
-        return url + request.getContextPath();
+        return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
     }
 
 

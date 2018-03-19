@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class RegisterComponent implements OnInit {
 
+  loading = false;
   title = "Registrarse";
   emailLabel = "Email";
   passwordLabel = "Contraseña";
@@ -37,10 +38,12 @@ export class RegisterComponent implements OnInit {
       return;
     }else this.error = "";
 
+    this.loading = true;
     this.authService.register(this.user).subscribe(
-      data => this.router.navigate(['login']),
+      data => this.router.navigate(['login'],{queryParams : {registered : true}}),
         error => this.error = error.error.message
     );
+    this.loading = false;
   }
 
 }
