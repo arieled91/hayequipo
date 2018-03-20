@@ -15,17 +15,15 @@ public class Application {
 		SpringApplication.run(Application.class, args);
 	}
 
-    @Value("${frontend.host}")
-    private final String frontendHost = "localhost";
-    @Value("${frontend.port}")
-    private final String frontendPort = "4200";
+    @Value("${frontend.url}")
+    private final String frontend = "http://localhost:4200";
 
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**")
-						.allowedOrigins("http://"+frontendHost+":"+frontendPort,"*")
+						.allowedOrigins(frontend,"*")
                         .allowedMethods("GET","POST","PATCH","PUT","DELETE")
                         .allowedHeaders("*");
 			}
