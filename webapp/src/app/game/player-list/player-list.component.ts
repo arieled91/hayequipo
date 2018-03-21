@@ -9,14 +9,23 @@ import {GameService} from "../service/game.service";
 })
 export class PlayerListComponent implements OnInit {
 
-  @Input() id : Number = null;
-  players;
-  playersLabel = "Anotados";
+  @Input() gameId : Number = null;
+  game;
+  players = [];
+  reservePlayers = [];
+  playersLabel = "Titulares";
+  reservePlayersLabel = "Suplentes";
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    if(!isNullOrUndefined(this.id)) this.gameService.listPlayers(this.id).subscribe(data => this.players = data);
+    if(!isNullOrUndefined(this.gameId)) {
+      this.gameService.findById(this.gameId).subscribe(data => this.game = data);
+      this.gameService.listPlayers(this.gameId).subscribe(data => {
+        this.players = data.slice(0, this.game.capacity);
+        this.reservePlayers = data.slice(this.game.capacity, data.length);
+      });
+    }
   }
 
 }

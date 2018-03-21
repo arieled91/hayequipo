@@ -40,7 +40,7 @@ export class GameService {
     return this.http.get<Game>(`${this.gamesUrl}/${gameId}`);
   }
 
-  listPlayers(gameId: Number) : Observable<any>{
+  listPlayers(gameId: Number) : Observable<Array<Player>>{
     return this.http.get<Array<Player>>(`${this.gamesUrl}/${gameId}/players`);
   }
 }

@@ -88,7 +88,7 @@ export class GameDialogComponent {
 
 @Component({
   selector: 'players-dialog',
-  template: '<app-player-list [id]="id"></app-player-list>',
+  template: '<app-player-list [gameId]="id"></app-player-list>',
 })
 export class PlayersDialogComponent {
 

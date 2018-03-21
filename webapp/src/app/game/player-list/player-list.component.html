@@ -1,4 +1,11 @@
 <mat-list>
   <h3 mat-subheader>{{playersLabel}}</h3>
-  <mat-list-item *ngFor="let player of players">{{player.firstName+' '+player.lastName}}</mat-list-item>
+  <mat-list-item *ngFor="let player of players; let i = index">
+    {{i+1 + " - " + player.firstName+' '+player.lastName}}
+  </mat-list-item>
+  <mat-divider *ngIf="reservePlayers.length>1"></mat-divider>
+  <h3 mat-subheader *ngIf="reservePlayers.length>1">{{reservePlayersLabel}}</h3>
+  <mat-list-item *ngFor="let player of reservePlayers; let i = index">
+    {{i+1 + " - " + player.firstName+' '+player.lastName}}
+  </mat-list-item>
 </mat-list>
