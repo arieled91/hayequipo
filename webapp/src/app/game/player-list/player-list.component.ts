@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {isNullOrUndefined} from "util";
 import {GameService} from "../service/game.service";
+import {Game} from "../game.model";
 
 @Component({
   selector: 'app-player-list',
@@ -10,7 +11,7 @@ import {GameService} from "../service/game.service";
 export class PlayerListComponent implements OnInit {
 
   @Input() gameId : Number = null;
-  game;
+  game = null;
   players = [];
   reservePlayers = [];
   playersLabel = "Titulares";
@@ -20,12 +21,17 @@ export class PlayerListComponent implements OnInit {
 
   ngOnInit() {
     if(!isNullOrUndefined(this.gameId)) {
-      this.gameService.findById(this.gameId).subscribe(data => this.game = data);
-      this.gameService.listPlayers(this.gameId).subscribe(data => {
-        this.players = data.slice(0, this.game.capacity);
-        this.reservePlayers = data.slice(this.game.capacity, data.length);
-      });
+      this.gameService.findById(this.gameId).subscribe(data => this.populate(data));
+
     }
+  }
+
+  populate(game: Game){
+    this.game = game;
+    this.gameService.listPlayers(game.id).subscribe(data => {
+      this.players = data.slice(0, game.capacity);
+      this.reservePlayers = data.slice(this.game.capacity, data.length);
+    });
   }
 
 }
