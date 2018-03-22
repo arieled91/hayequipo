@@ -1,6 +1,7 @@
+import {environment} from "../../environments/environment";
+
 export default class Api{
-  public static BASE_URL = "http://localhost:8888";
-  // public static BASE_URL = "http://10.28.133.81:8888";
+  public static BASE_URL = environment.apiUrl;
 
   public static URL = Api.BASE_URL+"/api";
 

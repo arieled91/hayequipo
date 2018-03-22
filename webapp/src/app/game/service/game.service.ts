@@ -15,6 +15,10 @@ export class GameService {
 
   constructor(private http: HttpClient) {}
 
+  findNext() : Observable<any>{
+    return this.findByDate(null);
+  }
+
   findByDate(date: Date) : Observable<any>{
     const pipe = new DatePipe('en-US');
     const dateParam = isNullOrUndefined(date) ? "": "date="+pipe.transform(date,"yyyy-MM-dd");

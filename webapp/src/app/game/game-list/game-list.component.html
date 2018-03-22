@@ -15,7 +15,7 @@
       </button>
     </mat-list-item>
 
-    <div style="margin-bottom: 10px; padding-left: 15px" *ngIf="itemsVisibility[i]">
+    <div style="margin-bottom: 10px" *ngIf="itemsVisibility[i]">
       <mat-chip-list>
         <mat-icon mat-list-icon></mat-icon>
 
@@ -29,9 +29,9 @@
           <span style="margin-left: 5px">{{playersBtn}}</span>
         </mat-chip>
 
-        <mat-chip *ngIf="game.status!==Status.CLOSED" style="margin-left: 15px; cursor: pointer" (click)="openGameFormDialog(game.id)">
+        <mat-chip *ngIf="game.status!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" (click)="openGameFormDialog(game.id)">
           <mat-icon>open_in_new</mat-icon>
-          <span style="margin-left: 5px">{{openBtn}}</span>
+          <!--<span style="margin-left: 5px">{{openBtn}}</span>-->
         </mat-chip>
 
       </mat-chip-list>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {GameService} from "../../game/service/game.service";
 
 @Component({
   selector: 'app-home',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  games = [];
+
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
+    this.gameService.findNext().subscribe(
+      data => this.games = data
+    );
   }
 
 }

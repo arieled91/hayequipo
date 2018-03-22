@@ -5,11 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "starthost": "ng serve --host 0.0.0.0",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "transpile": "ng-transpile --dir dist --verbose --browsers ignore",
-    "build": "ng build --prod && npm run transpile"
+    "build": "ng build --prod --env=prod && npm run transpile"
   },
   "private": true,
   "dependencies": {

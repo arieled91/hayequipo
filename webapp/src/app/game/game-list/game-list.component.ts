@@ -12,12 +12,13 @@ import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
 export class GameListComponent implements OnInit {
 
   @Input() games : Game[];
+  @Input() allowEdit : boolean = true;
   @Output() onDialogClose = new EventEmitter<boolean>();
 
   confirmExitGameLabel = "¿Estás seguro?";
   cancelBtn = "Salir";
   playersBtn = "Anotados";
-  openBtn = "Ver Más";
+  openBtn = "Más";
   Status = GameStatus;
   itemsVisibility = [];
 
