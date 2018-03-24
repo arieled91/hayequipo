@@ -32,6 +32,7 @@ public class Game extends AbstractEntity{
 
     @ManyToMany
     @JoinTable(
+            schema = "game",
             name = "players",
             joinColumns = @JoinColumn(name = "game_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "player_id", referencedColumnName = "id"))

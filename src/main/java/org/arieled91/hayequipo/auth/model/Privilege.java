@@ -16,10 +16,6 @@ public class Privilege extends AbstractEntity {
     private static final long serialVersionUID = 6384509731809068814L;
     private String name = null;
 
-    @ManyToMany(mappedBy = "privileges")
-    @JsonIgnore
-    private @NotNull Set<Role> roles = Set.of();
-
     public Privilege() {
     }
 
@@ -29,13 +25,5 @@ public class Privilege extends AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public @NotNull Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(@NotNull Set<Role> roles) {
-        this.roles = roles;
     }
 }

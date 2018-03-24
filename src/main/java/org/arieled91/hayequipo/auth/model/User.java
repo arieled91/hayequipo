@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "user", schema = "auth")
+@Table(name = "`user`", schema = "auth")
 public class User extends AbstractEntity {
 
     private static final long serialVersionUID = -9078135951670183508L;
@@ -35,11 +35,12 @@ public class User extends AbstractEntity {
     @JsonIgnore
     private boolean tokenExpired;
 
+    @ManyToMany
     @JoinTable(
+            schema = "auth",
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @ManyToMany
     @JsonIgnore
     private @NotNull Set<Role> roles = Set.of();
 
