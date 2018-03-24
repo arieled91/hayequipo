@@ -50,12 +50,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/actuator*",
                 "/actuator/**",
                 "/api/browser*"
+                //"/",
 //                ,"/**" //do NOT uncomment for prod
                 ).permitAll()
 
             // we don't need CSRF because our token is invulnerable
             .and().csrf().disable()
             .cors().and()
+            .formLogin().loginPage("/login").permitAll()
+                .defaultSuccessUrl("/home")
+                .failureUrl("/login?error")
+                .and()
 
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
