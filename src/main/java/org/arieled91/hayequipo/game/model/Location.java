@@ -5,9 +5,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
+@Table(name = "location", schema = "game")
 public class Location extends AbstractEntity {
 
     private static final long serialVersionUID = -984611830433786622L;

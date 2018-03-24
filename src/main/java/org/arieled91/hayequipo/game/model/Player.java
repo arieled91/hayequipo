@@ -8,9 +8,11 @@ import org.jetbrains.annotations.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Table(name = "player", schema = "game")
 public class Player extends AbstractEntity {
 
     private static final long serialVersionUID = 5865761740543149559L;

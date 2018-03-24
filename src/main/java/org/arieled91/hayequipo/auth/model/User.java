@@ -4,19 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
+@Table(name = "user", schema = "auth")
 public class User extends AbstractEntity {
 
     private static final long serialVersionUID = -9078135951670183508L;

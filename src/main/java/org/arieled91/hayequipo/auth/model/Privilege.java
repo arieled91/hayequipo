@@ -6,9 +6,11 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
+@Table(name = "privilege", schema = "auth")
 public class Privilege extends AbstractEntity {
 
     private static final long serialVersionUID = 6384509731809068814L;

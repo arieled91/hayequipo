@@ -4,14 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.arieled91.hayequipo.common.AbstractEntity;
 import org.jetbrains.annotations.NotNull;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
+@Table(name = "role", schema = "auth")
 public class Role extends AbstractEntity{
 
     private static final long serialVersionUID = 5633612503495481765L;
