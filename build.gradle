@@ -12,6 +12,10 @@ buildscript {
 	}
 }
 
+plugins {
+    id "com.heroku.sdk.heroku-gradle" version "1.0.1"
+}
+
 apply plugin: "java"
 apply plugin: "eclipse"
 apply plugin: "org.springframework.boot"
@@ -20,20 +24,22 @@ apply plugin: "application"
 
 group = "org.arieled91"
 version = "1.0"
+
 sourceCompatibility = "1.9"
 targetCompatibility = "1.9"
+
 mainClassName = "org.arieled91.hayequipo.Application"
 
 task wrapper(type: Wrapper) {
 	gradleVersion = "4.5"
 }
 
+
 repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
 }
-
 
 dependencies {
 	runtime("org.springframework.boot:spring-boot-devtools")
@@ -64,12 +70,19 @@ dependencies {
 
 }
 
-task stage {
-    dependsOn assemble
-}
-
-stage.mustRunAfter(clean)
+task stage(dependsOn: ['assemble', 'clean'])
+build.mustRunAfter clean
 
 jar {
     baseName = 'hayequipo'
+    version = '1.0'
+}
+
+//Command: ./gradlew build deployHeroku
+heroku {
+    appName = "futboldesa"
+    processTypes(
+            web: "java -jar -Dspring.profiles.active=production build/libs/hayequipo-*.jar"
+
+    )
 }
