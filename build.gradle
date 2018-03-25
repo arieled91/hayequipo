@@ -70,7 +70,7 @@ dependencies {
 
 }
 
-task stage(dependsOn: ['assemble', 'clean'])
+task stage(dependsOn: ['build', 'clean'])
 build.mustRunAfter clean
 
 jar {
