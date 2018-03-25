@@ -1,0 +1,5 @@
+{
+  "name": "futboldesa",
+  "description": "Futboldesa Api",
+  "addons": [ "heroku-postgresql" ]
+}

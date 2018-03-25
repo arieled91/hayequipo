@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar -Dspring.profiles.active=production build/libs/hayequipo-*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar -Dspring.profiles.active=production build/libs/hayequipo-1.0.jar
