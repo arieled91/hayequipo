@@ -65,5 +65,11 @@ dependencies {
 }
 
 task stage {
-    dependsOn installDist
+    dependsOn build
+}
+
+stage.mustRunAfter(clean)
+
+jar {
+    baseName = 'hayequipo'
 }
