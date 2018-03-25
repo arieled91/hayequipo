@@ -65,7 +65,7 @@ dependencies {
 }
 
 task stage {
-    dependsOn build
+    dependsOn assemble
 }
 
 stage.mustRunAfter(clean)
