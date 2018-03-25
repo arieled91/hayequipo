@@ -49,8 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/auth/login*",
                 "/actuator*",
                 "/actuator/**",
-                "/api/browser*"
-                //"/",
+                "/api/browser*",
+                "/"
 //                ,"/**" //do NOT uncomment for prod
                 ).permitAll()
 
@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and().csrf().disable()
             .cors().and()
             .formLogin().loginPage("/login").permitAll()
-                .defaultSuccessUrl("/home")
+                .defaultSuccessUrl("/user")
                 .failureUrl("/login?error")
                 .and()
 
