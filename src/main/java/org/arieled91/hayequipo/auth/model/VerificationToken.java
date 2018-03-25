@@ -11,8 +11,9 @@ import java.util.Date;
 @Table(name = "verification_token", schema = "auth")
 public class VerificationToken extends AbstractEntity{
 
-    private static final int EXPIRATION = 60 * 24;
     private static final long serialVersionUID = -9215865487791910405L;
+
+    private static final int EXPIRATION = 60 * 24;
 
     private String token = null;
 

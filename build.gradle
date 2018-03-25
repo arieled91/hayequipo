@@ -63,3 +63,6 @@ dependencies {
 	testCompile("junit:junit")
 
 }
+
+task stage(dependsOn: ['build', 'clean'])
+build.mustRunAfter clean
