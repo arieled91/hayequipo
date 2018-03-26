@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -100,7 +101,7 @@ public class GameController {
 
         }catch (final Exception e){
             logger.error("GameController - Error finding game by date:" + date, e);
-            return ResponseEntity.badRequest().body(List.of());
+            return ResponseEntity.badRequest().body(Collections.emptyList());
         }
     }
 

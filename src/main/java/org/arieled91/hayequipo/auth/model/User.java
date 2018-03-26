@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class User extends AbstractEntity {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     @JsonIgnore
-    private @NotNull Set<Role> roles = Set.of();
+    private @NotNull Set<Role> roles = new HashSet<>();
 
     public User() {}
 

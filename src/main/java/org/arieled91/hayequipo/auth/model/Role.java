@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,7 +26,7 @@ public class Role extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(
                     name = "privilege_id", referencedColumnName = "id"))
     @ManyToMany
-    private @NotNull Set<Privilege> privileges = Set.of();
+    private @NotNull Set<Privilege> privileges = new HashSet<>();
 
     public Role() {
     }

@@ -11,10 +11,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
-import static org.arieled91.hayequipo.auth.model.PrivilegeType.*;
-import static org.arieled91.hayequipo.auth.model.RoleType.*;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.CHANGE_PASSWORD;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.FULL_ACCESS;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.GAME_PRIORITY;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.READ;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.WRITE;
+import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_ADMIN;
+import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_MODERATOR;
+import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_USER;
 
 @Component
 public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -55,15 +63,15 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
 
         // == create initial roles
         //final List<Privilege> adminPrivileges = List.of(readPrivilege, writePrivilege, passwordPrivilege, fullAccessPrivilege);
-        final Set<Privilege> fullPrivileges = Set.of(fullAccessPrivilege, gamePriorityPrivilege);
-        final Set<Privilege> userPrivileges = Set.of(readPrivilege, writePrivilege, passwordPrivilege);
+        final Set<Privilege> fullPrivileges = new HashSet<>(Arrays.asList(fullAccessPrivilege, gamePriorityPrivilege));
+        final Set<Privilege> userPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege));
 
         final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullPrivileges);
         final Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
         createRoleIfNotFound(ROLE_MODERATOR.name(), fullPrivileges);
 
         // == create initial user
-        createUserIfNotFound("test@test.com", "Test", "Test", "test", Set.of(userRole, adminRole));
+        createUserIfNotFound("test@test.com", "Test", "Test", "test", new HashSet<>(Arrays.asList(userRole, adminRole)));
 
         alreadySetup = true;
     }
