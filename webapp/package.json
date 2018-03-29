@@ -41,6 +41,7 @@
     "material-design-icons-iconfont": "^3.0.3",
     "materialize-css": "^0.100.2",
     "moment": "^2.20.1",
+    "npm": "^5.8.0",
     "rxjs": "^5.5.6",
     "sass-loader": "^6.0.6",
     "web-animations-js": "^2.3.1",

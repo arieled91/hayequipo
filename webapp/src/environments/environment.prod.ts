@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "http://localhost:8888"
+  apiUrl: "http://futboldesa-prod.us-east-2.elasticbeanstalk.com"
 };

@@ -64,7 +64,7 @@ export class GameComponent implements OnInit, AfterContentInit{
 })
 export class GameDialogComponent {
 
-  @Input() private id : Number;
+  @Input() public id : Number;
 
   constructor(
     private dialogRef: MatDialogRef<GameDialogComponent>,
@@ -92,7 +92,7 @@ export class GameDialogComponent {
 })
 export class PlayersDialogComponent {
 
-  @Input() private id : Number;
+  @Input() public id : Number;
 
   constructor(
     private dialogRef: MatDialogRef<GameDialogComponent>,
