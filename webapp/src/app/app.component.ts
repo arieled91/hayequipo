@@ -1,7 +1,8 @@
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {appMenus} from "./app.menu";
 import {AuthenticationService} from "./auth/service/authentication.service";
 import {User} from "./auth/auth.model";
+import {MatSidenav} from "@angular/material";
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ import {User} from "./auth/auth.model";
 export class AppComponent implements OnInit{
 
   // drawerMenu;
-
+  @ViewChild('sidenav') sidenav : MatSidenav;
   title = 'FUTBOLDESA';
   menus = appMenus;
   user = new User();
@@ -28,15 +29,14 @@ export class AppComponent implements OnInit{
     this.setUser();
   }
 
-  // openDrawerMenu(){
-  //   this.setUser();
-  //   this.drawerMenu.open = true;
-  // }
-  //
-  // closeDrawerMenu(){
-  //   this.setUser();
-  //   this.drawerMenu.open = false;
-  // }
+  onSidenavToggle(){
+    this.sidenav.toggle();
+    if(this.sidenav.opened) this.populateSidenav();
+  }
+
+  populateSidenav(){
+    this.setUser();
+  }
 
   setUser(){
     this.authService.findCurrentUser().subscribe(

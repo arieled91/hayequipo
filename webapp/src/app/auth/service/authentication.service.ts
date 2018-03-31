@@ -22,7 +22,7 @@ export class AuthenticationService {
   login(username: string, password: string): Observable<boolean> {
     return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}), this.options)
       .map((response: TokenResponse) => {
-        console.log(response);
+        // console.log(response);
         // login successful if there's a jwt token in the response
         let token = response.token;
         if (token) {
@@ -64,7 +64,7 @@ export class AuthenticationService {
 
   ping(){
     return this.http.get<User>(this.pingUrl).subscribe(
-      data => console.log(data)
+      // data => console.log(data)
     )
   }
 }

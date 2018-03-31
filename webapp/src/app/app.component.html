@@ -6,7 +6,7 @@
       </mat-grid-tile>
       <mat-grid-tile>
         <span>{{user.email}}</span>
-        <button mat-icon-button [routerLink]="['/login']" (click)="sidenav.toggle()" *ngIf="user.email!==''">
+        <button mat-icon-button [routerLink]="['/login']" (click)="onSidenavToggle()" *ngIf="user.email!==''">
           <mat-icon>exit_to_app</mat-icon>
         </button>
       </mat-grid-tile>
@@ -22,7 +22,7 @@
 
   <mat-sidenav-content>
     <mat-toolbar [class.mat-elevation-z3]="true" color="accent" style="height: 100%;">
-      <button mat-icon-button style="margin: 10px" (click)="sidenav.toggle()">
+      <button mat-icon-button style="margin: 10px" (click)="onSidenavToggle()">
         <mat-icon>menu</mat-icon>
       </button>
       <span style="margin-right: 80px"><b>{{title}}</b></span>
