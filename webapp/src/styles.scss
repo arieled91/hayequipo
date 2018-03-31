@@ -1,72 +1,38 @@
-$mdc-theme-primary: #D1030F;
-$mdc-theme-primary-light: #ff030f;
-$mdc-theme-primary-dark: #a3030f;
-$mdc-theme-secondary: #0084E0;
-$mdc-theme-secondary-light: rgba(0, 172, 252, 0.75);
-$mdc-theme-secondary-dark: #59bd94;
-$mdc-theme-background: #ffffff;
-
 @import "~@angular/material/prebuilt-themes/deeppurple-amber";
-@import "~material-components-web/material-components-web";
+
+
 
 body{
   margin: 0;
-  //background: $mdc-theme-background;
-  --mdc-theme-primary: $mdc-theme-primary;
-  --mdc-theme-primary-light: $mdc-theme-primary-light;
-  --mdc-theme-primary-dark: $mdc-theme-primary-dark;
-  --mdc-theme-secondary: $mdc-theme-secondary;
-  --mdc-theme-secondary-light: $mdc-theme-secondary-light;
-  --mdc-theme-secondary-dark: $mdc-theme-secondary-dark;
-}
-
-body:after{
-  background: url("assets/images/icon.svg") no-repeat right top;
-  content : "";
-  display: block;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  opacity : 0.03;
-  z-index: -1;
+  background-color: white;
 }
 
 a.material-icons {
   text-decoration: none;
 }
 
-[mdcListGroup] {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-
-  [mdcAvatarList] [mdcListItemStartDetail] {
-    background-color: rgba(0, 0, 0, .26);
-  }
-
-  [mdcListItem]{
-    background-color: rgba(whitesmoke, .3)
-
-  }
-
-  a {
-    color: rgba(0, 0, 0, .85);
-  }
-}
-
-.btn-primary{
-  --mdc-theme-secondary: #D1030F;
-}
-
 .main-container{
-  //padding-left: 2%;
-  //padding-top: 20px;
-  header{
-    h1{
-      font-size: 28pt;
-    }
-  }
-  button{
-    max-height: 45px!important;
-  }
+  //background-color: rgba(255,255,255,0.2);
+  padding-left: 1%;
+  padding-right: 1%;
+  min-height: 100%;
+  min-width: 98%;
+  //position: fixed;
+}
 
+.main-container:after{
+  background: url("assets/images/icon.svg") no-repeat right top;
+  content : "";
+  display: block;
+  position: fixed;
+  top: 0;
+  width: 99%;
+  height: 99%;
+  opacity : 0.03;
+  z-index: -1;
+}
+
+.title{
+  padding-top: 20px;
+  padding-bottom: 5px;
 }

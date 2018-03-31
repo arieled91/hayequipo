@@ -1,32 +1,29 @@
 <div>
-  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-8-desktop  mdc-layout-grid__cell--span-3-tablet mdc-layout-grid__cell--span-1-phone mdc-layout-grid__cell--align-middle">
-    <b class="mdc-typography--headline">{{title}}</b>
-
-    <button mat-mini-fab (click)="openGameDialog()" style="margin-left: 10px">
-      <mat-icon>add</mat-icon>
-    </button>
+  <div>
+    <h1 class="title">{{title}}</h1>
   </div>
 
-
-  <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-3-phone  mdc-layout-grid__cell--span-5-tablet mdc-layout-grid__cell--align-middle" style="text-align: right">
+  <div style="text-align: right; margin-top: -20px!important;">
     <mat-form-field >
       <input matInput
              id="gameDate"
              name="gameDate"
              placeholder={{dateLabel}}
              [matDatepicker]="gameDatePicker"
-             [(ngModel)] ="gameDate">
+             [(ngModel)] ="gameDate"
+             (ngModelChange)="find()"
+      >
       <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #gameDatePicker></mat-datepicker>
-      <button mat-button *ngIf="gameDate" matSuffix mat-icon-button aria-label="Clear" (click)="this.gameDate=null">
+      <button mat-button *ngIf="gameDate" matSuffix mat-icon-button aria-label="Clear" (click)="this.gameDate=null; find();">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
 
-    <button mat-mini-fab color="primary" (click)="find()" style="margin-left: 10px">
-      <mat-icon>search</mat-icon>
-    </button>
 
+    <button mat-mini-fab (click)="openGameDialog()" style="margin-left: 10px">
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 </div>
 

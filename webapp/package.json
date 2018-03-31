@@ -5,12 +5,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "starthost": "ng serve --host 0.0.0.0",
+    "public": "ng serve --host 0.0.0.0",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "transpile": "ng-transpile --dir dist --verbose --browsers ignore",
-    "build": "ng build --prod --env=prod && npm run transpile"
+    "build": "ng build --prod --aot --env=prod && npm run transpile"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +28,7 @@
     "@angular/router": "^5.2.0",
     "@blox/material": "^0.7.0",
     "@material/auto-init": "^0.30.0",
+    "@material/dialog": "^0.33.0",
     "@material/form-field": "^0.30.0",
     "@material/theme": "^0.30.0",
     "angular-google-maps": "^2.4.1",
@@ -36,12 +37,9 @@
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
-    "material-components-web": "^0.30.0",
     "material-design-icons": "^3.0.1",
     "material-design-icons-iconfont": "^3.0.3",
-    "materialize-css": "^0.100.2",
     "moment": "^2.20.1",
-    "npm": "^5.8.0",
     "rxjs": "^5.5.6",
     "sass-loader": "^6.0.6",
     "web-animations-js": "^2.3.1",
@@ -64,6 +62,7 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "npm": "^5.8.0",
     "protractor": "~5.1.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",

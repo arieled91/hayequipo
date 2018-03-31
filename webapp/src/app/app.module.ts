@@ -23,7 +23,7 @@ import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {
   MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule,
-  MatListModule, MatSnackBarModule, MatSelectModule, MatChipsModule
+  MatListModule, MatSnackBarModule, MatSelectModule, MatChipsModule, MatSidenavModule
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -69,6 +69,7 @@ import {MapComponent} from "./map/map.component";
     MatSnackBarModule,
     MatSelectModule,
     MatChipsModule,
+    MatSidenavModule,
   ],
   providers: [
     GameService,

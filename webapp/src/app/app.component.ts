@@ -1,6 +1,5 @@
-import {AfterContentInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {appMenus} from "./app.menu";
-import {MDCTemporaryDrawer} from '@material/drawer';
 import {AuthenticationService} from "./auth/service/authentication.service";
 import {User} from "./auth/auth.model";
 
@@ -9,38 +8,35 @@ import {User} from "./auth/auth.model";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements AfterContentInit, OnInit{
+export class AppComponent implements OnInit{
 
-  drawerMenu;
+  // drawerMenu;
 
   title = 'FUTBOLDESA';
   menus = appMenus;
   user = new User();
 
-  @ViewChild('drawerMenuRef') drawerMenuRef: ElementRef;
 
   constructor(private authService: AuthenticationService, private changeDetector: ChangeDetectorRef) {
 
   }
 
-  ngAfterContentInit(): void {
-    this.drawerMenu = new MDCTemporaryDrawer(this.drawerMenuRef.nativeElement);
-  }
+
 
   ngOnInit(): void {
     this.authService.ping(); //redirects to login if user credentials fail
     this.setUser();
   }
 
-  openDrawerMenu(){
-    this.setUser();
-    this.drawerMenu.open = true;
-  }
-
-  closeDrawerMenu(){
-    this.setUser();
-    this.drawerMenu.open = false;
-  }
+  // openDrawerMenu(){
+  //   this.setUser();
+  //   this.drawerMenu.open = true;
+  // }
+  //
+  // closeDrawerMenu(){
+  //   this.setUser();
+  //   this.drawerMenu.open = false;
+  // }
 
   setUser(){
     this.authService.findCurrentUser().subscribe(

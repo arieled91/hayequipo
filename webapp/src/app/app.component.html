@@ -1,47 +1,49 @@
-<header>
-  <mat-toolbar [class.mat-elevation-z3]="true" color="accent" style="padding-left: 0">
-    <button mat-icon-button style="margin: 10px" (click)="openDrawerMenu()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span style="margin-right: 80px"><b>{{title}}</b></span>
-
-    <nav mat-tab-nav-bar class="menu-tab-bar" [hidden]="this.drawerMenu.open">
-      <a mat-tab-link
-         *ngFor="let menu of menus"
-         [routerLink]="menu.link"
-         routerLinkActive #rla="routerLinkActive"
-         [active]="rla.isActive">
-        <mat-icon style="margin-right: 10px">{{menu.icon}}</mat-icon>
-        {{menu.label}}
-      </a>
-    </nav>
-  </mat-toolbar>
-</header>
-
-<aside #drawerMenuRef class="mdc-drawer mdc-drawer--temporary mdc-typography">
-  <nav class="mdc-drawer__drawer">
-
-    <div mdcDrawerToolbarSpacer></div>
-    <div mdcDrawerHeader style="height: 90px">
-      <div mdcDrawerHeaderContent style="margin-left: 15px; margin-top: 15px">
+<mat-sidenav-container style="position: inherit; background-color: transparent">
+  <mat-sidenav #sidenav mode="over" class="sidenav">
+    <mat-grid-list [class.mat-elevation-z3]="true" cols="1" rowHeight="20px" class="sidenav-header">
+      <mat-grid-tile [rowspan]="2" style="margin-top: 20px">
         <span class="mat-title">{{user.firstName+" "+user.lastName}}</span>
-        <button mat-icon-button [routerLink]="['/login']" (click)="closeDrawerMenu()" *ngIf="user.email!==''">
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <span>{{user.email}}</span>
+        <button mat-icon-button [routerLink]="['/login']" (click)="sidenav.toggle()" *ngIf="user.email!==''">
           <mat-icon>exit_to_app</mat-icon>
         </button>
-        <br>
-        <span>{{user.email}}</span>
-      </div>
-    </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-list role="list">
+      <mat-list-item role="listitem" *ngFor="let menu of menus">
+        <button mat-button="wrapper"  [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="sidenav.toggle()" class="sidenav-menu-item">
+          <mat-icon style="margin-right: 5px">{{menu.icon}}</mat-icon>{{menu.label}}
+        </button>
+      </mat-list-item>
+    </mat-list>
+  </mat-sidenav>
 
-    <nav mdcDrawerContent mdcList="white">
-      <a *ngFor="let menu of menus" mdcListItem [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="closeDrawerMenu()">
-        <i class="material-icons mdc-list-item__graphic" aria-hidden="true">{{menu.icon}}</i>{{menu.label}}
-      </a>
-    </nav>
-  </nav>
-</aside>
+  <mat-sidenav-content>
+    <mat-toolbar [class.mat-elevation-z3]="true" color="accent" style="height: 100%;">
+      <button mat-icon-button style="margin: 10px" (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span style="margin-right: 80px"><b>{{title}}</b></span>
 
-<main class="mdc-layout-grid">
-    <router-outlet></router-outlet>
-</main>
+      <nav mat-tab-nav-bar class="menu-tab-bar" [hidden]="sidenav.opened">
+        <a mat-tab-link
+           *ngFor="let menu of menus"
+           [routerLink]="menu.link"
+           routerLinkActive #rla="routerLinkActive"
+           [active]="rla.isActive">
+          <mat-icon style="margin-right: 10px">{{menu.icon}}</mat-icon>
+          {{menu.label}}
+        </a>
+      </nav>
+    </mat-toolbar>
+
+    <main class="main-container">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+
 
