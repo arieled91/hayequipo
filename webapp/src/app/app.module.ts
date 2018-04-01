@@ -47,7 +47,7 @@ import {MapComponent} from "./map/map.component";
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([]),
+    RouterModule.forRoot([], { useHash: true }),
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
