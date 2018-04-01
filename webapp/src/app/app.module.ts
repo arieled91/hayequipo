@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {RouterModule} from "@angular/router";
 import {FormsModule} from '@angular/forms';
 import {MaterialModule} from '@blox/material';
 
@@ -22,13 +21,23 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatMomentDateModule} from '@angular/material-moment-adapter';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {
-  MAT_DATE_LOCALE, MatInputModule, MatNativeDateModule, MatToolbarModule, MatIconModule, MatTabsModule, MatGridListModule,
-  MatListModule, MatSnackBarModule, MatSelectModule, MatChipsModule, MatSidenavModule
+  MAT_DATE_LOCALE,
+  MatChipsModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatNativeDateModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule,
+  MatTabsModule,
+  MatToolbarModule
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-import { PlayerListComponent } from './game/player-list/player-list.component';
-import { RegisterComponent } from './auth/register/register.component';
+import {PlayerListComponent} from './game/player-list/player-list.component';
+import {RegisterComponent} from './auth/register/register.component';
 import {MapComponent} from "./map/map.component";
 
 @NgModule({
@@ -46,11 +55,11 @@ import {MapComponent} from "./map/map.component";
     MapComponent
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
-    RouterModule.forRoot([], { useHash: true }),
+    // RouterModule.forRoot([], { useHash: true }),
     FormsModule,
     HttpClientModule,
-    AppRoutingModule,
     MaterialModule,
 
     BrowserAnimationsModule,
