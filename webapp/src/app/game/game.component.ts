@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, Inject, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import {GameService} from "./service/game.service";
 import {MDCDialog} from '@material/dialog';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
@@ -8,26 +8,21 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/ma
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit, AfterContentInit{
+export class GameComponent implements OnInit{
 
 
   title = "Partidos";
   dateLabel = "Filtrar Fecha";
 
-  gameDialog;
-
-  gameDate;
+  _gameDate;
   games = [];
 
-  newGame;
 
-
-  constructor(private gameService: GameService, public dialog: MatDialog) {}
+  constructor(private gameService: GameService, public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
-    this.find()
-  }
-  ngAfterContentInit(): void {
+    this.find();
   }
 
   find() {
@@ -36,6 +31,14 @@ export class GameComponent implements OnInit, AfterContentInit{
     );
   }
 
+  get gameDate(){
+    return this._gameDate;
+  }
+
+  set gameDate(gameDate) {
+    this._gameDate = gameDate;
+    this.find();
+  }
 
   openGameDialog() {
     let dialogRef = this.dialog.open(GameDialogComponent, {

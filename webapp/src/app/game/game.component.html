@@ -11,7 +11,6 @@
              placeholder={{dateLabel}}
              [matDatepicker]="gameDatePicker"
              [(ngModel)] ="gameDate"
-             (ngModelChange)="find()"
       >
       <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #gameDatePicker></mat-datepicker>
