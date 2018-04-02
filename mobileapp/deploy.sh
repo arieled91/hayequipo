@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #upload files
 npm run build
-#cordova-hcp build
-#cordova build android
+cordova-hcp build
+cordova build android
 #cordova-icon
 cordova build --release
 if [ -e  ./www/index.html ] # check index exists

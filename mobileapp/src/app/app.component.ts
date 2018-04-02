@@ -1,11 +1,11 @@
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-declare let device;
 import {appMenus} from "./app.menu";
 import {AuthenticationService} from "./auth/service/authentication.service";
 import {User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
-import {isNullOrUndefined} from "util";
 import {DeviceDetectorService} from "ngx-device-detector";
+
+declare let device;
 
 @Component({
   selector: 'app-root',
@@ -20,7 +20,6 @@ export class AppComponent implements OnInit{
   menus = appMenus;
   user = new User();
   device;
-  isWeb : boolean = true;
   deviceInfo;
 
   constructor(private authService: AuthenticationService,
@@ -38,15 +37,19 @@ export class AppComponent implements OnInit{
     this.setUser();
 
     this.initMobile();
+  }
 
-    if(!isNullOrUndefined(device)) this.isWeb = true;
-
+  isWeb(){
+    return document.location.protocol == "http:" || document.location.protocol == "https:";
   }
 
   initMobile(){
-    document.addEventListener("deviceready", function() {
-      alert(device.platform);
-    }, false);
+    if (!this.isWeb()) {
+      document.addEventListener("deviceready", function() {
+        alert(device.platform);
+      }, false);
+    }
+
   }
 
   onSidenavToggle(){

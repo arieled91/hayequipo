@@ -37,13 +37,12 @@
           {{menu.label}}
         </a>
       </nav>
-      <a *ngIf="isWeb && deviceInfo.os ==='android'" href="https://s3.us-east-2.amazonaws.com/futboldesa/mobile/app-release.apk" style="right: 15px;position: absolute;" class="hide-on-desktop">
+      <a *ngIf="isWeb() && deviceInfo.os ==='android'" href="https://s3.us-east-2.amazonaws.com/futboldesa/mobile/app-release.apk" style="right: 15px;position: absolute;" class="hide-on-desktop">
         <button mat-icon-button>
           <mat-icon style="color: white" >get_app</mat-icon>
         </button>
       </a>
     </mat-toolbar>
-
     <main class="main-container">
       <router-outlet></router-outlet>
     </main>

@@ -1,7 +1,7 @@
 {
   "android": {
     "release": {
-      "keystore":"~/futboldesa/FutboldesaRelease.keystore",
+      "keystore":"FutboldesaRelease.keystore",
       "storePassword":"java1942",
       "alias":"FutboldesaRelease",
       "password":"java1942",
