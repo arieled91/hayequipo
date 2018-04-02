@@ -31,3 +31,5 @@ nbdist/
 ### Cordova ###
 platforms/
 www/
+.chcplogin
+*/plugins/cordova-hot*

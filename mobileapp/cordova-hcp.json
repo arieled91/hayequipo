@@ -1,0 +1,10 @@
+{
+  "name": "Futboldesa",
+  "s3bucket": "futboldesa",
+  "s3prefix": "",
+  "s3region": "us-east-2",
+  "ios_identifier": "Futboldesa",
+  "android_identifier": "Futboldesa",
+  "update": "start",
+  "content_url": "https://s3.amazonaws.com/futboldesa"
+}

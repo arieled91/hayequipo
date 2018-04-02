@@ -7,6 +7,12 @@
     "files": {}
   },
   "installed_plugins": {
+    "cordova-hot-code-push-local-dev-addon": {
+      "PACKAGE_NAME": "com.arieled91.hayequipo"
+    },
+    "cordova-hot-code-push-plugin": {
+      "PACKAGE_NAME": "com.arieled91.hayequipo"
+    },
     "cordova-plugin-whitelist": {
       "PACKAGE_NAME": "com.arieled91.hayequipo"
     }

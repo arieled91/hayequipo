@@ -39,6 +39,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {PlayerListComponent} from './game/player-list/player-list.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {MapComponent} from "./map/map.component";
+import {DeviceDetectorModule} from 'ngx-device-detector';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import {MapComponent} from "./map/map.component";
     // RouterModule.forRoot([], { useHash: true }),
     FormsModule,
     HttpClientModule,
+    DeviceDetectorModule.forRoot(),
     MaterialModule,
 
     BrowserAnimationsModule,

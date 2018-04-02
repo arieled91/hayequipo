@@ -18,10 +18,17 @@
   }
   [mat-tab-link]{
     height: 64px;
-    @media (max-width: 750px) {
-      display: none;
-    }
+  }
+}
 
+.hide-on-mobile{
+  @media (max-width: 750px) {
+    display: none;
+  }
+}
+.hide-on-desktop{
+  @media (min-width: 750px) {
+    display: none;
   }
 }
 

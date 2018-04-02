@@ -4,6 +4,8 @@ import {appMenus} from "./app.menu";
 import {AuthenticationService} from "./auth/service/authentication.service";
 import {User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
+import {isNullOrUndefined} from "util";
+import {DeviceDetectorService} from "ngx-device-detector";
 
 @Component({
   selector: 'app-root',
@@ -18,22 +20,34 @@ export class AppComponent implements OnInit{
   menus = appMenus;
   user = new User();
   device;
+  isWeb : boolean = true;
+  deviceInfo;
 
-  constructor(private authService: AuthenticationService, private changeDetector: ChangeDetectorRef) {
+  constructor(private authService: AuthenticationService,
+              private changeDetector: ChangeDetectorRef,
+              private deviceService: DeviceDetectorService,
+  ) {
 
   }
 
-
-
   ngOnInit(): void {
+    this.deviceInfo = this.deviceService.getDeviceInfo();
+
     this.authService.ping(); //redirects to login if user credentials fail
+
     this.setUser();
 
+    this.initMobile();
+
+    if(!isNullOrUndefined(device)) this.isWeb = true;
+
+  }
+
+  initMobile(){
     document.addEventListener("deviceready", function() {
       alert(device.platform);
     }, false);
   }
-
 
   onSidenavToggle(){
     this.sidenav.toggle();

@@ -2,8 +2,10 @@
   <div>
     <h1 class="title">{{title}}</h1>
   </div>
-
-  <div style="text-align: right; margin-top: -20px!important;">
+  <button mat-mini-fab (click)="openGameDialog()" style="margin-left: 10px; display: inline-block">
+    <mat-icon>add</mat-icon>
+  </button>
+  <div style="float: right; display: inline-block">
     <mat-form-field >
       <input matInput
              id="gameDate"
@@ -18,10 +20,8 @@
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-
-
-    <button mat-mini-fab (click)="openGameDialog()" style="margin-left: 10px">
-      <mat-icon>add</mat-icon>
+    <button mat-mini-fab color="primary" (click)="find()" style="margin-left: 10px">
+      <mat-icon>search</mat-icon>
     </button>
   </div>
 </div>

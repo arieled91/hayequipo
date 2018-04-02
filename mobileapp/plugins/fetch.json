@@ -6,5 +6,29 @@
     },
     "is_top_level": true,
     "variables": {}
+  },
+  "cordova-plugin-appversion": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-appversion@1.0.0"
+    },
+    "is_top_level": false,
+    "variables": {}
+  },
+  "cordova-hot-code-push-plugin": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-hot-code-push-plugin@^1.5.3"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-hot-code-push-local-dev-addon": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-hot-code-push-local-dev-addon"
+    },
+    "is_top_level": true,
+    "variables": {}
   }
 }

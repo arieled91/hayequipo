@@ -14,7 +14,7 @@ export class GameComponent implements OnInit{
   title = "Partidos";
   dateLabel = "Filtrar Fecha";
 
-  _gameDate;
+  gameDate;
   games = [];
 
 
@@ -29,15 +29,6 @@ export class GameComponent implements OnInit{
     this.gameService.findByDate(this.gameDate).subscribe(
       data => this.games = data
     );
-  }
-
-  get gameDate(){
-    return this._gameDate;
-  }
-
-  set gameDate(gameDate) {
-    this._gameDate = gameDate;
-    this.find();
   }
 
   openGameDialog() {

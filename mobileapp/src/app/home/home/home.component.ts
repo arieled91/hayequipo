@@ -18,4 +18,8 @@ export class HomeComponent implements OnInit {
     );
   }
 
+  reload(){
+    this.ngOnInit()
+  }
+
 }

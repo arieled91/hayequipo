@@ -1,2 +1,3 @@
-<h1 class="title">Próximos Partidos</h1>
+<h1 class="title" style="display: inline-block">Próximos Partidos</h1>
+<button mat-icon-button (click)="reload()"><mat-icon>refresh</mat-icon></button>
 <app-game-list [games]="games" [allowEdit]="false"></app-game-list>
