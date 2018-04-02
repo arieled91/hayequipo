@@ -1,0 +1,81 @@
+<div>
+  <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+
+    <header>
+      <h1 class="title">{{title}}</h1>
+    </header>
+
+    <mat-grid-list cols="1" rowHeight="70px" style="margin-top: 20px">
+      <mat-grid-tile>
+        <mat-form-field [ngClass]="{ 'has-error': f.submitted && !firstName.valid }" style="min-width: 250px">
+          <input matInput name="firstName" id="firstName"
+                 placeholder={{firstNameLabel}}
+                 [required]="true"
+                 #firstName="ngModel"
+                 [(ngModel)]="user.firstName">
+          <mat-error *ngIf="f.submitted && !firstName.valid" align="start"><strong>{{requiredLabel}}</strong> </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field [ngClass]="{ 'has-error': f.submitted && !lastName.valid }" style="min-width: 250px">
+          <input matInput name="lastName" id="lastName"
+                 placeholder={{lastNameLabel}}
+                 [required]="true"
+                 #lastName="ngModel"
+                 [(ngModel)]="user.lastName">
+          <mat-error *ngIf="f.submitted && !lastName.valid" align="start"><strong>{{requiredLabel}}</strong> </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field [ngClass]="{ 'has-error': f.submitted && !email.valid }" style="min-width: 250px">
+          <input matInput name="email" id="email"
+                 placeholder={{emailLabel}}
+                 [required]="true"
+                 type="email"
+                 #email="ngModel"
+                 [email]="true"
+                 [(ngModel)]="user.email">
+          <mat-error *ngIf="f.submitted && !email.valid" align="start"><strong>{{requiredLabel}}</strong> </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field [ngClass]="{ 'has-error': f.submitted && !password.valid }" style="min-width: 250px">
+          <input matInput name="password" id="password"
+                 placeholder={{passwordLabel}}
+                 [required]="true"
+                 type="password"
+                 minlength="3"
+                 #password="ngModel"
+                 [(ngModel)]="user.password">
+          <mat-error *ngIf="f.submitted && !password.valid" align="start"><strong>{{requiredLabel}}</strong> </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile>
+        <mat-form-field [ngClass]="{ 'has-error': f.submitted && (!confirmPassword.valid || confirmPassword!==password) }" style="min-width: 250px">
+          <input matInput name="confirmPassword" id="confirmPassword"
+                 placeholder={{confirmPasswordLabel}}
+                 [required]="true"
+                 type="password"
+                 minlength="3"
+                 #confirmPassword="ngModel"
+                 [(ngModel)]="confirmPasswordModel">
+          <mat-error *ngIf="f.submitted && !confirmPassword.valid" align="start"><strong>{{requiredLabel}}</strong> </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+
+      <mat-grid-tile *ngIf="error" class="alert-error" style="color: red">{{'Error: '+error}}</mat-grid-tile>
+      <mat-grid-tile *ngIf="info" class="alert-error">{{info}}</mat-grid-tile>
+
+      <mat-grid-tile>
+        <button mat-raised-button color="primary" [disabled]="loading" style="float: right; margin-left: 20px">{{registerBtn}}</button>
+        <button mat-raised-button [routerLink]="['/login']" style="float: right; margin-left: 20px">{{cancelBtn}}</button>
+      </mat-grid-tile>
+
+    </mat-grid-list>
+
+  </form>
+</div>

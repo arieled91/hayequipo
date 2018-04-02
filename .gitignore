@@ -2,7 +2,7 @@
 /build/
 /out/
 !gradle/wrapper/gradle-wrapper.jar
-/node_modules/
+*/node_modules/*
 *.lock
 .DS_Store
 
@@ -27,3 +27,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### Cordova ###
+platforms/
+www/
