@@ -21,6 +21,7 @@ export class GameListComponent implements OnInit {
   openBtn = "Más";
   Status = GameStatus;
   itemsVisibility = [];
+  locale = "es";
 
   constructor(private gameService: GameService, private dialog: MatDialog, private snackBar: MatSnackBar) {
   }

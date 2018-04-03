@@ -8,7 +8,11 @@
       <mat-icon mat-list-icon *ngIf="game.status===Status.CLOSED">event_busy</mat-icon>
 
       <h2 mat-line>{{game.description}}</h2>
-      <span matLine style="color: grey; margin-top: 5px">{{(game.dateTime | date:'EEE d MMM, HH:mm')  + " - " + game.location.description}}</span>
+
+      <div matLine style="color: grey; margin-top: 5px">
+        <span i18n>{{game.dateTime | date:'EEE d MMM, HH:mm'}}</span>
+        <span>{{' - ' + game.location.description}}</span>
+      </div>
 
       <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined && game.status!==Status.CLOSED">
         <mat-icon>person_add</mat-icon>
@@ -16,6 +20,12 @@
     </mat-list-item>
 
     <div style="margin-bottom: 10px" *ngIf="itemsVisibility[i]">
+
+      <div matLine style="margin-left: 65px; margin-bottom: 10px;">
+        <span style="color: grey;">{{game.location.address}}</span>
+        <mat-icon style="font-size: 12pt">location_on</mat-icon>
+      </div>
+
       <mat-chip-list>
         <mat-icon mat-list-icon></mat-icon>
 
@@ -30,7 +40,7 @@
         </mat-chip>
 
         <mat-chip *ngIf="game.status!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" (click)="openGameFormDialog(game.id)">
-          <mat-icon>open_in_new</mat-icon>
+          <mat-icon>edit</mat-icon>
           <!--<span style="margin-left: 5px">{{openBtn}}</span>-->
         </mat-chip>
 

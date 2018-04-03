@@ -3,7 +3,6 @@ import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {MaterialModule} from '@blox/material';
 
-
 import {AppComponent} from './app.component';
 import {GameListComponent} from './game/game-list/game-list.component';
 import {GameService} from './game/service/game.service';

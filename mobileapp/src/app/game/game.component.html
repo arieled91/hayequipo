@@ -6,7 +6,7 @@
     <mat-icon>add</mat-icon>
   </button>
   <div style="text-align: right; margin-top: -40px!important;">
-    <mat-form-field >
+    <mat-form-field style="width: 150px">
       <input matInput
              id="gameDate"
              name="gameDate"
@@ -16,7 +16,7 @@
       >
       <mat-datepicker-toggle matSuffix [for]="gameDatePicker"></mat-datepicker-toggle>
       <mat-datepicker #gameDatePicker></mat-datepicker>
-      <button mat-button *ngIf="gameDate" matSuffix mat-icon-button aria-label="Clear" (click)="this.gameDate=null; find();">
+      <button mat-button *ngIf="gameDate" matSuffix mat-icon-button aria-label="Clear" (click)="gameDate=null; find();">
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
