@@ -39,6 +39,7 @@ import {PlayerListComponent} from './game/player-list/player-list.component';
 import {RegisterComponent} from './auth/register/register.component';
 import {MapComponent} from "./map/map.component";
 import {DeviceDetectorModule} from 'ngx-device-detector';
+import {OAuthModule} from 'angular-oauth2-oidc';
 
 @NgModule({
   declarations: [
@@ -61,8 +62,9 @@ import {DeviceDetectorModule} from 'ngx-device-detector';
     FormsModule,
     HttpClientModule,
     DeviceDetectorModule.forRoot(),
-    MaterialModule,
+    OAuthModule.forRoot(),
 
+    MaterialModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatInputModule,

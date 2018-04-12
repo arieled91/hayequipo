@@ -19,45 +19,45 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}), this.options)
-      .map((response: TokenResponse) => {
-        // console.log(response);
-        // login successful if there's a jwt token in the response
-        let token = response.token;
-        if (token) {
-          // store username and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
-
-          // return true to indicate successful login
-          return true;
-        } else {
-          // return false to indicate failed login
-          return false;
-        }
-      }).catch((error:any) => Observable.throw(error.error || 'Server error'));
-  }
-
+  // login(username: string, password: string): Observable<boolean> {
+  //   return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}), this.options)
+  //     .map((response: TokenResponse) => {
+  //       // console.log(response);
+  //       // login successful if there's a jwt token in the response
+  //       let token = response.token;
+  //       if (token) {
+  //         // store username and jwt token in local storage to keep user logged in between page refreshes
+  //         localStorage.setItem('currentUser', JSON.stringify({ username: username, token: token }));
+  //
+  //         // return true to indicate successful login
+  //         return true;
+  //       } else {
+  //         // return false to indicate failed login
+  //         return false;
+  //       }
+  //     }).catch((error:any) => Observable.throw(error.error || 'Server error'));
+  // }
+  //
   register(user: UserRegistration) : Observable<any>{
     if(isNullOrUndefined(user)) throw new Error("Register - UserRegistration cannot be: "+user);
     return this.http.post<UserRegistration>(this.registrationUrl, user);
   }
-
-  static getUser(): any{
-    return JSON.parse(localStorage.getItem('currentUser'));
-  }
-
-  static getToken(): String {
-    const currentUser = AuthenticationService.getUser();
-    const token = currentUser && currentUser.token;
-    return token ? token : "";
-  }
-
-  static logout(): void {
-    // clear token remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
-  }
-
+  //
+  // static getUser(): any{
+  //   return JSON.parse(localStorage.getItem('currentUser'));
+  // }
+  //
+  // static getToken(): String {
+  //   const currentUser = AuthenticationService.getUser();
+  //   const token = currentUser && currentUser.token;
+  //   return token ? token : "";
+  // }
+  //
+  // static logout(): void {
+  //   // clear token remove user from local storage to log user out
+  //   localStorage.removeItem('currentUser');
+  // }
+  //
   findCurrentUser(): Observable<User>{
     return this.http.get<User>(this.userUrl)
   }

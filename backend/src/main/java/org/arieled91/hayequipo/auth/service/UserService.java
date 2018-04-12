@@ -28,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
@@ -39,8 +38,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Service
-@Transactional
+//@Service
+//@Transactional
 public class UserService {
 
     private final UserRepository repository;
@@ -49,7 +48,7 @@ public class UserService {
 
     private final RoleRepository roleRepository;
 
-    private final SessionRegistry sessionRegistry;
+//    private final SessionRegistry sessionRegistry;
 
     private final VerificationTokenRepository tokenRepository;
 
@@ -63,11 +62,11 @@ public class UserService {
 //    public static String APP_NAME = "SpringRegistration";
 
     @Autowired
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository, SessionRegistry sessionRegistry, VerificationTokenRepository tokenRepository, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, TokenUtil tokenUtil) {
+    public UserService(UserRepository repository, PasswordEncoder passwordEncoder, RoleRepository roleRepository/*, SessionRegistry sessionRegistry*/, VerificationTokenRepository tokenRepository, AuthenticationManager authenticationManager, UserDetailsService userDetailsService, TokenUtil tokenUtil) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
-        this.sessionRegistry = sessionRegistry;
+//        this.sessionRegistry = sessionRegistry;
         this.tokenRepository = tokenRepository;
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -212,9 +211,9 @@ public class UserService {
         return Optional.ofNullable(repository.findByEmailAndEnabledIsTrue(email));
     }
 
-    public List<String> getUsersFromSessionRegistry() {
-        return sessionRegistry.getAllPrincipals().stream().filter((u) -> !sessionRegistry.getAllSessions(u, false).isEmpty()).map(Object::toString).collect(Collectors.toList());
-    }
+//    public List<String> getUsersFromSessionRegistry() {
+//        return sessionRegistry.getAllPrincipals().stream().filter((u) -> !sessionRegistry.getAllSessions(u, false).isEmpty()).map(Object::toString).collect(Collectors.toList());
+//    }
 
     public Optional<User> getCurrentUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

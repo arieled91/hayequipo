@@ -33,17 +33,17 @@ export class RegisterComponent implements OnInit {
   }
 
   register(){
-    if(this.user.password!==this.confirmPasswordModel) {
-      this.error = this.passwordsDontMatchLabel;
-      return;
-    }else this.error = "";
-
-    this.loading = true;
-    this.authService.register(this.user).subscribe(
-      data => this.router.navigate(['login'],{queryParams : {registered : true}}),
-        error => this.error = error.error.message
-    );
-    this.loading = false;
+    // if(this.user.password!==this.confirmPasswordModel) {
+    //   this.error = this.passwordsDontMatchLabel;
+    //   return;
+    // }else this.error = "";
+    //
+    // this.loading = true;
+    // this.authService.register(this.user).subscribe(
+    //   data => this.router.navigate(['login'],{queryParams : {registered : true}}),
+    //     error => this.error = error.error.message
+    // );
+    // this.loading = false;
   }
 
 }

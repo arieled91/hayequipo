@@ -20,7 +20,7 @@ export class ApiHttpInterceptor implements HttpInterceptor {
     // Clone the request to add the new header.
     const authReq = req.clone({ headers: req.headers
         .append("Access-Control-Allow-Origin", "*")
-        .append("Authorization", "" + AuthenticationService.getToken() + "")
+        // .append("Authorization", "" + AuthenticationService.getToken() + "")
         .append("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT, PATCH, HEAD, OPTIONS")
         .append("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization")
         .append("Access-Control-Expose-Headers", "Access-Control-Allow-Origin, Access-Control-Allow-Credentials, Authorization")

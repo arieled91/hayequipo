@@ -2,7 +2,7 @@ package org.arieled91.hayequipo.game.service;
 
 import org.arieled91.hayequipo.auth.exception.UserNotFoundException;
 import org.arieled91.hayequipo.auth.model.User;
-import org.arieled91.hayequipo.auth.service.UserService;
+import org.arieled91.hayequipo.auth.service.AuthService;
 import org.arieled91.hayequipo.game.exception.GameClosedException;
 import org.arieled91.hayequipo.game.exception.GameNotFoundException;
 import org.arieled91.hayequipo.game.exception.PlayerAlreadyJoinedException;
@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -36,22 +36,22 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
-    private final UserService userService;
+    private final AuthService authService;
 
     @Autowired
-    public GameService(GameRepository gameRepository, PlayerRepository playerRepository, UserService userService) {
+    public GameService(GameRepository gameRepository, PlayerRepository playerRepository, AuthService authService) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
-        this.userService = userService;
+        this.authService = authService;
     }
 
     public void userJoin(Long gameId) {
-        final User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        final User user = authService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         userJoin(user, gameId);
     }
 
     public void userRemove(Long gameId) {
-        final User user = userService.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        final User user = authService.getCurrentUser().orElseThrow(UserNotFoundException::new);
         userRemove(user, gameId);
     }
 
@@ -73,8 +73,8 @@ public class GameService {
     }
 
     public void commonJoin(JoinRequest request) {
-        final User currentUser = userService.getCurrentUser().orElse(null);
-        final User userJoin = userService.findActiveUserByMail(request.getEmail()).orElse(null);
+        final User currentUser = authService.getCurrentUser().orElse(null);
+        final User userJoin = authService.findActiveUserByMail(request.getEmail()).orElse(null);
 
         //If an user is trying to add another user to the game
         // only users can add other users to the game
@@ -132,7 +132,7 @@ public class GameService {
     private Player buildPlayer(User user) {
         final Player player = new Player();
         player.setUser(user);
-        player.setType(userService.hasPrivilege(user, GAME_PRIORITY) ? VIP : NORMAL);
+        player.setType(authService.hasPrivilege(user, GAME_PRIORITY) ? VIP : NORMAL);
         return player;
     }
 
@@ -144,7 +144,7 @@ public class GameService {
     }
 
     public boolean isCurrentUserJoined(Game game) {
-        return userService.getCurrentUser().map(user -> isUserInGame(user, game)).orElse(false);
+        return authService.getCurrentUser().map(user -> isUserInGame(user, game)).orElse(false);
     }
 
     public static boolean isUserInGame(User user, Game game){

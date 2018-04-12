@@ -62,12 +62,12 @@ export class AppComponent implements OnInit{
   }
 
   setUser(){
-    this.authService.findCurrentUser().subscribe(
-      data => {
-          this.user = data;
-          this.changeDetector.markForCheck();
-      },
-      error => console.log(error)
-    );
+    // this.authService.findCurrentUser().subscribe(
+    //   data => {
+    //       this.user = data;
+    //       this.changeDetector.markForCheck();
+    //   },
+    //   error => console.log(error)
+    // );
   }
 }

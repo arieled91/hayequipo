@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private authenticationService: AuthenticationService,
+    // private authenticationService: AuthenticationService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
   ) {
@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     // reset login status
-    AuthenticationService.logout();
+    // AuthenticationService.logout();
 
     if(this.message.length>0) this.snackBar.open(this.message);
   }
@@ -49,22 +49,22 @@ export class LoginComponent implements OnInit {
   }
 
 
-  login() {
-    this.loading = true;
-    this.authenticationService.login(this.model.username, this.model.password)
-      .subscribe(result => {
-        if (result === true) {
-          // login successful
-          this.snackBar.dismiss();
-          this.router.navigate(['home']);
-        } else {
-          // login failed
-          this.loading = false;
-          this.snackBar.open(this.userPassIncorrectError);
-        }
-      }, error => {
-        this.loading = false;
-        this.snackBar.open(this.userPassIncorrectError);
-      });
-  }
+  // login() {
+  //   this.loading = true;
+  //   this.authenticationService.login(this.model.username, this.model.password)
+  //     .subscribe(result => {
+  //       if (result === true) {
+  //         // login successful
+  //         this.snackBar.dismiss();
+  //         this.router.navigate(['home']);
+  //       } else {
+  //         // login failed
+  //         this.loading = false;
+  //         this.snackBar.open(this.userPassIncorrectError);
+  //       }
+  //     }, error => {
+  //       this.loading = false;
+  //       this.snackBar.open(this.userPassIncorrectError);
+  //     });
+  // }
 }

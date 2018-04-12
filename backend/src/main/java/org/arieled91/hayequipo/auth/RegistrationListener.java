@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 import java.util.UUID;
 
-@Component
+//@Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationEvent> {
 
     private final UserService service;

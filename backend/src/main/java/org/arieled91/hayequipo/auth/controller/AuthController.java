@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 import static java.util.Objects.requireNonNull;
 
 
-@Controller
+//@Controller
 public class AuthController {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
