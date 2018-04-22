@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
+import javax.servlet.http.Cookie;
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -36,8 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authSuccessHandler() {
         return (request, response, authentication) -> {
-            authService.registerUserAccount(authentication);
-            response.sendRedirect("/");
+            final Cookie cookie = authService.authenticate(authentication);
+            response.addCookie(cookie);
+            response.sendRedirect("http://localhost:4200");
         };
     }
 

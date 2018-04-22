@@ -3,12 +3,7 @@ package org.arieled91.hayequipo.auth.service;
 import org.arieled91.hayequipo.auth.TokenUtil;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
-import org.arieled91.hayequipo.auth.model.Privilege;
-import org.arieled91.hayequipo.auth.model.PrivilegeType;
-import org.arieled91.hayequipo.auth.model.Role;
-import org.arieled91.hayequipo.auth.model.RoleType;
-import org.arieled91.hayequipo.auth.model.User;
-import org.arieled91.hayequipo.auth.model.VerificationToken;
+import org.arieled91.hayequipo.auth.model.*;
 import org.arieled91.hayequipo.auth.model.dto.UserRequest;
 import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
@@ -22,20 +17,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //@Service
@@ -179,8 +166,7 @@ public class UserService {
         }
 
         final User user = verificationToken.getUser();
-        final Calendar cal = Calendar.getInstance();
-        if ((verificationToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0) {
+        if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenRepository.delete(verificationToken);
             return Token.EXPIRED.key;
         }

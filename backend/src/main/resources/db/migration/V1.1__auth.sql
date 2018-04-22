@@ -1,0 +1,1 @@
+ALTER TABLE auth.verification_token ALTER COLUMN token TYPE varchar(3000);

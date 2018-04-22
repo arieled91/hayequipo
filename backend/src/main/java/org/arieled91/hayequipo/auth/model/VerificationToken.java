@@ -4,8 +4,7 @@ package org.arieled91.hayequipo.auth.model;
 import org.arieled91.hayequipo.common.AbstractEntity;
 
 import javax.persistence.*;
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "verification_token", schema = "auth")
@@ -13,7 +12,7 @@ public class VerificationToken extends AbstractEntity{
 
     private static final long serialVersionUID = -9215865487791910405L;
 
-    private static final int EXPIRATION = 60 * 24;
+    private static final int EXPIRATION_IN_DAYS = 365;
 
     private String token = null;
 
@@ -21,25 +20,26 @@ public class VerificationToken extends AbstractEntity{
     @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
     private User user = null;
 
-    private Date expiryDate = null;
+    private LocalDateTime expiryDate = null;
 
-    public VerificationToken() {
-        super();
-    }
+    public VerificationToken() {}
 
     public VerificationToken(final String token) {
-        super();
-
         this.token = token;
-        expiryDate = calculateExpiryDate(EXPIRATION);
+        expiryDate = calculateExpiryDate(EXPIRATION_IN_DAYS);
     }
 
+    @Deprecated
     public VerificationToken(final String token, final User user) {
-        super();
+        this(token);
+        this.user = user;
+        expiryDate = calculateExpiryDate(EXPIRATION_IN_DAYS);
+    }
 
+    public VerificationToken(final String token, final User user, LocalDateTime expiryDate) {
         this.token = token;
         this.user = user;
-        expiryDate = calculateExpiryDate(EXPIRATION);
+        this.expiryDate = expiryDate;
     }
 
     public String getToken() {
@@ -58,26 +58,24 @@ public class VerificationToken extends AbstractEntity{
         this.user = user;
     }
 
-    public Date getExpiryDate() {
+    public LocalDateTime getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(final Date expiryDate) {
+    public void setExpiryDate(final LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
     }
 
-    private Date calculateExpiryDate(final int expiryTimeInMinutes) {
-        final Calendar cal = Calendar.getInstance();
-        cal.setTimeInMillis(new Date().getTime());
-        cal.add(Calendar.MINUTE, expiryTimeInMinutes);
-        return new Date(cal.getTime().getTime());
+    @Deprecated
+    private LocalDateTime calculateExpiryDate(final int days) {
+        return LocalDateTime.now().plusDays(days);
     }
 
+    @Deprecated
     public void updateToken(final String newToken) {
         token = newToken;
-        expiryDate = calculateExpiryDate(EXPIRATION);
+        expiryDate = calculateExpiryDate(EXPIRATION_IN_DAYS);
     }
-
     //
 
     @Override
