@@ -5,7 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mobile.device.DeviceResolverHandlerInterceptor;
 import org.springframework.mobile.device.DeviceWebArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,14 +19,6 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/home").setViewName("home");
         registry.addViewController("/").setViewName("home");
-        registry.addViewController("/login").setViewName("login");
-        registry.addViewController("/user").setViewName("user");
-        registry.addViewController("/info").setViewName("info");
-        registry.addViewController("/error").setViewName("error");
-        registry.addViewController("/registration").setViewName("registration");
-        registry.addViewController("/map").setViewName("map");
-//        registry.addViewController("/error").setViewName("error");
-
     }
 
     @Bean

@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "role", schema = "auth")
-public class Role extends AbstractEntity{
+public class Role extends AbstractEntity {
 
     private static final long serialVersionUID = 5633612503495481765L;
     private String name = null;

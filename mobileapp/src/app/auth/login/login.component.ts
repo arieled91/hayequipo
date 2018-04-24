@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Params, Router} from '@angular/router';
-import {AuthenticationService} from "../service/authentication.service";
+import {AuthService} from "../service/auth.service";
 import {MatSnackBar} from "@angular/material";
+import Api from "../../service/api.util";
+import {isNullOrUndefined} from "util";
 
 
 @Component({
@@ -12,59 +14,46 @@ import {MatSnackBar} from "@angular/material";
 })
 
 export class LoginComponent implements OnInit {
-  model: any = {};
+
   loading = false;
   error = '';
-
-  title = "";
-  usernameLabel = "Usuario";
-  passwordLabel = "Contraseña";
-  loginBtn = "Ingresá";
-  registerBtn = "Registrate";
-  passwordRequiredLabel = "Se requiere una contraseña";
-  usernameRequiredLabel = "Se requiere un usuario";
-  userPassIncorrectError = "Usuario o contraseña inválidos";
-  validateMailMessage = "¡Listo! Confirmá tu correo para poder ingresar.";
   message = "";
+  token = null;
+
+  public googleAuthUrl = Api.BASE_URL+'/oauth2/authorization/google';
 
   constructor(
     private router: Router,
-    // private authenticationService: AuthenticationService,
+    private authService: AuthService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
   ) {
     this.route.queryParams.subscribe(params => this.populate(params));
   }
 
-  ngOnInit() {
-    // reset login status
-    // AuthenticationService.logout();
-
-    if(this.message.length>0) this.snackBar.open(this.message);
-  }
-
   populate(params: Params){
-    console.log(params);
-    if(params['registered']) this.message = this.validateMailMessage;
+    if(params['token']) this.token = params['token'];
+  }
+
+  ngOnInit() {
+    if(this.message.length>0) this.snackBar.open(this.message);
+
+    if(!isNullOrUndefined(this.token)) this.login();
+    else this.logout();
   }
 
 
-  // login() {
-  //   this.loading = true;
-  //   this.authenticationService.login(this.model.username, this.model.password)
-  //     .subscribe(result => {
-  //       if (result === true) {
-  //         // login successful
-  //         this.snackBar.dismiss();
-  //         this.router.navigate(['home']);
-  //       } else {
-  //         // login failed
-  //         this.loading = false;
-  //         this.snackBar.open(this.userPassIncorrectError);
-  //       }
-  //     }, error => {
-  //       this.loading = false;
-  //       this.snackBar.open(this.userPassIncorrectError);
-  //     });
-  // }
+  googleLogin(){
+    window.location.href = this.googleAuthUrl;
+  }
+
+
+  login() {
+    this.authService.saveToken(this.token);
+    this.router.navigate(["home"]);
+  }
+
+  logout() {
+    this.authService.removeToken();
+  }
 }

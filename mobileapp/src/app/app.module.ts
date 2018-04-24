@@ -9,9 +9,6 @@ import {GameService} from './game/service/game.service';
 import {HomeComponent} from './home/home/home.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {LoginComponent} from './auth/login/login.component';
-import {AuthenticationService} from "./auth/service/authentication.service";
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {GameFormComponent} from './game/game-form/game-form.component';
 import {GameComponent, GameDialogComponent, PlayersDialogComponent} from "./game/game.component";
 
@@ -36,10 +33,12 @@ import {
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {PlayerListComponent} from './game/player-list/player-list.component';
-import {RegisterComponent} from './auth/register/register.component';
 import {MapComponent} from "./map/map.component";
 import {DeviceDetectorModule} from 'ngx-device-detector';
 import {OAuthModule} from 'angular-oauth2-oidc';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {ApiHttpInterceptor} from "./service/api.interceptor";
+import {AuthService} from "./auth/service/auth.service";
 
 @NgModule({
   declarations: [
@@ -52,7 +51,6 @@ import {OAuthModule} from 'angular-oauth2-oidc';
     GameDialogComponent,
     PlayersDialogComponent,
     PlayerListComponent,
-    RegisterComponent,
     MapComponent
   ],
   imports: [
@@ -85,7 +83,7 @@ import {OAuthModule} from 'angular-oauth2-oidc';
   ],
   providers: [
     GameService,
-    AuthenticationService,
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiHttpInterceptor,

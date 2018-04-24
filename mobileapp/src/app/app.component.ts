@@ -1,6 +1,5 @@
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {appMenus} from "./app.menu";
-import {AuthenticationService} from "./auth/service/authentication.service";
 import {User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
 import {DeviceDetectorService} from "ngx-device-detector";
@@ -22,8 +21,7 @@ export class AppComponent implements OnInit{
   device;
   deviceInfo;
 
-  constructor(private authService: AuthenticationService,
-              private changeDetector: ChangeDetectorRef,
+  constructor(private changeDetector: ChangeDetectorRef,
               private deviceService: DeviceDetectorService,
   ) {
 
@@ -32,7 +30,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
 
-    this.authService.ping(); //redirects to login if user credentials fail
+    // this.authService.ping(); //redirects to login if user credentials fail
 
     this.setUser();
 

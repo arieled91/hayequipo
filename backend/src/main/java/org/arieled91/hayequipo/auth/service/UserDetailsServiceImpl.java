@@ -27,27 +27,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-//    @Autowired
-//    private final HttpServletRequest request;
-
-//    @Autowired
-//    private LoginAttemptService loginAttemptService;
-
-//    @Autowired
-//    public UserDetailsServiceImpl(UserRepository userRepository, UserService service, MessageSource messages, RoleRepository roleRepository) {
-//        this.userRepository = userRepository;
-//        this.service = service;
-//        this.messages = messages;
-//        this.roleRepository = roleRepository;
-//    }
-
 
     @Override
     public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-//        final String ip = getClientIP();
-//        if (loginAttemptService.isBlocked(ip)) {
-//            throw new RuntimeException("blocked");
-//        }
 
         final User user = userRepository.findByEmailAndEnabledIsTrue(email);
         if (user == null) throw new UsernameNotFoundException("No user found with username: " + email);
@@ -55,7 +37,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.isEnabled(), true, true, true, getAuthorities(user.getRoles()));
     }
 
-    // UTIL
 
     private Collection<? extends GrantedAuthority> getAuthorities(final Collection<Role> roles) {
         return getGrantedAuthorities(getPrivileges(roles));

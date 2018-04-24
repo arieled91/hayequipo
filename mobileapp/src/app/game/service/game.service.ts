@@ -10,8 +10,7 @@ import * as moment from 'moment';
 @Injectable()
 export class GameService {
 
-  private gamesUrl = Api.URL+"/controller/games";
-  private findUrl = "/controller/games/find";
+  private gamesUrl = "/api/controller/games";
 
   constructor(private http: HttpClient) {}
 
@@ -22,7 +21,7 @@ export class GameService {
   findByDate(date: Date) : Observable<any>{
     const pipe = new DatePipe('en-US');
     const dateParam = isNullOrUndefined(date) ? "": "date="+pipe.transform(date,"yyyy-MM-dd");
-    let requestUrl = Api.request(this.findUrl, dateParam);
+    let requestUrl = Api.request(this.gamesUrl+'/find', dateParam);
     return this.http.get<Game>(requestUrl);
   }
 

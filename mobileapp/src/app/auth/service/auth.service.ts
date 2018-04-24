@@ -1,55 +1,54 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import { Cookie } from 'ng2-cookies';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch';
+import {Observable} from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
-import { OAuthService } from 'angular-oauth2-oidc';
-
-export class Foo {
-  constructor(
-    public id: number,
-    public name: string) { }
-}
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import {HttpClient} from "@angular/common/http";
+import {User} from "../auth.model";
+import Api from "../../service/api.util";
 
 @Injectable()
-export class AppService {
+export class AuthService {
+  private pingUrl = Api.BASE_URL+'/api/ping';
+  private authUrl = Api.BASE_URL+'/auth/login';
+  private userUrl = Api.BASE_URL+'/auth/user';
 
-  constructor(
-    private _router: Router, private _http: Http, private oauthService: OAuthService){
-    this.oauthService.loginUrl = 'http://localhost:8888/oauth/authorize';
-    this.oauthService.redirectUri = 'http://localhost:4200/';
-    this.oauthService.clientId = "350567834653-a5tm5lk0kf7uc2vhvtvsh03ofc81m8uf.apps.googleusercontent.com";
-    this.oauthService.scope = "read write foo bar";
-    this.oauthService.setStorage(sessionStorage);
-    this.oauthService.oidc=false;
-    this.oauthService.tryLogin({});
+
+  public static SESSION_ID_KEY = "sessionid";
+
+
+  constructor(private http: HttpClient) {}
+
+
+  static getUser(): any{
+    return JSON.parse(localStorage.getItem('currentUser'));
   }
 
-  obtainAccessToken(){
-    this.oauthService.initImplicitFlow();
+  removeToken() {
+    localStorage.removeItem(AuthService.SESSION_ID_KEY)
   }
 
-  getResource(resourceUrl) : Observable<Foo>{
-    var headers = new Headers({'Content-type': 'application/x-www-form-urlencoded; charset=utf-8', 'Authorization': 'Bearer '+this.oauthService.getAccessToken()});
-    var options = new RequestOptions({ headers: headers });
-    return this._http.get(resourceUrl, options)
-      .map((res:Response) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  saveToken(token: string) {
+    this.removeToken();
+    localStorage.setItem(AuthService.SESSION_ID_KEY, token)
   }
 
-  isLoggedIn(){
-    console.log(this.oauthService.getAccessToken());
-    if (this.oauthService.getAccessToken() === null){
-      return false;
-    }
-    return true;
+  getToken(): String {
+    return localStorage.getItem(AuthService.SESSION_ID_KEY)
   }
 
-  logout() {
-    this.oauthService.logOut();
-    location.reload();
+  logout(): void {
+    // clear token remove user from local storage to log user out
+    localStorage.removeItem('currentUser');
+  }
+
+  findCurrentUser(): Observable<User>{
+    return this.http.get<User>(this.userUrl)
+  }
+
+  ping(){
+    return this.http.get<User>(this.pingUrl).subscribe(
+      // data => console.log(data)
+    )
   }
 }

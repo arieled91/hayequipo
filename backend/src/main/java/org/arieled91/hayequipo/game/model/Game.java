@@ -15,7 +15,7 @@ import static java.util.Comparator.*;
 
 @Entity
 @Table(name = "game", schema = "game")
-public class Game extends AbstractEntity{
+public class Game extends AbstractEntity {
 
     private static final long serialVersionUID = -5091912854447609619L;
 
