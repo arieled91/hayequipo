@@ -1,5 +1,7 @@
 package org.arieled91.hayequipo.auth.config;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -24,5 +26,9 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         final PrintWriter writer = response.getWriter();
         writer.println("HTTP Status 401 - " + authException.getMessage());
+        logger.info(authException.getMessage(), authException);
+
     }
+
+    protected final Log logger = LogFactory.getLog(getClass());
 }

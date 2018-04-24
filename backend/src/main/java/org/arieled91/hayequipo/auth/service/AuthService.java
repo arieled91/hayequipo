@@ -32,8 +32,8 @@ public class AuthService {
     private final VerificationTokenRepository tokenRepository;
 
     @Autowired
-    public AuthService(UserRepository repository, RoleRepository roleRepository, VerificationTokenRepository tokenRepository) {
-        this.userRepository = repository;
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository, VerificationTokenRepository tokenRepository) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.tokenRepository = tokenRepository;
     }
@@ -43,7 +43,7 @@ public class AuthService {
     }
 
     public void upgradeUser(User user){
-        Role moderator = roleRepository.findByName(RoleType.ROLE_MODERATOR.name());
+        final Role moderator = roleRepository.findByName(RoleType.ROLE_MODERATOR.name());
         if(moderator==null) throw new RuntimeException("Moderator role not found");
 
         if(currentUserHasPrivilege(PrivilegeType.FULL_ACCESS)) {
@@ -88,7 +88,7 @@ public class AuthService {
     }
 
     public Optional<User> getCurrentUser(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken))
             return findActiveUserByMail(authentication.getName());
         return Optional.empty();

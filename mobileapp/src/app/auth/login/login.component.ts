@@ -38,8 +38,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     if(this.message.length>0) this.snackBar.open(this.message);
 
+    this.logout();
+
     if(!isNullOrUndefined(this.token)) this.login();
-    else this.logout();
   }
 
 
