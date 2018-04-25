@@ -26,7 +26,7 @@ targetCompatibility = "1.8"
 mainClassName = "org.arieled91.hayequipo.Application"
 
 task wrapper(type: Wrapper) {
-	gradleVersion = "4.5"
+	gradleVersion = "4.7"
 }
 
 
@@ -47,12 +47,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-security")
 
-
-
     compile("org.springframework.security:spring-security-oauth2-client")
     compile("org.springframework.security:spring-security-oauth2-jose")
 
-//    compile("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.0.0.RELEASE")
     compile("org.springframework.data:spring-data-rest-hal-browser")
     compile("org.springframework.boot:spring-boot-starter-mail")
     compile("org.springframework.mobile:spring-mobile-device:1.1.5.RELEASE")
@@ -74,6 +71,8 @@ dependencies {
     testCompile("org.springframework.security:spring-security-test")
 	testCompile("junit:junit")
 
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 
 }
 
@@ -81,27 +80,3 @@ jar {
     baseName = 'hayequipo'
     version = '1.0'
 }
-
-//Command: ./gradlew build deployHeroku
-//heroku {
-//    appName = "futboldesa"
-//    processTypes(
-//            web: "java -jar -Dspring.profiles.active=production build/libs/hayequipo-*.jar"
-//
-//    )
-//}
-//
-////applicationDefaultJvmArgs = ["-Dspring.profiles.active=production"]
-//
-//task stage(type: Copy, dependsOn: [clean, build]) {
-//    from jar.archivePath
-//    into project.rootDir
-//    rename {
-//        'app.jar'
-//    }
-//}
-//stage.mustRunAfter(clean)
-//
-//clean << {
-//    project.file('app.jar').delete()
-//}

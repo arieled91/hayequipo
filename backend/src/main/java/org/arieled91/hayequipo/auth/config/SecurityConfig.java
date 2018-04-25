@@ -1,9 +1,9 @@
 package org.arieled91.hayequipo.auth.config;
 
+import org.arieled91.hayequipo.EnvProperties;
 import org.arieled91.hayequipo.auth.model.VerificationToken;
 import org.arieled91.hayequipo.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,14 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthService authService;
     private final UnauthorizedHandler unauthorizedHandler;
-
-    @Value("${frontend.url}")
-    private String frontendUrl;
+    private final EnvProperties envProperties;
 
     @Autowired
-    public SecurityConfig(AuthService authService, UnauthorizedHandler unauthorizedHandler) {
+    public SecurityConfig(AuthService authService, UnauthorizedHandler unauthorizedHandler, EnvProperties envProperties) {
         this.authService = authService;
         this.unauthorizedHandler = unauthorizedHandler;
+        this.envProperties = envProperties;
     }
 
     @Override
@@ -63,14 +62,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationSuccessHandler authSuccessHandler() {
         return (request, response, authentication) -> {
             final VerificationToken verification = authService.authenticate(authentication);
-            response.sendRedirect(frontendUrl+"/#/login?token="+verification.getToken());
+            response.sendRedirect(envProperties.getFrontendUrl()+"/#/login?token="+verification.getToken());
         };
     }
 
     @Bean
     public AuthenticationFailureHandler authFailureHandler() {
         return (request, response, authException) -> {
-            response.sendRedirect(frontendUrl+"/#/login?message="+authException.getLocalizedMessage());
+            response.sendRedirect(envProperties.getFrontendUrl()+"/#/login?message="+authException.getLocalizedMessage());
         };
     }
 
