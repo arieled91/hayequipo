@@ -18,7 +18,7 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "application"
 
 group = "org.arieled91"
-version = "1.0"
+version = "1.2"
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
@@ -36,8 +36,6 @@ repositories {
 
 dependencies {
 	runtime("org.springframework.boot:spring-boot-devtools")
-
-
 
     compile("org.springframework.boot:spring-boot-starter")
 	compile("org.springframework.boot:spring-boot-starter-web")
@@ -72,11 +70,9 @@ dependencies {
 	testCompile("junit:junit")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-
-
 }
 
 jar {
     baseName = 'hayequipo'
-    version = '1.0'
+    version = '1.2'
 }

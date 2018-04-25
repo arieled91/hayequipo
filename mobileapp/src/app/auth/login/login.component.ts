@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
 
 
   googleLogin(){
-    window.location.href = this.googleAuthUrl+"?redirect=http://localhost:4200";
+    window.location.href = this.googleAuthUrl;
   }
 
 

@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .headers().frameOptions().disable().and()
             .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
+                .antMatchers("/","/home", "/login", "/oauth2/authorization/*","/actuator").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .oauth2Login()
@@ -49,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             // disable page caching
             .headers().frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-                .cacheControl();
-        ;
+                .cacheControl().and().and();
+
 
     }
     @Bean
