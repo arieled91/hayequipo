@@ -5,7 +5,6 @@ import org.arieled91.hayequipo.common.AbstractEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "verification_token", schema = "auth")
@@ -16,8 +15,6 @@ public class VerificationToken extends AbstractEntity {
     private static final int EXPIRATION_IN_DAYS = 365;
 
     private String token = null;
-
-    private String uuid = null;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id", foreignKey = @ForeignKey(name = "FK_VERIFY_USER"))
@@ -43,7 +40,6 @@ public class VerificationToken extends AbstractEntity {
         this.token = token;
         this.user = user;
         this.expiryDate = expiryDate;
-        this.uuid = UUID.randomUUID().toString();
     }
 
     public String getToken() {
@@ -68,14 +64,6 @@ public class VerificationToken extends AbstractEntity {
 
     public void setExpiryDate(final LocalDateTime expiryDate) {
         this.expiryDate = expiryDate;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Deprecated

@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.io.Serializable;
 
 @Component
-public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
+public class UnauthorizedHandler implements AuthenticationEntryPoint, Serializable {
 
     private static final long serialVersionUID = -8970718410437077606L;
 
@@ -25,7 +25,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
         // We should just send a 401 Unauthorized response because there is no 'login page' to redirect to
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         final PrintWriter writer = response.getWriter();
-        writer.println("HTTP Status 401 - " + authException.getMessage());
+        writer.println("HTTP Status 401 - " + authException.getLocalizedMessage());
         logger.info(authException.getMessage(), authException);
 
     }

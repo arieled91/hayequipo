@@ -1,5 +1,11 @@
-<div>
-  <button mat-raised-button color="primary" (click)="googleLogin()">Google Login</button>
-</div>
+<mat-grid-list cols="1" rowHeight="70px" style="margin-top: 20px">
+  <mat-grid-tile>
+    <h1>{{title}}</h1>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <button mat-raised-button color="primary" (click)="googleLogin()">{{googleLoginLbl}}</button>
+  </mat-grid-tile>
+</mat-grid-list>
+
 
 

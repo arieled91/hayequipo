@@ -3,6 +3,7 @@ import {appMenus} from "./app.menu";
 import {User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
 import {DeviceDetectorService} from "ngx-device-detector";
+import {AuthService} from "./auth/service/auth.service";
 
 declare let device;
 
@@ -23,14 +24,13 @@ export class AppComponent implements OnInit{
 
   constructor(private changeDetector: ChangeDetectorRef,
               private deviceService: DeviceDetectorService,
+              private authService: AuthService
   ) {
 
   }
 
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
-
-    // this.authService.ping(); //redirects to login if user credentials fail
 
     this.setUser();
 
@@ -60,12 +60,12 @@ export class AppComponent implements OnInit{
   }
 
   setUser(){
-    // this.authService.findCurrentUser().subscribe(
-    //   data => {
-    //       this.user = data;
-    //       this.changeDetector.markForCheck();
-    //   },
-    //   error => console.log(error)
-    // );
+    this.authService.findCurrentUser().subscribe(
+      data => {
+          this.user = data;
+          this.changeDetector.markForCheck();
+      },
+      error => console.log(error)
+    );
   }
 }

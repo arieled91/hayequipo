@@ -10,7 +10,6 @@ import Api from "../../service/api.util";
 @Injectable()
 export class AuthService {
   private pingUrl = Api.BASE_URL+'/api/ping';
-  private authUrl = Api.BASE_URL+'/auth/login';
   private userUrl = Api.BASE_URL+'/auth/user';
 
 

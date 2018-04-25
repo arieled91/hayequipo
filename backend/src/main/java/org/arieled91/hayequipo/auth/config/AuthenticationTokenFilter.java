@@ -11,8 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -33,15 +33,19 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
     @Value("${authorization.header}")
     private String tokenHeader;
 
+    private static final int BEARER_LENGTH = "Bearer ".length();
+
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain chain) throws ServletException, IOException {
 
-        final String sessionUuid = request.getHeader(tokenHeader);
+        final String rawToken = request.getHeader(tokenHeader);
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null && sessionUuid!=null && !sessionUuid.isEmpty()) {
-            final User user = authService.findUserBySessionId(sessionUuid).orElseThrow(AuthorizationException::new);
-            authenticate(user, request);
+        final String token = rawToken != null && rawToken.length() > BEARER_LENGTH ? rawToken.substring(BEARER_LENGTH) : null;
+
+        if (SecurityContextHolder.getContext().getAuthentication() == null && token!=null && !token.isEmpty()) {
+            final User user = authService.findUserByToken(token).orElseThrow(AuthorizationException::new);
+            authenticate(user,request);
         }
 
         chain.doFilter(request, response);

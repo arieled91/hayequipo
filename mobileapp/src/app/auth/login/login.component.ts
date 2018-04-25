@@ -15,10 +15,14 @@ import {isNullOrUndefined} from "util";
 
 export class LoginComponent implements OnInit {
 
+  title = "Identificación de Usuario";
+
   loading = false;
   error = '';
   message = "";
   token = null;
+
+  googleLoginLbl = "Ingresá con Google";
 
   public googleAuthUrl = Api.BASE_URL+'/oauth2/authorization/google';
 
@@ -33,6 +37,7 @@ export class LoginComponent implements OnInit {
 
   populate(params: Params){
     if(params['token']) this.token = params['token'];
+    if(params['message']) this.snackBar.open( params['token']);
   }
 
   ngOnInit() {
@@ -45,7 +50,7 @@ export class LoginComponent implements OnInit {
 
 
   googleLogin(){
-    window.location.href = this.googleAuthUrl;
+    window.location.href = this.googleAuthUrl+"?redirect=http://localhost:4200";
   }
 
 
