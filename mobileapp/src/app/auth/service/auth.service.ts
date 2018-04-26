@@ -9,8 +9,8 @@ import Api from "../../service/api.util";
 
 @Injectable()
 export class AuthService {
-  private pingUrl = Api.BASE_URL+'/api/ping';
-  private userUrl = Api.BASE_URL+'/auth/user';
+  private pingUrl = '/api/ping';
+  private userUrl = '/auth/user';
 
 
   public static SESSION_ID_KEY = "sessionid";
@@ -18,10 +18,6 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-
-  static getUser(): any{
-    return JSON.parse(localStorage.getItem('currentUser'));
-  }
 
   removeToken() {
     localStorage.removeItem(AuthService.SESSION_ID_KEY)
@@ -34,11 +30,6 @@ export class AuthService {
 
   getToken(): String {
     return localStorage.getItem(AuthService.SESSION_ID_KEY)
-  }
-
-  logout(): void {
-    // clear token remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
   }
 
   findCurrentUser(): Observable<User>{

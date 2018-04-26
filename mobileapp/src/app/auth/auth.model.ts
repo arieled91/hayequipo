@@ -1,17 +1,17 @@
 export interface TokenResponse{
-  token: String;
+  token: string;
 }
 
 export class User{
-  firstName : String = "";
-  lastName  : String = "";
-  email     : String = "";
-  privileges: String[] = [];
+  firstName : string = "";
+  lastName  : string = "";
+  email     : string = "";
+  privileges: string[] = [];
 }
 
 export class UserRegistration{
-  firstName : String = null;
-  lastName  : String = null;
-  email     : String = null;
-  password  : String = null;
+  firstName : string = null;
+  lastName  : string = null;
+  email     : string = null;
+  password  : string = null;
 }

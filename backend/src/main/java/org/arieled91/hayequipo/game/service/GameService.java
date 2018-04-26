@@ -99,7 +99,7 @@ public class GameService {
     private void validateJoin(Player player, Game game){
         if(game.getStatus() == Game.Status.CLOSED) throw new GameClosedException();
 
-        if(game.getPlayers().stream().filter(p -> p.getUser().getId().equals(player.getUser().getId())).count() > 0) throw new PlayerAlreadyJoinedException();
+        if(game.getPlayers().stream().anyMatch(p -> p.getUser().getId().equals(player.getUser().getId()))) throw new PlayerAlreadyJoinedException();
 
         if(player.getFirstName()==null) throw new RuntimeException("Player firstName cannot be null");
     }

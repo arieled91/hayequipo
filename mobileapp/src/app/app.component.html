@@ -1,9 +1,11 @@
 <mat-sidenav-container style="position: inherit; background-color: transparent">
   <mat-sidenav #sidenav mode="over" class="sidenav">
+
     <mat-grid-list [class.mat-elevation-z3]="true" cols="1" rowHeight="20px" class="sidenav-header">
       <mat-grid-tile [rowspan]="2" style="margin-top: 20px">
         <span class="mat-title">{{user.firstName+" "+user.lastName}}</span>
       </mat-grid-tile>
+
       <mat-grid-tile>
         <span>{{user.email}}</span>
         <button mat-icon-button [routerLink]="['/login']" (click)="onSidenavToggle()" *ngIf="user.email!==''">
@@ -11,6 +13,7 @@
         </button>
       </mat-grid-tile>
     </mat-grid-list>
+
     <mat-list role="list">
       <mat-list-item role="listitem" *ngFor="let menu of menus">
         <button mat-button="wrapper"  [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="sidenav.toggle()" class="sidenav-menu-item">
@@ -18,6 +21,7 @@
         </button>
       </mat-list-item>
     </mat-list>
+
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -40,12 +44,15 @@
       <a *ngIf="isWeb() && deviceInfo.os ==='android'" href="https://s3.us-east-2.amazonaws.com/futboldesa/mobile/app-release.apk" style="right: 15px;position: absolute;" class="hide-on-desktop">
         <button mat-icon-button>
           <mat-icon style="color: white" >get_app</mat-icon>
+          <mat-icon style="color: white" >get_app</mat-icon>
         </button>
       </a>
     </mat-toolbar>
+
     <main class="main-container">
       <router-outlet></router-outlet>
     </main>
+
   </mat-sidenav-content>
 </mat-sidenav-container>
 

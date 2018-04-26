@@ -22,10 +22,8 @@ export class ApiHttpInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
       const headers = req.headers
-          // .append("Access-Control-Allow-Origin", "*")
           .append(this.TOKEN_KEY, 'Bearer ' + this.authService.getToken() + '')
           .append('Content-Type','application/json;charset=UTF-8');
-
 
     const apiReq = req.clone({ headers: headers, url: `${this.baseUrl}${req.url}` });
     return next.handle(apiReq)

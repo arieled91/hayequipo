@@ -4,6 +4,7 @@ import {User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {AuthService} from "./auth/service/auth.service";
+import {HttpClient} from "@angular/common/http";
 
 declare let device;
 
@@ -18,13 +19,14 @@ export class AppComponent implements OnInit{
   @ViewChild('sidenav') sidenav : MatSidenav;
   title = 'FUTBOLDESA';
   menus = appMenus;
-  user = new User();
+  user : any = new User();
   device;
   deviceInfo;
 
   constructor(private changeDetector: ChangeDetectorRef,
               private deviceService: DeviceDetectorService,
-              private authService: AuthService
+              private authService: AuthService,
+              private http: HttpClient
   ) {
 
   }
@@ -32,7 +34,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
 
-    this.setUser();
+    // this.setUser();
 
     this.initMobile();
   }
@@ -65,7 +67,12 @@ export class AppComponent implements OnInit{
           this.user = data;
           this.changeDetector.markForCheck();
       },
-      error => console.log(error)
+      error => console.log("currentusererror "+error)
     );
   }
+  // setUser(){
+  //   this.http.get("/auth/user").subscribe(
+  //     data => this.user = data
+  //   );
+  // }
 }
