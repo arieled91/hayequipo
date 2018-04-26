@@ -33,9 +33,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
-
-    // this.setUser();
-
     this.initMobile();
   }
 
@@ -70,9 +67,4 @@ export class AppComponent implements OnInit{
       error => console.log("currentusererror "+error)
     );
   }
-  // setUser(){
-  //   this.http.get("/auth/user").subscribe(
-  //     data => this.user = data
-  //   );
-  // }
 }
