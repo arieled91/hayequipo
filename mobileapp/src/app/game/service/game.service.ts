@@ -11,18 +11,20 @@ import * as moment from 'moment';
 export class GameService {
 
   private gamesUrl = "/api/controller/games";
+  private findByDateUrl = "/api/games/search/findByDate";
 
   constructor(private http: HttpClient) {}
 
-  findNext() : Observable<any>{
-    return this.findByDate(null);
+
+  findAvailable() : Observable<any>{
+    return this.http.get<Game>(this.gamesUrl+'/find');
   }
 
   findByDate(date: Date) : Observable<any>{
     const pipe = new DatePipe('en-US');
     const dateParam = isNullOrUndefined(date) ? "": "date="+pipe.transform(date,"yyyy-MM-dd");
-    let requestUrl = Api.request(this.gamesUrl+'/find', dateParam);
-    return this.http.get<Game>(requestUrl);
+    console.log(Api.request(this.findByDateUrl, dateParam));
+    return this.http.get<Game>(Api.request(this.findByDateUrl, dateParam));
   }
 
   saveGame(game: Game) : Observable<any>{

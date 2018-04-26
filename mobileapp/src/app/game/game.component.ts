@@ -2,6 +2,7 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {GameService} from "./service/game.service";
 import {MDCDialog} from '@material/dialog';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-game',
@@ -26,10 +27,23 @@ export class GameComponent implements OnInit{
   }
 
   find() {
-    this.gameService.findByDate(this.gameDate).subscribe(
+    if(isNullOrUndefined(this.gameDate)) this.findAvailable();
+    else this.findByDate();
+  }
+
+  findAvailable() {
+    this.gameService.findAvailable().subscribe(
       data => this.games = data
     );
   }
+
+  findByDate() {
+    this.gameService.findByDate(this.gameDate).subscribe(
+      data => this.games = data._embedded.games
+    );
+  }
+
+
 
   openGameDialog() {
     let dialogRef = this.dialog.open(GameDialogComponent, {

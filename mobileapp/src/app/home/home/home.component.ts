@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   }
 
   populate(){
-    this.gameService.findNext().subscribe(
+    this.gameService.findAvailable().subscribe(
       data => this.games = data
     );
   }
