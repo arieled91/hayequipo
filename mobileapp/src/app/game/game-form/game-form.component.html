@@ -1,62 +1,66 @@
 <div>
   <form #GameForm="ngForm">
 
-    <header>
-      <h1 title>{{title}}</h1>
-    </header>
+    <mat-grid-list cols="1" rowHeight="65px">
+      <mat-grid-tile>
+        <header>
+          <h1 title class="title">{{title}}</h1>
+        </header>
+      </mat-grid-tile>
 
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <input matInput name="gameDescription"
+                 placeholder={{descriptionLabel}}
+                 [required]="true"
+                 [(ngModel)] ="game.description">
+        </mat-form-field>
+      </mat-grid-tile>
 
-    <mat-form-field>
-      <input matInput name="gameDescription"
-             placeholder={{descriptionLabel}}
-             [required]="true"
-             [(ngModel)] ="game.description">
-    </mat-form-field>
-    <mat-form-field>
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <input matInput name="locationDescription"
+                 placeholder="{{locationDescLabel}}"
+                 [required]="true"
+                 [(ngModel)] ="game.location.description">
+        </mat-form-field>
+      </mat-grid-tile>
 
-      <input matInput name="locationDescription"
-             placeholder="{{locationDescLabel}}"
-             [required]="true"
-             [(ngModel)] ="game.location.description">
-    </mat-form-field>
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <input matInput name="locationAddress"
+                 placeholder={{locationAddrLabel}}
+                 [required]="true"
+                 [(ngModel)] ="game.location.address">
+        </mat-form-field>
+      </mat-grid-tile>
 
-    <mat-form-field>
-      <input matInput name="locationAddress"
-             placeholder={{locationAddrLabel}}
-             [required]="true"
-             [(ngModel)] ="game.location.address">
-    </mat-form-field>
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <input #dateTimepicker
+                 type="datetime-local"
+                 matInput name="gameDate"
+                 placeholder={{dateLabel}}
+                 [required]="true"
+                 [(ngModel)] ="game.dateTime">
+        </mat-form-field>
+      </mat-grid-tile>
 
-    <mat-form-field>
-      <input matInput name="gameDate"
-             [matDatepicker]="dateTimepicker"
-             placeholder={{dateLabel}}
-             [required]="true"
-             [(ngModel)] ="game.dateTime">
-      <mat-datepicker-toggle matSuffix [for]="dateTimepicker"></mat-datepicker-toggle>
-      <mat-datepicker #dateTimepicker></mat-datepicker>
-    </mat-form-field>
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <mat-select name="gameCapacity"
+            placeholder={{fieldTypeLabel}}
+            [(ngModel)]="game.capacity"
+            [required]="true">
+            <mat-option *ngFor="let field of fields" [value]="field.capacity">{{field.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </mat-grid-tile>
 
-
-    <mat-form-field>
-      <input matInput name="gameTime"
-             type="time"
-             placeholder={{timeLabel}}
-             [required]="true"
-             [ngModel] ="getGameTime()" (ngModelChange)="setTime($event)">
-    </mat-form-field>
-
-
-    <mat-form-field>
-      <mat-select name="gameCapacity"
-        placeholder={{fieldTypeLabel}}
-        [(ngModel)]="game.capacity"
-        [required]="true">
-        <mat-option *ngFor="let field of fields" [value]="field.capacity">{{field.label}}</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="GameForm.form.invalid" style="float: right; margin-left: 20px">Guardar</button>
-    <button mat-raised-button (click)="cancel()" style="float: right">Cancelar</button>
+      <mat-grid-tile>
+        <button mat-raised-button routerLink="/game" style="float: right">Cancelar</button>
+        <button mat-raised-button color="primary" (click)="save()" [disabled]="GameForm.form.invalid" style="float: right; margin-left: 20px">Guardar</button>
+      </mat-grid-tile>
+    </mat-grid-list>
   </form>
 </div>

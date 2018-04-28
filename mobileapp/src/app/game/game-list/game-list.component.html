@@ -39,7 +39,7 @@
           <span style="margin-left: 5px">{{playersBtn}}</span>
         </mat-chip>
 
-        <mat-chip *ngIf="Status[game.status]!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" (click)="openGameFormDialog(game.id)">
+        <mat-chip *ngIf="Status[game.status]!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" [routerLink]="['/game-form', {id:game.id}]">
           <mat-icon>edit</mat-icon>
           <!--<span style="margin-left: 5px">{{openBtn}}</span>-->
         </mat-chip>
