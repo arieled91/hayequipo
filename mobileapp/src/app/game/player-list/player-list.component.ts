@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameService} from "../service/game.service";
 import {isNullOrUndefined} from "util";
+import {GameService} from "../service/game.service";
+import {Game} from "../game.model";
 
 @Component({
   selector: 'app-player-list',
@@ -9,7 +10,8 @@ import {isNullOrUndefined} from "util";
 })
 export class PlayerListComponent implements OnInit {
 
-  @Input() game = null;
+  @Input() gameId : Number = null;
+  game = null;
   players = [];
   reservePlayers = [];
   playersLabel = "Titulares";
@@ -18,9 +20,18 @@ export class PlayerListComponent implements OnInit {
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    if(!isNullOrUndefined(this.game)) {
-      this.players = this.game.players.slice(0, this.game.capacity);
-      this.reservePlayers = this.game.players.slice(this.game.capacity, this.game.players.length);
+    if(!isNullOrUndefined(this.gameId)) {
+      this.gameService.findById(this.gameId).subscribe(data => this.populate(data));
+
     }
   }
+
+  populate(game: Game){
+    this.game = game;
+    this.gameService.listPlayers(game.id).subscribe(data => {
+      this.players = data.slice(0, game.capacity);
+      this.reservePlayers = data.slice(this.game.capacity, data.length);
+    });
+  }
+
 }
