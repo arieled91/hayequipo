@@ -3,6 +3,7 @@ import {GameService} from "./service/game.service";
 import {MDCDialog} from '@material/dialog';
 import {MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatSnackBar} from "@angular/material";
 import {isNullOrUndefined} from "util";
+import {Game} from "./game.model";
 
 @Component({
   selector: 'app-game',
@@ -96,17 +97,17 @@ export class GameDialogComponent {
 
 @Component({
   selector: 'players-dialog',
-  template: '<app-player-list [gameId]="id"></app-player-list>',
+  template: '<app-player-list [game]="game"></app-player-list>',
 })
 export class PlayersDialogComponent {
 
-  @Input() public id : Number;
+  @Input() public game : Game;
 
   constructor(
     private dialogRef: MatDialogRef<GameDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private snackBar: MatSnackBar
   ) {
-    this.id = data.id;
+    this.game = data;
   }
 }
