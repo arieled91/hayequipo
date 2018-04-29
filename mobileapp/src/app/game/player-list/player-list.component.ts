@@ -16,13 +16,18 @@ export class PlayerListComponent implements OnInit {
   reservePlayers = [];
   playersLabel = "Titulares";
   reservePlayersLabel = "Suplentes";
+  loading = true;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
     if(!isNullOrUndefined(this.gameId)) {
-      this.gameService.findById(this.gameId).subscribe(data => this.populate(data));
-
+      this.gameService.findById(this.gameId).subscribe(
+        data => {
+          this.populate(data);
+          this.loading = false;
+        }
+      );
     }
   }
 

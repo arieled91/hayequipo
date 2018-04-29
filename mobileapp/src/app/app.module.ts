@@ -28,7 +28,8 @@ import {
   MatSidenavModule,
   MatSnackBarModule,
   MatTabsModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatProgressSpinnerModule,
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -80,6 +81,7 @@ import {AuthService} from "./auth/service/auth.service";
     MatSelectModule,
     MatChipsModule,
     MatSidenavModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     GameService,
