@@ -33,19 +33,19 @@ export class GameService {
     return this.http.post<Game>(this.gamesUrl+"/save", game);
   }
 
-  joinGame(gameId: Number) : Observable<any>{
+  joinGame(gameId: number) : Observable<any>{
     return this.http.get<Game>(`${this.gamesUrl}/${gameId}/join`);
   }
 
-  exitGame(gameId: Number) : Observable<any>{
+  exitGame(gameId: number) : Observable<any>{
     return this.http.get<Game>(`${this.gamesUrl}/${gameId}/remove`);
   }
 
-  findById(gameId: Number) : Observable<any>{
+  findById(gameId: number) : Observable<any>{
     return this.http.get<Game>(`${this.gamesUrl}/${gameId}`);
   }
 
-  listPlayers(gameId: Number) : Observable<Array<Player>>{
+  listPlayers(gameId: number) : Observable<Array<Player>>{
     return this.http.get<Array<Player>>(`${this.gamesUrl}/${gameId}/players`);
   }
 }

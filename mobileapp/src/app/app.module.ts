@@ -42,6 +42,7 @@ import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {AuthService} from "./auth/service/auth.service";
 import {AgmCoreModule} from "@agm/core";
 import { GameCardComponent } from './game/game-card/game-card.component';
+import { GameMapComponent } from './game/game-map/game-map.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { GameCardComponent } from './game/game-card/game-card.component';
     PlayersDialogComponent,
     PlayerListComponent,
     MapComponent,
-    GameCardComponent
+    GameCardComponent,
+    GameMapComponent
   ],
   imports: [
     AppRoutingModule,
