@@ -40,6 +40,8 @@ import {OAuthModule} from 'angular-oauth2-oidc';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {AuthService} from "./auth/service/auth.service";
+import {AgmCoreModule} from "@agm/core";
+import { GameCardComponent } from './game/game-card/game-card.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +54,8 @@ import {AuthService} from "./auth/service/auth.service";
     GameDialogComponent,
     PlayersDialogComponent,
     PlayerListComponent,
-    MapComponent
+    MapComponent,
+    GameCardComponent
   ],
   imports: [
     AppRoutingModule,
@@ -62,7 +65,10 @@ import {AuthService} from "./auth/service/auth.service";
     HttpClientModule,
     DeviceDetectorModule.forRoot(),
     OAuthModule.forRoot(),
-
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBzWGn5njSvYpzsIJrJQUp9zU7jVG9unD8',
+      libraries: ["places"]
+    }),
     MaterialModule,
     BrowserAnimationsModule,
     MatFormFieldModule,

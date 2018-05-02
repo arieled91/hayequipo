@@ -1,9 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
 import {fieldTypes, Game} from "../game.model";
 import {isNullOrUndefined} from "util";
 import {GameService} from "../service/game.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
+import {MapsAPILoader} from "@agm/core";
+// noinspection ES6UnusedImports
+import {} from '@types/googlemaps';
 
 @Component({
   selector: 'app-game-form',
@@ -24,13 +27,13 @@ export class GameFormComponent implements OnInit {
   game : Game = new Game();
   fields = fieldTypes;
 
-  // @Output() onSaved = new EventEmitter<boolean>();
-  // @Output() onCancel = new EventEmitter<void>();
+  @ViewChild('searchAddress') public searchAddress: ElementRef;
 
   constructor(private gameService: GameService,
               private router: Router,
               private snackBar: MatSnackBar,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private mapsAPILoader: MapsAPILoader, private ngZone: NgZone
   ) {
   }
 
@@ -40,7 +43,32 @@ export class GameFormComponent implements OnInit {
     });
 
     if(!isNullOrUndefined(this.id) && this.id > 0) this.gameService.findById(this.id).subscribe(data => this.game = data);
+
+    this.loadMapSearcher();
   }
+
+  loadMapSearcher() {
+    this.mapsAPILoader.load().then(
+      () => {
+        let autocomplete = new google.maps.places.Autocomplete(this.searchAddress.nativeElement, { types:["address"] });
+
+        autocomplete.addListener("place_changed", () => {
+          this.ngZone.run(() => {
+            let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+            this.game.location.latitude = place.geometry.location.lat();
+            this.game.location.longitude = place.geometry.location.lng();
+            this.game.location.address = place.formatted_address;
+
+            if(place.geometry === undefined || place.geometry === null ){
+              return;
+            }
+          });
+        });
+      }
+    );
+  }
+
 
   save() {
     this.gameService.saveGame(this.game).subscribe(

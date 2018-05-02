@@ -1,32 +1,31 @@
 <mat-list *ngIf="games.length > 0" class="game_list">
   <div *ngFor="let game of games; let i = index;" class="game_list_item">
-
-    <mat-list-item (click)="itemsVisibility[i] = !itemsVisibility[i]" style="cursor: pointer">
+    <!--style="cursor: pointer"-->
+    <mat-list-item>
 
       <mat-icon mat-list-icon style="color: limegreen" *ngIf="game.currentUserJoined && Status[game.status]!==Status.CLOSED">event_available</mat-icon>
       <mat-icon mat-list-icon *ngIf="!game.currentUserJoined && Status[game.status]!==Status.CLOSED">event</mat-icon>
       <mat-icon mat-list-icon *ngIf="Status[game.status]===Status.CLOSED">event_busy</mat-icon>
 
-      <h2 mat-line>{{game.description}}</h2>
+      <span mat-line style="padding-top: 10px; cursor: pointer" (click)="itemsVisibility[i] = !itemsVisibility[i]" >{{game.description}}</span>
 
-      <div matLine style="color: grey; margin-top: 5px">
+      <div matLine style="color: grey; padding-top: 5px; cursor: pointer" (click)="itemsVisibility[i] = !itemsVisibility[i]" >
         <span i18n>{{game.dateTime | date:'EEE d MMM, HH:mm'}}</span>
-        <span>{{' - ' + game.location.description}}</span>
-      </div>
-
-      <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined && Status[game.status]!==Status.CLOSED">
-        <mat-icon>person_add</mat-icon>
-      </button>
-    </mat-list-item>
-
-    <div style="margin-bottom: 10px" *ngIf="itemsVisibility[i]">
-
-      <div matLine style="margin-left: 65px; margin-bottom: 10px;">
+        <br>
         <span style="color: grey;">{{game.location.address}}</span>
         <mat-icon style="font-size: 12pt">location_on</mat-icon>
       </div>
 
-      <mat-chip-list>
+      <div>
+        <button mat-mini-fab color="basic" (click)="joinGame(game.id)" *ngIf="!game.currentUserJoined && Status[game.status]!==Status.CLOSED">
+          <mat-icon>person_add</mat-icon>
+        </button>
+      </div>
+    </mat-list-item>
+
+    <div style="margin-bottom: 10px; margin-top: 10px" *ngIf="itemsVisibility[i]">
+
+      <mat-chip-list >
         <mat-icon mat-list-icon></mat-icon>
 
         <mat-chip style="margin-left: 15px; cursor: pointer" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined && Status[game.status]!==Status.CLOSED">
@@ -36,12 +35,15 @@
 
         <mat-chip style="margin-left: 15px; cursor: pointer" (click)="openPlayersDialog(game.id)">
           <mat-icon>group</mat-icon>
-          <span style="margin-left: 5px">{{playersBtn}}</span>
+          <!--<span style="margin-left: 5px">{{playersBtn}}</span>-->
         </mat-chip>
 
-        <mat-chip *ngIf="Status[game.status]!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" [routerLink]="['/game-form', {id:game.id}]">
+        <mat-chip style="margin-left: 15px; cursor: pointer" [routerLink]="['/map']" [queryParams]="{latitude:game.location.latitude, longitude:game.location.longitude}">
+          <mat-icon>location_on</mat-icon>
+        </mat-chip>
+
+        <mat-chip *ngIf="Status[game.status]!==Status.CLOSED && allowEdit" style="margin-left: 15px; cursor: pointer" [routerLink]="['/game-form/'+game.id]">
           <mat-icon>edit</mat-icon>
-          <!--<span style="margin-left: 5px">{{openBtn}}</span>-->
         </mat-chip>
 
       </mat-chip-list>

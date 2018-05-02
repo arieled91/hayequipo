@@ -1,11 +1,34 @@
 <div>
   <form #GameForm="ngForm">
 
-    <mat-grid-list cols="1" rowHeight="65px">
+    <mat-grid-list cols="1" rowHeight="55px">
       <mat-grid-tile>
         <header>
           <h1 title class="title">{{title}}</h1>
         </header>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+    <div style="max-width: 500px; position: center; margin: auto;" >
+      <agm-map [latitude]="game.location.latitude" [longitude]="game.location.longitude" [zoom]=14>
+        <agm-marker [latitude]="game.location.latitude" [longitude]="game.location.longitude"></agm-marker>
+      </agm-map>
+    </div>
+
+    <mat-grid-list cols="1" rowHeight="60px" style="margin-top: 10px">
+
+      <mat-grid-tile>
+        <mat-form-field class="full-width">
+          <input matInput name="locationAddress"
+                 placeholder={{locationAddrLabel}}
+                 [required]="true"
+                 [(ngModel)] ="game.location.address"
+                 #searchAddress
+                 autocorrect="off"
+                 autocapitalize="off"
+                 spellcheck="off"
+                 autocomplete="new-password">
+        </mat-form-field>
       </mat-grid-tile>
 
       <mat-grid-tile>
@@ -14,24 +37,6 @@
                  placeholder={{descriptionLabel}}
                  [required]="true"
                  [(ngModel)] ="game.description">
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field class="full-width">
-          <input matInput name="locationDescription"
-                 placeholder="{{locationDescLabel}}"
-                 [required]="true"
-                 [(ngModel)] ="game.location.description">
-        </mat-form-field>
-      </mat-grid-tile>
-
-      <mat-grid-tile>
-        <mat-form-field class="full-width">
-          <input matInput name="locationAddress"
-                 placeholder={{locationAddrLabel}}
-                 [required]="true"
-                 [(ngModel)] ="game.location.address">
         </mat-form-field>
       </mat-grid-tile>
 

@@ -16,7 +16,7 @@ public class Location extends AbstractEntity {
     private @NotEmpty @NotNull String address = "";
     private @Nullable Double latitude = null;
     private @Nullable Double longitude = null;
-    private String description = null;
+    private @Nullable String description = null;
 
     public Location() {
     }
