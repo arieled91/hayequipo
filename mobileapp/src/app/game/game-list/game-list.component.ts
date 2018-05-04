@@ -3,6 +3,7 @@ import {Game, GameStatus} from "../game.model";
 import {GameService} from "../service/game.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
 import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
+import {buildMapQueryByAddress} from "../../map/googlemaps.util";
 
 @Component({
   selector: 'app-game-list',
@@ -16,6 +17,7 @@ export class GameListComponent implements OnInit {
   @Output() onDialogClose = new EventEmitter<boolean>();
 
   confirmExitGameLabel = "¿Estás seguro?";
+  confirmNavigateToMapLabel = "¿Estás seguro que querés abrir el mapa?";
   cancelBtn = "Salir";
   playersBtn = "Anotados";
   openBtn = "Más";
@@ -30,7 +32,7 @@ export class GameListComponent implements OnInit {
 
   joinGame(id) {
     this.gameService.joinGame(id).subscribe(
-      data => {
+      () => {
         this.games.find(game => game.id == id).currentUserJoined = true;
         this.snackBar.open('¡Anotado! Recordá que si te bajas traés facturas','',{duration: 4000});
       }
@@ -40,7 +42,7 @@ export class GameListComponent implements OnInit {
   exitGame(id){
     if(confirm(this.confirmExitGameLabel)) {
       this.gameService.exitGame(id).subscribe(
-        data => {
+        () => {
           this.games.find(game => game.id == id).currentUserJoined = false;
           this.snackBar.open('¡Tenés que traer facturas!','',{duration: 4000});
         }
@@ -66,5 +68,10 @@ export class GameListComponent implements OnInit {
       minHeight: '100px',
       data: {id : id}
     });
+  }
+
+  openMap(game:Game){
+    if(confirm(this.confirmNavigateToMapLabel))
+      window.open(buildMapQueryByAddress(game.location.address), "_blank");
   }
 }

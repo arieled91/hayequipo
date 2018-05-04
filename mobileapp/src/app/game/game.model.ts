@@ -2,7 +2,7 @@ import {Moment} from "moment";
 
 export class Game {
   id          : Number = null;
-  description : String = null;
+  description : string = "";
   dateTime    : Moment = null;
   location    : Location = new Location();
   capacity    : number = 0;
@@ -12,16 +12,16 @@ export class Game {
 }
 
 export class Location {
-  latitude    : Number = null;
-  longitude   : Number = null;
+  latitude    : number = 0;
+  longitude   : number = 0;
   description : String = null;
-  address     : String = null;
+  address     : string = "";
 }
 
 export class Player{
-  firstName : String = "";
-  lastName  : String = "";
-  email     : String = "";
+  firstName : string = "";
+  lastName  : string = "";
+  email     : string = "";
 }
 
 export const fieldTypes = [

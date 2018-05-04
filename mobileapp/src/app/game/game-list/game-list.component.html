@@ -38,7 +38,11 @@
           <!--<span style="margin-left: 5px">{{playersBtn}}</span>-->
         </mat-chip>
 
-        <mat-chip style="margin-left: 15px; cursor: pointer" [routerLink]="['/game-map',game.id]">
+        <!--<mat-chip style="margin-left: 15px; cursor: pointer" [routerLink]="['/game-map',game.id]">-->
+          <!--<mat-icon>location_on</mat-icon>-->
+        <!--</mat-chip>-->
+
+        <mat-chip style="margin-left: 15px; cursor: pointer" (click)="openMap(game)">
           <mat-icon>location_on</mat-icon>
         </mat-chip>
 

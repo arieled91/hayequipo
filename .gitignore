@@ -5,6 +5,7 @@
 */node_modules/*
 *.lock
 .DS_Store
+npm-debug.log
 
 ### STS ###
 .apt_generated

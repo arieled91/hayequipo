@@ -56,17 +56,19 @@ export class GameFormComponent implements OnInit {
           this.ngZone.run(() => {
             let place: google.maps.places.PlaceResult = autocomplete.getPlace();
 
-            this.game.location.latitude = place.geometry.location.lat();
-            this.game.location.longitude = place.geometry.location.lng();
-            this.game.location.address = place.formatted_address;
+            if(place.geometry === undefined || place.geometry === null ) return;
 
-            if(place.geometry === undefined || place.geometry === null ){
-              return;
-            }
+            this.saveLocation(place)
           });
         });
       }
     );
+  }
+
+  saveLocation(place: google.maps.places.PlaceResult){
+    this.game.location.latitude = place.geometry.location.lat();
+    this.game.location.longitude = place.geometry.location.lng();
+    this.game.location.address = place.formatted_address;
   }
 
 

@@ -1,5 +1,6 @@
 <div style="margin-top: 15px">
-  <span style="color: grey; font-size: 16pt;">{{game.location.address}}</span>
+  <a style="color: grey; font-size: 16pt;" target="_blank" href='{{mapApiLink}}'>{{game.location.address}}</a>
   <mat-icon>location_on</mat-icon>
   <location-map [latitude]="game.location.latitude" [longitude]="game.location.longitude"></location-map>
 </div>
+

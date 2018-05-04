@@ -57,7 +57,7 @@ import { GameMapComponent } from './game/game-map/game-map.component';
     PlayerListComponent,
     MapComponent,
     GameCardComponent,
-    GameMapComponent
+    GameMapComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -97,11 +97,11 @@ import { GameMapComponent } from './game/game-map/game-map.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiHttpInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: MAT_DATE_LOCALE,
-      useValue: 'es-AR'
+      useValue: 'es-AR',
     }
   ],
   bootstrap: [AppComponent]
