@@ -29,7 +29,7 @@ import {
   MatSnackBarModule,
   MatTabsModule,
   MatToolbarModule,
-  MatProgressSpinnerModule,
+  MatProgressSpinnerModule, MatExpansionModule,
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
@@ -92,6 +92,7 @@ import { ConfirmDialogComponent } from './common/dialog/confirm-dialog.component
     MatChipsModule,
     MatSidenavModule,
     MatProgressSpinnerModule,
+    MatExpansionModule,
   ],
   providers: [
     GameService,

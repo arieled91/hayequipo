@@ -31,7 +31,8 @@ export class GameListComponent implements OnInit {
 
   ngOnInit() {}
 
-  joinGame(id) {
+  joinGame(id, event) {
+    event.stopPropagation();
     this.gameService.joinGame(id).subscribe(
       () => {
         this.games.find(game => game.id == id).currentUserJoined = true;
@@ -71,18 +72,10 @@ export class GameListComponent implements OnInit {
     });
   }
 
-  openMap(game:Game){
-    // if(confirm(this.confirmNavigateToMapLabel))
-      window.location.assign(buildMapQueryByAddress(game.location.address)/*, "_blank"*/);
-  }
 
   openMapConfirmDialog(game:Game){
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    this.dialog.open(ConfirmDialogComponent, {
       data: {content : this.confirmNavigateToMapLabel, openUrl: buildMapQueryByAddress(game.location.address)}
-    });
-
-    dialogRef.afterClosed().subscribe(confirmed => {
-      if(confirmed) this.openMap(game);
     });
   }
 }
