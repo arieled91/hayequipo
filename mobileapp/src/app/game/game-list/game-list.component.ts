@@ -4,6 +4,7 @@ import {GameService} from "../service/game.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
 import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
 import {buildMapQueryByAddress} from "../../map/googlemaps.util";
+import {ConfirmDialogComponent} from "../../common/dialog/confirm-dialog.component";
 
 @Component({
   selector: 'app-game-list',
@@ -71,7 +72,17 @@ export class GameListComponent implements OnInit {
   }
 
   openMap(game:Game){
-    if(confirm(this.confirmNavigateToMapLabel))
-      window.open(buildMapQueryByAddress(game.location.address), "_blank");
+    // if(confirm(this.confirmNavigateToMapLabel))
+      window.location.assign(buildMapQueryByAddress(game.location.address)/*, "_blank"*/);
+  }
+
+  openMapConfirmDialog(game:Game){
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {content : this.confirmNavigateToMapLabel, openUrl: buildMapQueryByAddress(game.location.address)}
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if(confirmed) this.openMap(game);
+    });
   }
 }

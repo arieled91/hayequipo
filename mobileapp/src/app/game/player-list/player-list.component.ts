@@ -33,7 +33,7 @@ export class PlayerListComponent implements OnInit {
 
   populate(game: Game){
     this.game = game;
-    this.gameService.listPlayers(game.id).subscribe(data => {
+    this.gameService.listPlayers(this.game.id).subscribe(data => {
       this.players = data.slice(0, game.capacity);
       this.reservePlayers = data.slice(this.game.capacity, data.length);
     });
