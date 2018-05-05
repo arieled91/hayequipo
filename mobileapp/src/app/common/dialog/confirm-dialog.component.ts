@@ -9,8 +9,8 @@ import {isNullOrUndefined} from "util";
     <mat-dialog-content>{{content}}</mat-dialog-content>
     <mat-dialog-actions>
       <button mat-button mat-dialog-close (click)="onConfirm.emit(false)">Cancelar</button>
-      <button mat-button [mat-dialog-close]="true" (click)="onConfirm.emit(true)">Aceptar</button>
-      <!--<a href="{{openUrl}}" target="_blank"><button mat-button [mat-dialog-close]="true">Abrir</button></a>-->
+      <button *ngIf="openUrl===''" mat-button [mat-dialog-close]="true" (click)="onConfirm.emit(true)">Aceptar</button>
+      <button *ngIf="openUrl!==''" mat-button mat-dialog-close (click)="onOpenUrl()">Abrir</button>
     </mat-dialog-actions>
   `
 })
@@ -18,7 +18,7 @@ export class ConfirmDialogComponent implements OnInit {
 
   @Input() public title : string = "Confirmar";
   @Input() public content : string = "";
-  @Input() public openUrl : String = "";
+  @Input() public openUrl : string = "";
 
   @Output() onConfirm: EventEmitter<boolean> = new EventEmitter();
 
@@ -31,4 +31,7 @@ export class ConfirmDialogComponent implements OnInit {
   ngOnInit() {
   }
 
+  onOpenUrl(event:Event){
+    window.open(this.openUrl);
+  }
 }
