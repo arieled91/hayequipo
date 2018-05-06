@@ -8,6 +8,7 @@ import {GameCardComponent} from "./game/game-card/game-card.component";
 import {MapComponent} from "./map/map.component";
 import {GameMapComponent} from "./game/game-map/game-map.component";
 import {ConfirmDialogComponent} from "./common/dialog/confirm-dialog.component";
+import {UserListComponent} from "./auth/user-list/user-list.component";
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'confirm-dialog', component: GameDialogComponent },
   { path: 'players-dialog', component: PlayersDialogComponent },
   { path: 'map', component: MapComponent },
-  { path: 'game-map/:id', component: GameMapComponent }
+  { path: 'game-map/:id', component: GameMapComponent },
+  { path: 'user-list', component: UserListComponent },
 ];
 
 @NgModule({

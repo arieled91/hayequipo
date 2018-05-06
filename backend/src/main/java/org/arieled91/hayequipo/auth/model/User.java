@@ -17,10 +17,6 @@ public class User extends AbstractEntity {
 
     private static final long serialVersionUID = -9078135951670183508L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private @NotEmpty @NotNull String firstName = "";
 
     private @NotEmpty @NotNull String lastName = "";
@@ -46,14 +42,6 @@ public class User extends AbstractEntity {
     private @NotNull Set<Role> roles = new HashSet<>();
 
     public User() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public @NotNull String getFirstName() {
         return firstName;

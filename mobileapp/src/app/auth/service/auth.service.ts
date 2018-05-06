@@ -5,12 +5,13 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 import {HttpClient} from "@angular/common/http";
 import {User} from "../auth.model";
-import Api from "../../service/api.util";
+import {PagedList} from "../../common/common.model";
 
 @Injectable()
 export class AuthService {
   private pingUrl = '/api/ping';
-  private userUrl = '/auth/user';
+  private userUrl = '/auth/users';
+  private userRepositoryUrl = '/api/users';
 
 
   public static SESSION_ID_KEY = "sessionid";
@@ -33,7 +34,16 @@ export class AuthService {
   }
 
   findCurrentUser(): Observable<User>{
-    return this.http.get<User>(this.userUrl)
+    return this.http.get<User>(this.userUrl+'/current')
+  }
+
+  listUsers(): Observable<PagedList<User>>{
+    return this.http.get<any>(this.userRepositoryUrl).map(data => {
+      let pagedList = new PagedList<User>();
+      pagedList.data = data._embedded.users;
+      pagedList.page = data.page;
+      return pagedList;
+    })
   }
 
   ping(){

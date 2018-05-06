@@ -19,20 +19,22 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {
   MAT_DATE_LOCALE,
   MatChipsModule,
+  MatExpansionModule,
   MatGridListModule,
   MatIconModule,
   MatInputModule,
   MatListModule,
   MatNativeDateModule,
+  MatProgressSpinnerModule,
   MatSelectModule,
   MatSidenavModule,
   MatSnackBarModule,
   MatTabsModule,
   MatToolbarModule,
-  MatProgressSpinnerModule, MatExpansionModule,
 } from "@angular/material";
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
 import {PlayerListComponent} from './game/player-list/player-list.component';
 import {MapComponent} from "./map/map.component";
 import {DeviceDetectorModule} from 'ngx-device-detector';
@@ -41,9 +43,10 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {AuthService} from "./auth/service/auth.service";
 import {AgmCoreModule} from "@agm/core";
-import { GameCardComponent } from './game/game-card/game-card.component';
-import { GameMapComponent } from './game/game-map/game-map.component';
-import { ConfirmDialogComponent } from './common/dialog/confirm-dialog.component';
+import {GameCardComponent} from './game/game-card/game-card.component';
+import {GameMapComponent} from './game/game-map/game-map.component';
+import {ConfirmDialogComponent} from './common/dialog/confirm-dialog.component';
+import {UserListComponent} from './auth/user-list/user-list.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,7 @@ import { ConfirmDialogComponent } from './common/dialog/confirm-dialog.component
     GameCardComponent,
     GameMapComponent,
     ConfirmDialogComponent,
+    UserListComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -93,6 +97,7 @@ import { ConfirmDialogComponent } from './common/dialog/confirm-dialog.component
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
+    MatTableModule,
   ],
   providers: [
     GameService,

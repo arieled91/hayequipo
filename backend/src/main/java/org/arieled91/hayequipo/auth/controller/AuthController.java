@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 
 @Controller
@@ -25,20 +26,25 @@ public class AuthController {
         this.authService = userService;
     }
 
-
-    @RequestMapping(value = "/auth/user", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/users/current", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<User> currentUser() {
         return ResponseEntity.ok(authService.getCurrentUser().orElse(new User()));
     }
+
+    @RequestMapping(value = "/auth/users/current/privileges", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<Set<String>> currentUserPrivileges() {
+        return ResponseEntity.ok(authService.getCurrentUser().orElse(new User()).getPrivileges());
+    }
     
-    @RequestMapping(value = "/auth/username", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/users/current/username", method = RequestMethod.GET)
     @ResponseBody
     public String currentUsername() {
         return authService.getCurrentUser().map(User::getEmail).orElse("guest");
     }
 
-    @RequestMapping(value = "/auth/upgrade", method = RequestMethod.GET)
+    @RequestMapping(value = "/auth/users/current/upgrade", method = RequestMethod.PUT)
     @ResponseBody
     public ResponseEntity<?> upgradeUser(final String email) {
         try {
