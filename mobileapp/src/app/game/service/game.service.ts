@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Game, Player} from "../game.model";
 import {DatePipe} from "@angular/common";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {isNullOrUndefined} from "util";
 import Api from "../../service/api.util";
 import * as moment from 'moment';
