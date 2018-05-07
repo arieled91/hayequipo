@@ -30,7 +30,7 @@
     </mat-expansion-panel-header>
 
     <mat-chip-list>
-      <mat-chip style="cursor: pointer" (click)="exitGame(game.id)" *ngIf="game.currentUserJoined && Status[game.status]!==Status.CLOSED">
+      <mat-chip style="cursor: pointer" (click)="openExitGameConfirmDialog(game)" *ngIf="game.currentUserJoined && Status[game.status]!==Status.CLOSED">
         <mat-icon>event_busy</mat-icon>
         <span style="margin-left: 5px">{{cancelBtn}}</span>
       </mat-chip>

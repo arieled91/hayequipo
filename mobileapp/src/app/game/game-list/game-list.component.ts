@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Game, GameStatus} from "../game.model";
 import {GameService} from "../service/game.service";
 import {MatDialog, MatSnackBar} from "@angular/material";
-import {GameDialogComponent, PlayersDialogComponent} from "../game.component";
+import {PlayersDialogComponent} from "../game.component";
 import {buildMapQueryByAddress} from "../../map/googlemaps.util";
 import {ConfirmDialogComponent} from "../../common/dialog/confirm-dialog.component";
 
@@ -17,13 +17,12 @@ export class GameListComponent implements OnInit {
   @Input() allowEdit : boolean = true;
   @Output() onDialogClose = new EventEmitter<boolean>();
 
-  confirmExitGameLabel = "¿Estás seguro?";
+  joinedGameLabel = "Anotado ¡Nos vemos en la cancha!";
+  exitGameLabel = "¡Qué lastima! Será la próxima";
+  confirmExitGameLabel = "¿Estás seguro que querés salir?";
   confirmNavigateToMapLabel = "¿Estás seguro que querés abrir el mapa?";
   cancelBtn = "Salir";
-  playersBtn = "Anotados";
-  openBtn = "Más";
   Status = GameStatus;
-  itemsVisibility = [];
   locale = "es";
 
   constructor(private gameService: GameService, private dialog: MatDialog, private snackBar: MatSnackBar) {
@@ -36,32 +35,9 @@ export class GameListComponent implements OnInit {
     this.gameService.joinGame(id).subscribe(
       () => {
         this.games.find(game => game.id == id).currentUserJoined = true;
-        this.snackBar.open('¡Anotado! Recordá que si te bajas traés facturas','',{duration: 4000});
+        this.snackBar.open(this.joinedGameLabel,'',{duration: 4000});
       }
     )
-  }
-
-  exitGame(id){
-    if(confirm(this.confirmExitGameLabel)) {
-      this.gameService.exitGame(id).subscribe(
-        () => {
-          this.games.find(game => game.id == id).currentUserJoined = false;
-          this.snackBar.open('¡Tenés que traer facturas!','',{duration: 4000});
-        }
-      )
-    }
-  }
-
-  openGameFormDialog(id: Number){
-    let dialogRef = this.dialog.open(GameDialogComponent, {
-      minWidth: '50%',
-      minHeight: '50%',
-      data: {id : id}
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      this.onDialogClose.emit(result.reload);
-    });
   }
 
   openPlayersDialog(id: Number) {
@@ -78,4 +54,24 @@ export class GameListComponent implements OnInit {
       data: {content : this.confirmNavigateToMapLabel, openUrl: buildMapQueryByAddress(game.location.address)}
     });
   }
+
+  openExitGameConfirmDialog(game:Game){
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {content : this.confirmExitGameLabel}
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if(confirmed) this.exitGame(game.id);
+    });
+  }
+
+  exitGame(id:Number){
+    this.gameService.exitGame(id).subscribe(
+      () => {
+        this.games.find(game => game.id == id).currentUserJoined = false;
+        this.snackBar.open(this.exitGameLabel,'',{duration: 4000});
+      }
+    )
+  }
+
 }
