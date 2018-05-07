@@ -35,6 +35,8 @@ import {
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
 import {PlayerListComponent} from './game/player-list/player-list.component';
 import {MapComponent} from "./map/map.component";
 import {DeviceDetectorModule} from 'ngx-device-detector';
@@ -98,6 +100,8 @@ import {UserListComponent} from './auth/user-list/user-list.component';
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
   ],
   providers: [
     GameService,

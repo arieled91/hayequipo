@@ -1,31 +1,38 @@
-<!--<div class="example-container mat-elevation-z8">-->
-  <!--<div class="example-header">-->
-    <!--<mat-form-field>-->
-      <!--<input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">-->
-    <!--</mat-form-field>-->
-  <!--</div>-->
+<div class="container">
 
-  <!--<mat-table #table [dataSource]="dataSource">-->
+  <header>
+    <h1 title class="title">{{title}}</h1>
+  </header>
 
-    <!--&lt;!&ndash; Email Column &ndash;&gt;-->
-    <!--<ng-container matColumnDef="position">-->
-      <!--<mat-header-cell *matHeaderCellDef> No. </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>-->
-    <!--</ng-container>-->
+  <div class="filter">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
+  </div>
 
-    <!--&lt;!&ndash; FirstName Column &ndash;&gt;-->
-    <!--<ng-container matColumnDef="name">-->
-      <!--<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let user"> {{user.firstName}} </mat-cell>-->
-    <!--</ng-container>-->
 
-    <!--&lt;!&ndash; LastName Column &ndash;&gt;-->
-    <!--<ng-container matColumnDef="weight">-->
-      <!--<mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let user"> {{user.lastName}} </mat-cell>-->
-    <!--</ng-container>-->
+  <div class="loading-shade"
+       *ngIf="isLoadingResults || isRateLimitReached">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
 
-    <!--<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
-    <!--<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-  <!--</mat-table>-->
-<!--</div>-->
+  <table mat-table #table [dataSource]="dataSource" class="table"
+         matSort matSortActive="created" matSortDisableClear matSortDirection="asc">
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let row">{{row.firstName+' '+row.lastName}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="pageSize">
+  </mat-paginator>
+</div>
