@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 
 
-
 import {HttpClient} from "@angular/common/http";
 import {User} from "../auth.model";
 import {PagedList} from "../../common/common.model";
@@ -12,7 +11,8 @@ import Api from "../../service/api.util";
 export class AuthService {
   private pingUrl = '/api/ping';
   private userUrl = '/auth/users';
-  private userRepositoryUrl = '/api/users';
+  private userSearchUrl = '/api/users/search/findAllByEnabledAndQuery?enabled=true';
+  // &query=ariel
 
 
   public static SESSION_ID_KEY = "sessionid";
@@ -38,13 +38,14 @@ export class AuthService {
     return this.http.get<User>(this.userUrl+'/current')
   }
 
-  listUsers(sort: string, order: string, page: number, size: number): Observable<PagedList<User>>{
-    return this.http.get<any>(this.userRepositoryUrl+'?'+Api.pageParams(page, sort, order, size)).map(data => {
-      let pagedList = new PagedList<User>();
-      pagedList.data = data._embedded.users;
-      pagedList.page = data.page;
-      return pagedList;
-    })
+  listUsers(query: string, sort: string, order: string, page: number, size: number): Observable<PagedList<User>>{
+    return this.http.get<any>(this.userSearchUrl+'&'+'query='+query+'&'+Api.pageParams(page, sort, order, size))
+      .map(data => {
+        let pagedList = new PagedList<User>();
+        pagedList.data = data._embedded.users;
+        pagedList.page = data.page;
+        return pagedList;
+      })
   }
 
   ping(){

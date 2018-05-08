@@ -6,6 +6,8 @@ import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
 import org.arieled91.hayequipo.auth.repository.VerificationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +43,14 @@ public class AuthService {
         this.roleRepository = roleRepository;
         this.tokenRepository = tokenRepository;
         this.clientService = clientService;
+    }
+
+    public Page<User> listAll(Pageable pageable){
+        return userRepository.findAll(pageable);
+    }
+
+    public Page<User> listAll(Pageable pageable, boolean enabled){
+        return userRepository.findAllByEnabled(enabled, pageable);
     }
 
     public void upgradeUser(String email){
@@ -84,9 +94,9 @@ public class AuthService {
     }
 
     public OAuth2AccessToken extractToken(Authentication authentication){
-        OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
+        final OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
 
-        OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
+        final OAuth2AuthorizedClient client = clientService.loadAuthorizedClient(oauthToken.getAuthorizedClientRegistrationId(), oauthToken.getName());
 
         return client.getAccessToken();
     }
