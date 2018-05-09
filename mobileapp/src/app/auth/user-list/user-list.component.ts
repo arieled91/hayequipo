@@ -32,6 +32,8 @@ export class UserListComponent implements AfterContentInit {
     this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
 
     this.find();
+
+    this.authService.getPrivileges().subscribe(data => console.log(data));
   }
 
   applyFilter() {

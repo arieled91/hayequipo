@@ -1,6 +1,6 @@
 {
   "name": "com.arieled91.hayequipo",
-  "displayName": "Futboldesanpm install node-sass",
+  "displayName": "Futboldesa",
   "version": "1.2.0",
   "license": "MIT",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "transpile": "ng-transpile --dir dist --verbose --browsers ignore",
     "build": "ng build --prod --build-optimizer --aot --configuration=production --vendor-chunk"
   },
-  "author": "Apache Cordova Team",
+  "author": "https://github.com/arieled91",
   "private": true,
   "dependencies": {
     "@agm/core": "^1.0.0-beta.2",
