@@ -83,7 +83,7 @@ public class AuthService {
         final OAuth2AccessToken token = extractToken(authentication);
         final LocalDateTime expiration = LocalDateTime.ofInstant(token.getExpiresAt(), ZoneId.systemDefault());
 
-        return tokenRepository.save(new VerificationToken(token.getTokenValue(), user, expiration));
+        return tokenRepository.save(new VerificationToken(UUID.randomUUID().toString(), user, expiration));
     }
 
     public User findOrCreateUser(Authentication authentication){
