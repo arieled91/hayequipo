@@ -49,6 +49,7 @@ import {GameCardComponent} from './game/game-card/game-card.component';
 import {GameMapComponent} from './game/game-map/game-map.component';
 import {ConfirmDialogComponent} from './common/dialog/confirm-dialog.component';
 import {UserListComponent} from './auth/user-list/user-list.component';
+import {RegisterComponent} from "./auth/register/register.component";
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import {UserListComponent} from './auth/user-list/user-list.component';
     GameListComponent,
     HomeComponent,
     LoginComponent,
+    RegisterComponent,
     GameFormComponent,
     GameDialogComponent,
     PlayersDialogComponent,

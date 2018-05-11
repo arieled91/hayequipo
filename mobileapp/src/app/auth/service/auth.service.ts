@@ -2,17 +2,19 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Rx';
 
 
-import {HttpClient,HttpParams} from '@angular/common/http';
-import {User} from "../auth.model";
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {TokenResponse, User, UserRegistration} from "../auth.model";
 import {PagedList} from "../../common/common.model";
 import Api from "../../service/api.util";
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class AuthService {
   private pingUrl = '/api/ping';
   private userUrl = '/auth/users';
+  private authUrl = '/auth/login';
   private userListSearchUrl = '/api/users/search/findAllByEnabledAndQuery?enabled=true';
-
+  private registrationUrl = '/auth/registration';
 
   public static SESSION_ID_KEY = "sessionid";
 
@@ -53,5 +55,28 @@ export class AuthService {
 
   getPrivileges(): Observable<Set<String>>{
     return this.http.get<Set<String>>(this.userUrl+'/current/privileges')
+  }
+
+  register(user: UserRegistration) : Observable<any>{
+    if(isNullOrUndefined(user)) throw new Error("Register - UserRegistration cannot be: "+user);
+    return this.http.post<UserRegistration>(this.registrationUrl, user);
+  }
+
+  login(username: string, password: string): Observable<boolean> {
+    return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}))
+      .map((response: TokenResponse) => {
+        // console.log(response);
+        // login successful if there's a jwt token in the response
+        let token = response.token;
+        if (token!==null && token.length>0) {
+          // return true to indicate successful login
+          this.saveToken(token);
+          console.log("token ok");
+          return true;
+        } else {
+          // return false to indicate failed login
+          return false;
+        }
+      }).catch((error:any) => Observable.throw(error.error || 'Server error'));
   }
 }

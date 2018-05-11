@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class EnvProperties {
 
     private String frontendUrl = "http://localhost:4200";
+    private String authSecret = "secret";
 
 
     public String getFrontendUrl() {
@@ -17,5 +18,13 @@ public class EnvProperties {
     public EnvProperties setFrontendUrl(String frontendUrl) {
         this.frontendUrl = frontendUrl;
         return this;
+    }
+
+    public String getAuthSecret() {
+        return authSecret;
+    }
+
+    public void setAuthSecret(String authSecret) {
+        this.authSecret = authSecret;
     }
 }

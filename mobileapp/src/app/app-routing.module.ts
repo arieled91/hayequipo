@@ -9,11 +9,13 @@ import {MapComponent} from "./map/map.component";
 import {GameMapComponent} from "./game/game-map/game-map.component";
 import {ConfirmDialogComponent} from "./common/dialog/confirm-dialog.component";
 import {UserListComponent} from "./auth/user-list/user-list.component";
+import {RegisterComponent} from "./auth/register/register.component";
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent },
   { path: 'game',  component: GameComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: 'game-form/:id', component: GameFormComponent },
   { path: 'game-form', component: GameFormComponent },
   { path: 'game-card', component: GameCardComponent },

@@ -29,7 +29,6 @@ public class VerificationToken extends AbstractEntity {
         expiryDate = calculateExpiryDate(EXPIRATION_IN_DAYS);
     }
 
-    @Deprecated
     public VerificationToken(final String token, final User user) {
         this(token);
         this.user = user;
@@ -66,17 +65,16 @@ public class VerificationToken extends AbstractEntity {
         this.expiryDate = expiryDate;
     }
 
-    @Deprecated
+
     private LocalDateTime calculateExpiryDate(final int days) {
         return LocalDateTime.now().plusDays(days);
     }
 
-    @Deprecated
+
     public void updateToken(final String newToken) {
         token = newToken;
         expiryDate = calculateExpiryDate(EXPIRATION_IN_DAYS);
     }
-    //
 
     @Override
     public int hashCode() {

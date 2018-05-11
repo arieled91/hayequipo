@@ -15,14 +15,22 @@ import {isNullOrUndefined} from "util";
 
 export class LoginComponent implements OnInit {
 
-  title = "Identificación de Usuario";
+  title = "Identificación";
 
   loading = false;
   error = '';
   message = "";
   token = null;
-
+  model: any = {};
   googleLoginLbl = "Ingresá con Google";
+  usernameLabel = "Usuario";
+  passwordLabel = "Contraseña";
+  loginBtn = "Ingresá";
+  registerBtn = "Registrate";
+  passwordRequiredLabel = "Se requiere una contraseña";
+  usernameRequiredLabel = "Se requiere un usuario";
+  userPassIncorrectError = "Usuario o contraseña inválidos";
+  validateMailMessage = "¡Listo! Confirmá tu correo para poder ingresar.";
 
   public googleAuthUrl = Api.BASE_URL+'/oauth2/authorization/google';
 
@@ -37,14 +45,12 @@ export class LoginComponent implements OnInit {
 
   populate(params: Params){
     if(params['token']) this.token = params['token'];
-    if(params['message']) this.snackBar.open( params['token']);
+    if(params['message']) this.snackBar.open( params['message'],'',{duration: 10000});
+    if(params['registered']) this.snackBar.open(this.validateMailMessage,'',{duration: 10000});
   }
 
   ngOnInit() {
-    if(this.message.length>0) this.snackBar.open(this.message);
-
     this.logout();
-
     if(!isNullOrUndefined(this.token)) this.login();
   }
 
@@ -62,4 +68,24 @@ export class LoginComponent implements OnInit {
   logout() {
     this.authService.removeToken();
   }
+
+  ownLogin() {
+    this.loading = true;
+    this.authService.login(this.model.username, this.model.password)
+      .subscribe(result => {
+        if (result === true) {
+          // login successful
+          this.snackBar.dismiss();
+          this.router.navigate(['home']);
+        } else {
+          // login failed
+          this.loading = false;
+          this.snackBar.open(this.userPassIncorrectError);
+        }
+      }, error => {
+        this.loading = false;
+        this.snackBar.open(this.userPassIncorrectError);
+      });
+  }
+
 }

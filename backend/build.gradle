@@ -67,6 +67,8 @@ dependencies {
 
 	compile("io.projectreactor.ipc:reactor-netty")
 
+    compile("io.jsonwebtoken:jjwt:0.9.0")
+
     testCompile("org.springframework.boot:spring-boot-starter-test")
     testCompile("org.springframework.security:spring-security-test")
 	testCompile("junit:junit")

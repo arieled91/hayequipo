@@ -1,18 +1,20 @@
 package org.arieled91.hayequipo.auth.config;
 
 import org.arieled91.hayequipo.EnvProperties;
-import org.arieled91.hayequipo.auth.model.VerificationToken;
 import org.arieled91.hayequipo.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,12 +27,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthService authService;
     private final UnauthorizedHandler unauthorizedHandler;
     private final EnvProperties envProperties;
+    private final UserDetailsService userDetailsService;
 
     @Autowired
-    public SecurityConfig(AuthService authService, UnauthorizedHandler unauthorizedHandler, EnvProperties envProperties) {
+    public SecurityConfig(AuthService authService, UnauthorizedHandler unauthorizedHandler, EnvProperties envProperties, UserDetailsService userDetailsService) {
         this.authService = authService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.envProperties = envProperties;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -38,11 +42,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().configurationSource(corsConfigurationSource()).and()
             .csrf().disable()
             .headers().frameOptions().disable().and()
-            .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
-                .antMatchers("/","/home", "/login", "/oauth2/authorization/*","/actuator").permitAll()
-                .anyRequest().authenticated()
-                .and()
+                .antMatchers(
+                        "/",
+                        "/home",
+                        "/login",
+                        "/oauth2/authorization/*",
+                        "/actuator",
+                        "/auth/registration","/auth/registrationConfirm", "/auth/login"
+                ).permitAll()
+                .anyRequest().authenticated().and()
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), envProperties))
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), envProperties))
+                // don't create session
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .oauth2Login()
                     .successHandler(authSuccessHandler())
                     .failureHandler(authFailureHandler()).and()
@@ -54,6 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,8 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationSuccessHandler authSuccessHandler() {
         return (request, response, authentication) -> {
-            final VerificationToken verification = authService.authenticate(authentication);
-            response.sendRedirect(envProperties.getFrontendUrl()+"/#/login?token="+verification.getToken());
+            final String token = authService.authenticateOauth2(authentication);
+            response.sendRedirect(envProperties.getFrontendUrl()+"/#/login?token="+token);
         };
     }
 
@@ -74,9 +88,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
-    @Bean
-    public AuthenticationTokenFilter authenticationTokenFilterBean(){
-        return new AuthenticationTokenFilter();
+    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -89,5 +104,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authBuilder) throws Exception {
+        authBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 }
