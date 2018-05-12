@@ -45,8 +45,8 @@ export class AuthService {
     const params : HttpParams = new HttpParams().append("query",query);
     Api.addPageParams(params, page, sort, order, size);
 
-    return this.http.get<any>(this.userListSearchUrl, {params: params})
-      .pipe(map(data => {
+    return this.http.get<any>(this.userListSearchUrl, {params: params}).pipe(
+      map(data => {
         let pagedList = new PagedList<User>();
         pagedList.data = data._embedded.users;
         pagedList.page = data.page;
@@ -72,7 +72,6 @@ export class AuthService {
         if (token!==null && token.length>0) {
           // return true to indicate successful login
           this.saveToken(token);
-          console.log("token ok");
           return true;
         } else {
           // return false to indicate failed login
