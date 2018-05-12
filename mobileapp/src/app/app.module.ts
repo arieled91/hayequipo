@@ -40,7 +40,6 @@ import {MatSortModule} from '@angular/material/sort';
 import {PlayerListComponent} from './game/player-list/player-list.component';
 import {MapComponent} from "./map/map.component";
 import {DeviceDetectorModule} from 'ngx-device-detector';
-import {OAuthModule} from 'angular-oauth2-oidc';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {ApiHttpInterceptor} from "./service/api.interceptor";
 import {AuthService} from "./auth/service/auth.service";
@@ -76,7 +75,6 @@ import {RegisterComponent} from "./auth/register/register.component";
     FormsModule,
     HttpClientModule,
     DeviceDetectorModule.forRoot(),
-    OAuthModule.forRoot(),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBzWGn5njSvYpzsIJrJQUp9zU7jVG9unD8',
       libraries: ["places"]

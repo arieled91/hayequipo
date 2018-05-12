@@ -1,7 +1,7 @@
 {
   "name": "com.arieled91.hayequipo",
   "displayName": "Futboldesa",
-  "version": "1.2.0",
+  "version": "1.4.0",
   "license": "MIT",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,6 @@
     "@material/form-field": "^0.30.0",
     "@material/theme": "^0.30.0",
     "angular-google-maps": "^2.4.1",
-    "angular-oauth2-oidc": "^3.1.4",
     "classlist.js": "^1.1.20150312",
     "cordova-android": "^7.1.0",
     "cordova-hot-code-push-local-dev-addon": "^0.4.2",
