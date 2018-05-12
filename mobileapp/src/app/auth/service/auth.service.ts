@@ -6,9 +6,8 @@ import {TokenResponse, User, UserRegistration} from "../auth.model";
 import {PagedList} from "../../common/common.model";
 import Api from "../../service/api.util";
 import {isNullOrUndefined} from "util";
-import {Observable} from "rxjs";
-import {map} from "rxjs/operators"
-import {catchError} from "rxjs/operators";
+import {Observable, throwError} from "rxjs";
+import {map, catchError} from "rxjs/operators"
 
 @Injectable()
 export class AuthService {
@@ -66,23 +65,21 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<boolean> {
-    return this.http.post(this.authUrl, JSON.stringify({username: username, password: password}))
-      .pipe(map((response: TokenResponse) => {
-          // console.log(response);
-          // login successful if there's a jwt token in the response
-          let token = response.token;
-          if (token!==null && token.length>0) {
-            // return true to indicate successful login
-            this.saveToken(token);
-            console.log("token ok");
-            return true;
-          } else {
-            // return false to indicate failed login
-            return false;
-          }
-        }),
-        catchError((error:any) => Observable.throw(error.error || 'Server error'))
-      )
-
+    return this.http.post(this.authUrl, {username: username, password: password}).pipe(
+      map((response: TokenResponse) => {
+        // login successful if there's a jwt token in the response
+        let token = response.token;
+        if (token!==null && token.length>0) {
+          // return true to indicate successful login
+          this.saveToken(token);
+          console.log("token ok");
+          return true;
+        } else {
+          // return false to indicate failed login
+          return false;
+        }
+      }),
+      catchError((error:any) => throwError(error.error || 'Server error'))
+    )
   }
 }
