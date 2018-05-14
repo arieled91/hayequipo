@@ -91,7 +91,7 @@ public class User extends AbstractEntity {
         this.tokenExpired = tokenExpired;
     }
 
-    public Collection<Role> getRoles() {
+    public @NotNull Set<Role> getRoles() {
         return roles;
     }
 

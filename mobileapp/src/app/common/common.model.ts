@@ -9,3 +9,11 @@ export class PagedList<T>{
   data: Array<T> = [];
   page: Page = new Page();
 }
+
+export class Links{
+  self : Link = null;
+}
+
+export class Link{
+  href : string = "";
+}

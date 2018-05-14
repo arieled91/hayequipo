@@ -12,16 +12,19 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.CHANGE_PASSWORD;
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.FULL_ACCESS;
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.GAME_PRIORITY;
+import static org.arieled91.hayequipo.auth.model.PrivilegeType.MODERATE;
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.READ;
 import static org.arieled91.hayequipo.auth.model.PrivilegeType.WRITE;
 import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_ADMIN;
 import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_MODERATOR;
+import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_PRIORITY_USER;
 import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_USER;
 
 @Component
@@ -59,19 +62,22 @@ public class UserDataLoader implements ApplicationListener<ContextRefreshedEvent
         final Privilege writePrivilege = createPrivilegeIfNotFound(WRITE.name());
         final Privilege passwordPrivilege = createPrivilegeIfNotFound(CHANGE_PASSWORD.name());
         final Privilege fullAccessPrivilege = createPrivilegeIfNotFound(FULL_ACCESS.name());
+        final Privilege moderatePrivilege = createPrivilegeIfNotFound(MODERATE.name());
         final Privilege gamePriorityPrivilege = createPrivilegeIfNotFound(GAME_PRIORITY.name());
 
         // == create initial roles
-        //final List<Privilege> adminPrivileges = List.of(readPrivilege, writePrivilege, passwordPrivilege, fullAccessPrivilege);
-        final Set<Privilege> fullPrivileges = new HashSet<>(Arrays.asList(fullAccessPrivilege, gamePriorityPrivilege));
-        final Set<Privilege> userPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege));
+        final Set<Privilege> fullPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege,gamePriorityPrivilege,moderatePrivilege, fullAccessPrivilege));
+        final Set<Privilege> moderatorUserPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege, gamePriorityPrivilege, moderatePrivilege));
+        final Set<Privilege> priorityUserPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege, gamePriorityPrivilege));
+        final Set<Privilege> normalUserPrivileges = new HashSet<>(Arrays.asList(readPrivilege, writePrivilege, passwordPrivilege));
 
         final Role adminRole = createRoleIfNotFound(ROLE_ADMIN.name(), fullPrivileges);
-        final Role userRole = createRoleIfNotFound(ROLE_USER.name(), userPrivileges);
-        createRoleIfNotFound(ROLE_MODERATOR.name(), fullPrivileges);
+        /*final Role moderatorRole =*/ createRoleIfNotFound(ROLE_MODERATOR.name(), moderatorUserPrivileges);
+        /*final Role priorityUserRole =*/ createRoleIfNotFound(ROLE_PRIORITY_USER.name(), priorityUserPrivileges);
+        /*final Role normalUserRole =*/ createRoleIfNotFound(ROLE_USER.name(), normalUserPrivileges);
 
         // == create initial user
-        createUserIfNotFound("test@test.com", "Test", "Test", "test", new HashSet<>(Arrays.asList(userRole, adminRole)));
+        createUserIfNotFound("test@test.com", "Test", "Test", "test", new HashSet<>(Collections.singletonList(adminRole)));
 
         alreadySetup = true;
     }

@@ -3,6 +3,7 @@ package org.arieled91.hayequipo.auth.config;
 
 import io.jsonwebtoken.Jwts;
 import org.arieled91.hayequipo.EnvProperties;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,24 +33,24 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest req,
                                     HttpServletResponse res,
                                     FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader(AUTH_HEADER);
+        final String header = req.getHeader(AUTH_HEADER);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
             chain.doFilter(req, res);
             return;
         }
 
-        UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
+        final UsernamePasswordAuthenticationToken authentication = getAuthentication(req);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(req, res);
     }
 
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader(AUTH_HEADER);
+    private @Nullable UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
+        final String token = request.getHeader(AUTH_HEADER);
         if (token != null) {
             // parse the token.
-            String user = Jwts.parser()
+            final String user = Jwts.parser()
                     .setSigningKey(envProperties.getAuthSecret().getBytes())
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody()

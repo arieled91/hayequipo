@@ -1,6 +1,6 @@
 import {AuthService} from "../service/auth.service";
 import {PagedList} from "../../common/common.model";
-import {User} from "../auth.model";
+import {Role, User} from "../auth.model";
 import {AfterContentInit, Component, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {merge} from 'rxjs';
@@ -21,6 +21,8 @@ export class UserListComponent implements AfterContentInit {
   isLoadingResults = true;
   pageSize = 30;
   searchQuery : string = '';
+  roles : Role[] = [];
+  userPrivileges;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -33,7 +35,8 @@ export class UserListComponent implements AfterContentInit {
 
     this.find();
 
-    this.authService.getPrivileges().subscribe(data => console.log(data));
+    this.authService.getUserPrivileges().subscribe(data => this.userPrivileges=data);
+    this.authService.listRoles().subscribe(data => this.roles=data);
   }
 
   applyFilter() {

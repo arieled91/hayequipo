@@ -49,7 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/login",
                         "/oauth2/authorization/*",
                         "/actuator",
-                        "/auth/registration","/auth/registrationConfirm", "/auth/login"
+                        "/auth/registration",
+                        "/auth/registrationConfirm",
+                        "/auth/login",
+                        "/auth/users/current/privileges"
                 ).permitAll()
                 .anyRequest().authenticated().and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), envProperties))

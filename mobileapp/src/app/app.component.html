@@ -15,13 +15,26 @@
     </mat-grid-list>
 
     <mat-list role="list">
-      <mat-list-item role="listitem" *ngFor="let menu of menus">
+      <!--<h3 mat-subheader class="menu-title">Menu</h3>-->
+      <mat-list-item role="listitem" *ngFor="let menu of publicMenus">
         <button mat-button="wrapper"  [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="sidenav.toggle()" class="sidenav-menu-item">
           <mat-icon style="margin-right: 5px">{{menu.icon}}</mat-icon>{{menu.label}}
         </button>
       </mat-list-item>
     </mat-list>
 
+    <div *ngIf="">
+      <mat-divider></mat-divider>
+
+      <mat-list role="list">
+        <h3 mat-subheader class="menu-title">Administración</h3>
+        <mat-list-item role="listitem" *ngFor="let menu of adminMenus">
+          <button mat-button="wrapper"  [routerLink]="[menu.link]" routerLinkActive="activeTabIndex" (click)="sidenav.toggle()" class="sidenav-menu-item">
+            <mat-icon style="margin-right: 5px">{{menu.icon}}</mat-icon>{{menu.label}}
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -33,7 +46,7 @@
 
       <nav mat-tab-nav-bar class="menu-tab-bar hide-on-mobile" [hidden]="sidenav.opened">
         <a mat-tab-link
-           *ngFor="let menu of menus"
+           *ngFor="let menu of publicMenus"
            [routerLink]="menu.link"
            routerLinkActive #rla="routerLinkActive"
            [active]="rla.isActive">

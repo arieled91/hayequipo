@@ -2,7 +2,6 @@
 
 
 .menu-tab-bar{
-  //margin-bottom: -15px;
   margin-right: 30px;
   a{
     color: white;
@@ -34,7 +33,7 @@
 
 .sidenav{
   position: fixed;
-  width: 300px;
+  width: 280px;
   background-color: #f5f5f5;
 }
 
@@ -48,4 +47,10 @@
   padding-top: 20px;
   background-color: #d50000;
   color: white
+}
+
+.menu-title{
+  justify-content: center;
+  padding-top: 0;
+  padding-bottom: 0;
 }

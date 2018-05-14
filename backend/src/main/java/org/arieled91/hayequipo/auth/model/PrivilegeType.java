@@ -5,5 +5,6 @@ public enum PrivilegeType {
     WRITE,
     CHANGE_PASSWORD,
     FULL_ACCESS,
+    MODERATE,
     GAME_PRIORITY
 }

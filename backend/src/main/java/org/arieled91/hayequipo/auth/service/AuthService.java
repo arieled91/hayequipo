@@ -6,7 +6,14 @@ import org.arieled91.hayequipo.EnvProperties;
 import org.arieled91.hayequipo.auth.OnRegistrationEvent;
 import org.arieled91.hayequipo.auth.exception.AuthorizationException;
 import org.arieled91.hayequipo.auth.exception.UserAlreadyExistsException;
-import org.arieled91.hayequipo.auth.model.*;
+import org.arieled91.hayequipo.auth.model.AuthenticationRequest;
+import org.arieled91.hayequipo.auth.model.Privilege;
+import org.arieled91.hayequipo.auth.model.PrivilegeType;
+import org.arieled91.hayequipo.auth.model.Role;
+import org.arieled91.hayequipo.auth.model.RoleType;
+import org.arieled91.hayequipo.auth.model.User;
+import org.arieled91.hayequipo.auth.model.UserRequest;
+import org.arieled91.hayequipo.auth.model.VerificationToken;
 import org.arieled91.hayequipo.auth.repository.RoleRepository;
 import org.arieled91.hayequipo.auth.repository.UserRepository;
 import org.arieled91.hayequipo.auth.repository.VerificationTokenRepository;
@@ -32,12 +39,20 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.requireNonNull;
 import static org.arieled91.hayequipo.auth.SecurityConstants.EXPIRATION_TIME;
 import static org.arieled91.hayequipo.auth.SecurityConstants.TOKEN_PREFIX;
+import static org.arieled91.hayequipo.auth.model.RoleType.ROLE_USER;
 
 
 @Service
@@ -131,7 +146,7 @@ public class AuthService {
         user.setPassword(UUID.randomUUID().toString());
         user.setEnabled(true);
         user.setTokenExpired(false);
-        user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByName(RoleType.ROLE_USER.name()))));
+        user.setRoles(new HashSet<>(Collections.singletonList(roleRepository.findByName(ROLE_USER.name()))));
         return userRepository.save(user);
     }
 
@@ -212,7 +227,7 @@ public class AuthService {
         EXPIRED("expired"),
         VALID("valid");
 
-        private String key;
+        private final String key;
 
         Token(String key) {
             this.key=key;

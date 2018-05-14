@@ -1,3 +1,5 @@
+import {Links} from "../common/common.model";
+
 export interface TokenResponse{
   token: string;
 }
@@ -15,3 +17,13 @@ export class UserRegistration{
   email     : string = null;
   password  : string = null;
 }
+
+export class Role{
+  name : string;
+  _links: Links;
+}
+
+export enum Privileges {
+  FULL_ACCESS = "FULL_ACCESS"
+}
+

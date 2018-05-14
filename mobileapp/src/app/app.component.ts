@@ -1,10 +1,9 @@
-import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
-import {appMenus} from "./app.menu";
-import {User} from "./auth/auth.model";
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {adminMenus, publicMenus} from "./app.menu";
+import {Privileges, User} from "./auth/auth.model";
 import {MatSidenav} from "@angular/material";
 import {DeviceDetectorService} from "ngx-device-detector";
 import {AuthService} from "./auth/service/auth.service";
-import {HttpClient} from "@angular/common/http";
 
 declare let device;
 
@@ -13,27 +12,29 @@ declare let device;
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, AfterViewInit{
 
   // drawerMenu;
   @ViewChild('sidenav') sidenav : MatSidenav;
   title = 'FUTBOLDESA';
-  menus = appMenus;
+  publicMenus = publicMenus;
+  adminMenus = adminMenus;
   user : any = new User();
   device;
   deviceInfo;
+  privileges : Set<string> = new Set<string>([]);
+  Privileges = Privileges;
 
   constructor(private changeDetector: ChangeDetectorRef,
               private deviceService: DeviceDetectorService,
-              private authService: AuthService,
-              private http: HttpClient
+              private authService: AuthService
   ) {
-
   }
 
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.initMobile();
+    this.authService.getUserPrivileges().subscribe(data=>this.privileges = data);
   }
 
   isWeb(){
@@ -66,5 +67,8 @@ export class AppComponent implements OnInit{
       },
       error => console.log("currentusererror "+error)
     );
+  }
+
+  ngAfterViewInit() {
   }
 }

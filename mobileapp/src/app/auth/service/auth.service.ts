@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core';
 
 
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {TokenResponse, User, UserRegistration} from "../auth.model";
+import {Role, TokenResponse, User, UserRegistration} from "../auth.model";
 import {PagedList} from "../../common/common.model";
 import Api from "../../service/api.util";
 import {isNullOrUndefined} from "util";
 import {Observable, throwError} from "rxjs";
-import {map, catchError} from "rxjs/operators"
+import {map, catchError} from "rxjs/operators";
 
 @Injectable()
 export class AuthService {
@@ -16,6 +16,7 @@ export class AuthService {
   private authUrl = '/auth/login';
   private userListSearchUrl = '/api/users/search/findAllByEnabledAndQuery?enabled=true';
   private registrationUrl = '/auth/registration';
+  private rolesUrl = "/api/roles";
 
   public static SESSION_ID_KEY = "sessionid";
 
@@ -23,16 +24,12 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
 
-  removeToken() {
-    localStorage.removeItem(AuthService.SESSION_ID_KEY)
-  }
-
   saveToken(token: string) {
-    this.removeToken();
+    localStorage.clear();
     localStorage.setItem(AuthService.SESSION_ID_KEY, token)
   }
 
-  getToken(): String {
+  getToken(): string {
     return localStorage.getItem(AuthService.SESSION_ID_KEY)
   }
 
@@ -55,8 +52,8 @@ export class AuthService {
 
   }
 
-  getPrivileges(): Observable<Set<String>>{
-    return this.http.get<Set<String>>(this.userUrl+'/current/privileges')
+  getUserPrivileges(): Observable<Set<string>>{
+    return this.http.get<Set<string>>(this.userUrl+'/current/privileges')
   }
 
   register(user: UserRegistration) : Observable<any>{
@@ -79,6 +76,12 @@ export class AuthService {
         }
       }),
       catchError((error:any) => throwError(error.error || 'Server error'))
+    )
+  }
+
+  listRoles(): Observable<Role[]>{
+    return this.http.get<any>(this.rolesUrl).pipe(
+      map(data=>data._embedded.roles)
     )
   }
 }
