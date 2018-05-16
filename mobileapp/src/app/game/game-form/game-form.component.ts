@@ -1,8 +1,9 @@
 import {Component, ElementRef, Input, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Location} from '@angular/common';
 import {fieldTypes, Game} from "../game.model";
 import {isNullOrUndefined} from "util";
 import {GameService} from "../service/game.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {MatSnackBar} from "@angular/material";
 import {MapsAPILoader} from "@agm/core";
 // noinspection ES6UnusedImports
@@ -30,10 +31,11 @@ export class GameFormComponent implements OnInit {
   @ViewChild('searchAddress') public searchAddress: ElementRef;
 
   constructor(private gameService: GameService,
-              private router: Router,
               private snackBar: MatSnackBar,
               private route: ActivatedRoute,
-              private mapsAPILoader: MapsAPILoader, private ngZone: NgZone
+              private mapsAPILoader: MapsAPILoader,
+              private ngZone: NgZone,
+              private location: Location
   ) {
   }
 
@@ -71,30 +73,18 @@ export class GameFormComponent implements OnInit {
     this.game.location.address = place.formatted_address;
   }
 
-
   save() {
     this.gameService.saveGame(this.game).subscribe(
     data => {
-      this.router.navigate(["game-list"]);
-      this.router.navigate(["game"]);
+      this.location.back();
     },
     error => this.snackBar.open(error)
     );
   }
 
-  // setTime(event){
-  //   let time = event;
-  //   this.game.dateTime = moment(this.game.dateTime).hours(isNullOrUndefined(time) ? 0 : event.substring(0,2));
-  //   this.game.dateTime = moment(this.game.dateTime).minutes(isNullOrUndefined(time) ? 0 : event.substring(3,5));
-  //   this.game.dateTime = moment(this.game.dateTime).seconds(0);
-  //   this.game.dateTime = moment(this.game.dateTime).milliseconds(0);
-  //
-  //   console.log(this.game.dateTime);
-  // }
-  //
-  // getGameTime(){
-  //   return isNullOrUndefined(this.game.dateTime) ? this.game.dateTime : moment(this.game.dateTime).format("HH:mm")
-  // }
+  back(){
+    this.location.back();
+  }
 
   getCapacityValue() {
     return this.fields.find(g => g.capacity==this.game.capacity)

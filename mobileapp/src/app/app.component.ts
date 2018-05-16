@@ -22,7 +22,7 @@ export class AppComponent implements OnInit, AfterViewInit{
   user : any = new User();
   device;
   deviceInfo;
-  privileges : Set<string> = new Set<string>([]);
+  privileges : string[] = [];
   Privileges = Privileges;
 
   constructor(private changeDetector: ChangeDetectorRef,
@@ -34,7 +34,10 @@ export class AppComponent implements OnInit, AfterViewInit{
   ngOnInit(): void {
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.initMobile();
-    this.authService.getUserPrivileges().subscribe(data=>this.privileges = data);
+    this.authService.getUserPrivileges().subscribe(data=>{
+      this.privileges = data;
+      console.log(this.privileges.includes(Privileges.FULL_ACCESS));
+    });
   }
 
   isWeb(){

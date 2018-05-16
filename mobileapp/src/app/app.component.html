@@ -23,7 +23,7 @@
       </mat-list-item>
     </mat-list>
 
-    <div *ngIf="">
+    <div *ngIf="privileges.includes(Privileges.FULL_ACCESS)">
       <mat-divider></mat-divider>
 
       <mat-list role="list">

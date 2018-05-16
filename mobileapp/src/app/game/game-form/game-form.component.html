@@ -63,7 +63,7 @@
       </mat-grid-tile>
 
       <mat-grid-tile>
-        <button mat-raised-button routerLink="/game" style="float: right">Cancelar</button>
+        <button mat-raised-button (click)="back()" style="float: right">Cancelar</button>
         <button mat-raised-button color="primary" (click)="save()" [disabled]="GameForm.form.invalid" style="float: right; margin-left: 20px">Guardar</button>
       </mat-grid-tile>
     </mat-grid-list>

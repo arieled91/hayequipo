@@ -52,8 +52,8 @@ export class AuthService {
 
   }
 
-  getUserPrivileges(): Observable<Set<string>>{
-    return this.http.get<Set<string>>(this.userUrl+'/current/privileges')
+  getUserPrivileges(): Observable<string[]>{
+    return this.http.get<string[]>(this.userUrl+'/current/privileges')
   }
 
   register(user: UserRegistration) : Observable<any>{
